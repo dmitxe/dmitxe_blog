@@ -70,9 +70,9 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
             ->setIsActive(true)
             ->setIsCached(false)
             ->setParams([
+                'depth'=>0.0,
                 'group_id'=>1,
                 'css_class'=>'nav',
-                'depth'=>'',
                 'selected_inheritance'=>false
             ])
         ;
