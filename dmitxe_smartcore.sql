@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost:3306
--- Время создания: Фев 08 2014 г., 16:12
+-- Время создания: Фев 08 2014 г., 16:25
 -- Версия сервера: 5.6.13
 -- Версия PHP: 5.5.9
 
@@ -304,7 +304,7 @@ CREATE TABLE IF NOT EXISTS `engine_folders` (
 --
 
 INSERT INTO `engine_folders` (`folder_id`, `folder_pid`, `title`, `is_file`, `position`, `uri_part`, `is_active`, `is_deleted`, `descr`, `meta`, `redirect_to`, `router_node_id`, `has_inherit_nodes`, `permissions`, `lockout_nodes`, `template_inheritable`, `template_self`, `create_by_user_id`, `create_datetime`) VALUES
-(1, NULL, 'Главная', 0, 0, NULL, 1, 0, 'Корневая папка', 'N;', NULL, 3, 1, 'N;', 'N;', NULL, NULL, 1, '2014-02-08 09:41:35'),
+(1, NULL, 'Главная', 0, 0, NULL, 1, 0, 'Корневая папка', 'N;', NULL, NULL, 1, 'N;', 'N;', NULL, NULL, 1, '2014-02-08 09:41:35'),
 (2, 1, 'Блог', 0, 0, 'blog', 1, 0, NULL, 'N;', NULL, 3, 0, 'N;', 'N;', NULL, NULL, 1, '2014-02-08 15:48:10');
 
 -- --------------------------------------------------------
@@ -723,7 +723,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`, `firstname`, `lastname`, `facebook_id`, `created`) VALUES
 (1, 'admin', 'admin', 'XeDmitry@yandex.ru', 'xedmitry@yandex.ru', 1, 'swus56uv12s8csg4s4o0cc8oc4cwswk', 'WVoNtiOEHYwzIj9jsOX+bsXDx3rhVOjPDdbrXwbVMtfjeKJYbB40+4MvnD7cyxYzyiiPqp4nCwwXM0xK44maCQ==', '2014-02-08 15:46:29', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, '', '', '', '2014-02-08 09:34:44'),
-(2, 'root', 'root', 'root@mail.ru', 'root@mail.ru', 1, '90titcvit4w08s8ogs480cc4wkkosc', 'wyPbJ85w8lENyKs0zMTaMk0z7TycmEdcP8XshlT5u+s/sH0/L5BGOw+kB/42MBoqirKqYLUizKz73yZtJriSYw==', '2014-02-08 16:04:39', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:9:"ROLE_ROOT";}', 0, NULL, '', '', '', '2014-02-08 16:04:15');
+(2, 'root', 'root', 'root@mail.ru', 'root@mail.ru', 1, '90titcvit4w08s8ogs480cc4wkkosc', 'wyPbJ85w8lENyKs0zMTaMk0z7TycmEdcP8XshlT5u+s/sH0/L5BGOw+kB/42MBoqirKqYLUizKz73yZtJriSYw==', '2014-02-08 16:25:12', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:9:"ROLE_ROOT";}', 0, NULL, '', '', '', '2014-02-08 16:04:15');
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
