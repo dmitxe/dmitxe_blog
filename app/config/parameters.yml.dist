@@ -1,10 +1,10 @@
 parameters:
-    base_url:           http://smart-core.org
+    base_url:           http://dmitxe.ru
 
     database_driver:    pdo_mysql
     database_host:      localhost
     database_port:      ~
-    database_name:      smart_core
+    database_name:      dmitxe_smartcore
     database_user:      root
     database_password:  ~
 
@@ -15,7 +15,7 @@ parameters:
     #database_user_db1:     smart_core
     #database_password_db1: 123
 
-    database_table_prefix: aaa_
+    database_table_prefix:
 
     mailer_transport:   mail
     mailer_host:        localhost

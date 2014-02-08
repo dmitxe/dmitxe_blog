@@ -1,0 +1,153 @@
+{% extends '@Html/base.html.twig' %}
+
+{% block html_head_title %}{{ parent() }}
+    {{ cms_html_title({'delimiter': '&ndash;', 'site_full_name': "Dmitry Xe's Personal Site", 'site_short_name': 'dmitxe.ru',}) }}
+{% endblock html_head_title %}
+
+{% block html_head_meta %}{{ parent() }}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% endblock html_head_meta %}
+
+{% block html_head_styles %}{{ parent() }}
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 100px;
+        }
+    </style>
+{% endblock html_head_styles %}
+
+{#
+{% block html_head_styles %}{{ parent() }}
+{% endblock html_head_styles %}
+#}
+
+{% block html_head_scripts %}{{ parent() }}
+{% endblock html_head_scripts %}
+
+{% block body %}
+
+<div id="mst_page" class="container">
+    <div class="row">
+        <div id="header" class="span12">
+            <div id="logo"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+            <div class="navbar navbar-static-top navbar-inverse">
+                <div id="mainmenu" class="navbar-inner top-menu">
+                    {{ main_menu }}
+                    <ul class="nav pull-right">
+                        {% if is_granted('ROLE_USER') %}
+                            <li class="divider-vertical"></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user icon-white"></i>
+                                    &nbsp;{{ app.user.username }} <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ path('fos_user_profile_show') }}"><i class="icon-cog"></i> Мой профиль</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="{{ path('fos_user_security_logout') }}"><i class="icon-off"></i> Выход</a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li><a href="{{ path('fos_user_registration_register') }}">Зарегистрироваться</a></li>
+                            <li class="dropdown">
+                                <a id="login-dropdown" class="dropdown-toggle" href="#" data-toggle="dropdown">Войти <strong class="caret"></strong></a>
+                                <div class="dropdown-menu" style="padding: 16px; padding-bottom: 0px;">
+
+                                    {{ render(controller('DmitxeUserBundle:Security:headerLogin')) }}
+
+                                </div>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="row">
+            <div class="span12">
+                <div class="breadcrumb">
+                    {{ breadcrumbs }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row" class='span3'>
+            {% block sidebar %}
+                <div id="sidebar" class="span3">
+                    <div class="portlet">
+                        <div class="portlet-decoration">
+                            <div class="portlet-title">Рубрики блога</div>
+                        </div>
+                        <div class="portlet-content">
+                            {{ render(controller('BlogModule:BlogWidget:categoryTree')) }}
+                        </div>
+
+                        <div class="portlet-decoration">
+                            <div class="portlet-title">Ближайшие задачи в разработке</div>
+                        </div>
+                        <div class="portlet-content">
+                            <ul class="nav nav-tabs nav-stacked">
+                                <li><a href="#">Разработка &laquo;Бандла&raquo; для распределённого хранения файлов.</a></li>
+                                <li><a href="#">Фабрики для форм блога.</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="portlet-decoration">
+                            <div class="portlet-title">Архив статей</div>
+                        </div>
+
+                        <div class="portlet-content">
+                            {{ render(controller('BlogModule:BlogWidget:archiveMonthly')) }}
+                        </div>
+
+                        <div class="portlet-decoration">
+                            <div class="portlet-title">Тэги блога</div>
+                        </div>
+
+                        <div class="portlet-content">
+                            {{ render(controller('BlogModule:BlogWidget:tagCloud')) }}
+                        </div>
+
+                    </div>
+                </div>
+            {% endblock sidebar %}
+            <div class="span9">
+                <div id="mst_content">
+                    {% block content content %}
+                </div>
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="span12">
+            <div id="footer"> © 2011-2013 Дмитрий Хе. Все права защищены. {{  footer  }}
+                <br />
+                <small>
+                    {{ simple_profiler() }}
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+{% endblock body %}
+
+{% block body_js %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function () {
+            jQuery('#login-dropdown').click(function(e) {
+                setTimeout(function() {
+                    jQuery("#username").focus();
+                }, 1);
+            });
+        });
+    </script>
+{% endblock body_js %}
+
