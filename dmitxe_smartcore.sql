@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.3
+-- version 3.3.10.4
 -- http://www.phpmyadmin.net
 --
--- Хост: 127.0.0.1
--- Время создания: Фев 08 2014 г., 12:22
--- Версия сервера: 5.6.13-log
--- Версия PHP: 5.4.17
+-- Хост: localhost:3306
+-- Время создания: Фев 08 2014 г., 16:12
+-- Версия сервера: 5.6.13
+-- Версия PHP: 5.5.9
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -17,7 +16,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- База данных: `dmitxe_smartcore`
+-- База данных: `dmitxe_blog2`
 --
 
 -- --------------------------------------------------------
@@ -26,6 +25,7 @@ SET time_zone = "+00:00";
 -- Структура таблицы `blog_articles`
 --
 
+DROP TABLE IF EXISTS `blog_articles`;
 CREATE TABLE IF NOT EXISTS `blog_articles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `author_id` int(11) DEFAULT NULL,
@@ -75,6 +75,7 @@ INSERT INTO `blog_articles` (`id`, `author_id`, `category_id`, `image_id`, `is_c
 -- Структура таблицы `blog_articles_tags_relations`
 --
 
+DROP TABLE IF EXISTS `blog_articles_tags_relations`;
 CREATE TABLE IF NOT EXISTS `blog_articles_tags_relations` (
   `article_id` int(11) NOT NULL,
   `tag_id` int(11) NOT NULL,
@@ -128,6 +129,7 @@ INSERT INTO `blog_articles_tags_relations` (`article_id`, `tag_id`) VALUES
 -- Структура таблицы `blog_categories`
 --
 
+DROP TABLE IF EXISTS `blog_categories`;
 CREATE TABLE IF NOT EXISTS `blog_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent` int(11) DEFAULT NULL,
@@ -164,6 +166,7 @@ INSERT INTO `blog_categories` (`id`, `parent`, `slug`, `title`, `created_at`) VA
 -- Структура таблицы `blog_tags`
 --
 
+DROP TABLE IF EXISTS `blog_tags`;
 CREATE TABLE IF NOT EXISTS `blog_tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `slug` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -212,6 +215,7 @@ INSERT INTO `blog_tags` (`id`, `slug`, `title`, `created_at`, `weight`) VALUES
 -- Структура таблицы `engine_blocks`
 --
 
+DROP TABLE IF EXISTS `engine_blocks`;
 CREATE TABLE IF NOT EXISTS `engine_blocks` (
   `block_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `position` smallint(6) DEFAULT NULL,
@@ -241,6 +245,7 @@ INSERT INTO `engine_blocks` (`block_id`, `position`, `name`, `descr`, `create_by
 -- Структура таблицы `engine_blocks_inherit`
 --
 
+DROP TABLE IF EXISTS `engine_blocks_inherit`;
 CREATE TABLE IF NOT EXISTS `engine_blocks_inherit` (
   `block_id` smallint(6) NOT NULL,
   `folder_id` int(11) NOT NULL,
@@ -265,6 +270,7 @@ INSERT INTO `engine_blocks_inherit` (`block_id`, `folder_id`) VALUES
 -- Структура таблицы `engine_folders`
 --
 
+DROP TABLE IF EXISTS `engine_folders`;
 CREATE TABLE IF NOT EXISTS `engine_folders` (
   `folder_id` int(11) NOT NULL AUTO_INCREMENT,
   `folder_pid` int(11) DEFAULT NULL,
@@ -291,14 +297,15 @@ CREATE TABLE IF NOT EXISTS `engine_folders` (
   KEY `is_active` (`is_active`),
   KEY `is_deleted` (`is_deleted`),
   KEY `position` (`position`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Дамп данных таблицы `engine_folders`
 --
 
 INSERT INTO `engine_folders` (`folder_id`, `folder_pid`, `title`, `is_file`, `position`, `uri_part`, `is_active`, `is_deleted`, `descr`, `meta`, `redirect_to`, `router_node_id`, `has_inherit_nodes`, `permissions`, `lockout_nodes`, `template_inheritable`, `template_self`, `create_by_user_id`, `create_datetime`) VALUES
-(1, NULL, 'Главная', 0, 0, NULL, 1, 0, 'Корневая папка', 'N;', NULL, 4, 1, 'N;', 'N;', NULL, NULL, 1, '2014-02-08 09:41:35');
+(1, NULL, 'Главная', 0, 0, NULL, 1, 0, 'Корневая папка', 'N;', NULL, 3, 1, 'N;', 'N;', NULL, NULL, 1, '2014-02-08 09:41:35'),
+(2, 1, 'Блог', 0, 0, 'blog', 1, 0, NULL, 'N;', NULL, 3, 0, 'N;', 'N;', NULL, NULL, 1, '2014-02-08 15:48:10');
 
 -- --------------------------------------------------------
 
@@ -306,6 +313,7 @@ INSERT INTO `engine_folders` (`folder_id`, `folder_pid`, `title`, `is_file`, `po
 -- Структура таблицы `engine_nodes`
 --
 
+DROP TABLE IF EXISTS `engine_nodes`;
 CREATE TABLE IF NOT EXISTS `engine_nodes` (
   `node_id` int(11) NOT NULL AUTO_INCREMENT,
   `folder_id` int(11) DEFAULT NULL,
@@ -335,8 +343,8 @@ CREATE TABLE IF NOT EXISTS `engine_nodes` (
 INSERT INTO `engine_nodes` (`node_id`, `folder_id`, `block_id`, `is_active`, `module`, `params`, `template`, `position`, `priority`, `is_cached`, `descr`, `create_by_user_id`, `create_datetime`) VALUES
 (1, 1, 2, 1, 'Menu', 'a:4:{s:5:"depth";N;s:9:"css_class";s:3:"nav";s:20:"selected_inheritance";b:0;s:8:"group_id";i:1;}', NULL, 1, 0, 0, NULL, 1, '2014-02-08 09:55:47'),
 (2, 1, 1, 1, 'Texter', 'a:2:{s:12:"text_item_id";i:1;s:6:"editor";b:1;}', NULL, 2, 0, 0, NULL, 1, '2014-02-08 10:50:43'),
-(3, 1, 2, 1, 'Blog', 'a:0:{}', NULL, 0, 0, 0, NULL, 1, '2014-02-08 12:14:01'),
-(4, 1, 3, 1, 'News', 'a:1:{s:14:"items_per_page";i:10;}', NULL, 0, 0, 0, NULL, 1, '2014-02-08 12:15:52');
+(3, 2, 2, 1, 'Blog', 'a:0:{}', NULL, 0, 0, 0, NULL, 1, '2014-02-08 12:14:01'),
+(4, 1, 3, 0, 'News', 'a:1:{s:14:"items_per_page";i:10;}', NULL, 0, 0, 0, NULL, 1, '2014-02-08 12:15:52');
 
 -- --------------------------------------------------------
 
@@ -344,6 +352,7 @@ INSERT INTO `engine_nodes` (`node_id`, `folder_id`, `block_id`, `is_active`, `mo
 -- Структура таблицы `engine_roles`
 --
 
+DROP TABLE IF EXISTS `engine_roles`;
 CREATE TABLE IF NOT EXISTS `engine_roles` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -352,12 +361,18 @@ CREATE TABLE IF NOT EXISTS `engine_roles` (
   UNIQUE KEY `UNIQ_9B56FA8C5E237E06` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+--
+-- Дамп данных таблицы `engine_roles`
+--
+
+
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `feedbacks`
 --
 
+DROP TABLE IF EXISTS `feedbacks`;
 CREATE TABLE IF NOT EXISTS `feedbacks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -367,12 +382,18 @@ CREATE TABLE IF NOT EXISTS `feedbacks` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+--
+-- Дамп данных таблицы `feedbacks`
+--
+
+
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `front_end_libraries`
 --
 
+DROP TABLE IF EXISTS `front_end_libraries`;
 CREATE TABLE IF NOT EXISTS `front_end_libraries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
@@ -400,6 +421,7 @@ INSERT INTO `front_end_libraries` (`id`, `name`, `related_by`, `proirity`, `curr
 -- Структура таблицы `front_end_libraries_paths`
 --
 
+DROP TABLE IF EXISTS `front_end_libraries_paths`;
 CREATE TABLE IF NOT EXISTS `front_end_libraries_paths` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `lib_id` int(11) NOT NULL,
@@ -425,6 +447,7 @@ INSERT INTO `front_end_libraries_paths` (`id`, `lib_id`, `version`, `path`) VALU
 -- Структура таблицы `menu`
 --
 
+DROP TABLE IF EXISTS `menu`;
 CREATE TABLE IF NOT EXISTS `menu` (
   `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `pid` int(11) DEFAULT NULL,
@@ -459,6 +482,7 @@ INSERT INTO `menu` (`item_id`, `pid`, `group_id`, `folder_id`, `is_active`, `pos
 -- Структура таблицы `menu_groups`
 --
 
+DROP TABLE IF EXISTS `menu_groups`;
 CREATE TABLE IF NOT EXISTS `menu_groups` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `position` smallint(6) DEFAULT NULL,
@@ -484,6 +508,7 @@ INSERT INTO `menu_groups` (`group_id`, `position`, `name`, `descr`, `properties`
 -- Структура таблицы `news`
 --
 
+DROP TABLE IF EXISTS `news`;
 CREATE TABLE IF NOT EXISTS `news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -496,12 +521,18 @@ CREATE TABLE IF NOT EXISTS `news` (
   UNIQUE KEY `UNIQ_1DD39950989D9B62` (`slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+--
+-- Дамп данных таблицы `news`
+--
+
+
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `session`
 --
 
+DROP TABLE IF EXISTS `session`;
 CREATE TABLE IF NOT EXISTS `session` (
   `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -516,9 +547,6 @@ CREATE TABLE IF NOT EXISTS `session` (
 -- Дамп данных таблицы `session`
 --
 
-INSERT INTO `session` (`id`, `user_id`, `data`, `time`) VALUES
-('ahi40569s68at4frsg9ptrsdf6', 0, '_sf2_attributes|a:2:{s:33:"_security.admin_login.target_path";s:27:"http://dmitxe.mysite/admin/";s:18:"_csrf/authenticate";s:43:"6BdEtPQx8DENfiVTjPbFV8KfAOnrWnuO19OO4fzm7P8";}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1391837904;s:1:"c";i:1391837904;s:1:"l";s:1:"0";}', '2014-02-08 09:38:25'),
-('eovd2sj6g2n7mq2c4sgiju3j57', 1, '_sf2_attributes|a:7:{s:18:"_csrf/authenticate";s:43:"6BdEtPQx8DENfiVTjPbFV8KfAOnrWnuO19OO4fzm7P8";s:24:"_security_smart_core_cms";s:745:"C:74:"Symfony\\Component\\Security\\Core\\Authentication\\Token\\UsernamePasswordToken":657:{a:3:{i:0;N;i:1;s:11:"admin_login";i:2;s:609:"a:4:{i:0;C:42:"SmartCore\\Bundle\\FOSUserBundle\\Entity\\User":251:{a:2:{i:0;s:0:"";i:1;s:221:"a:9:{i:0;s:88:"WVoNtiOEHYwzIj9jsOX+bsXDx3rhVOjPDdbrXwbVMtfjeKJYbB40+4MvnD7cyxYzyiiPqp4nCwwXM0xK44maCQ==";i:1;s:31:"swus56uv12s8csg4s4o0cc8oc4cwswk";i:2;s:5:"admin";i:3;s:5:"admin";i:4;b:0;i:5;b:0;i:6;b:0;i:7;b:1;i:8;i:1;}";}}i:1;b:1;i:2;a:2:{i:0;O:41:"Symfony\\Component\\Security\\Core\\Role\\Role":1:{s:47:"\0Symfony\\Component\\Security\\Core\\Role\\Role\0role";s:16:"ROLE_SUPER_ADMIN";}i:1;O:41:"Symfony\\Component\\Security\\Core\\Role\\Role":1:{s:47:"\0Symfony\\Component\\Security\\Core\\Role\\Role\0role";s:9:"ROLE_USER";}}i:3;a:0:{}}";}}";s:23:"_csrf/smart_core_folder";s:43:"_6rPG0MIt-67VyHZms24GcKM-FmKFYtpKlf5x7liYXs";s:22:"_csrf/smart_core_block";s:43:"BOP2O0sV2oiPsT2WgMzBNEQuRUEaZfW_ByJA8x0rCPk";s:21:"_csrf/smart_core_node";s:43:"uTEAyNEsGvVD-4B0Y5pae8tkSraElb0pzhhB87R9o_4";s:29:"_csrf/smart_module_menu_group";s:43:"jJWpNp2xSPgp2i5_gIZtGamnE3yd62nRHeAY0v9uRKQ";s:28:"_csrf/smart_module_menu_item";s:43:"3asWTlTYnBJ1G1o7UOAIaoV4ilNNxgmrKCuo_RgHvZY";}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1391847653;s:1:"c";i:1391837904;s:1:"l";s:1:"0";}', '2014-02-08 12:20:54');
 
 -- --------------------------------------------------------
 
@@ -526,6 +554,7 @@ INSERT INTO `session` (`id`, `user_id`, `data`, `time`) VALUES
 -- Структура таблицы `sitemap_urls`
 --
 
+DROP TABLE IF EXISTS `sitemap_urls`;
 CREATE TABLE IF NOT EXISTS `sitemap_urls` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `is_visited` tinyint(1) NOT NULL,
@@ -543,12 +572,18 @@ CREATE TABLE IF NOT EXISTS `sitemap_urls` (
   KEY `title_hash` (`title_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+--
+-- Дамп данных таблицы `sitemap_urls`
+--
+
+
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `sliders`
 --
 
+DROP TABLE IF EXISTS `sliders`;
 CREATE TABLE IF NOT EXISTS `sliders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -560,12 +595,18 @@ CREATE TABLE IF NOT EXISTS `sliders` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+--
+-- Дамп данных таблицы `sliders`
+--
+
+
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `slides`
 --
 
+DROP TABLE IF EXISTS `slides`;
 CREATE TABLE IF NOT EXISTS `slides` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `slider_id` int(11) DEFAULT NULL,
@@ -584,12 +625,18 @@ CREATE TABLE IF NOT EXISTS `slides` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+--
+-- Дамп данных таблицы `slides`
+--
+
+
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `texter`
 --
 
+DROP TABLE IF EXISTS `texter`;
 CREATE TABLE IF NOT EXISTS `texter` (
   `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `locale` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -615,6 +662,7 @@ INSERT INTO `texter` (`item_id`, `locale`, `editor`, `text`, `meta`, `created`, 
 -- Структура таблицы `texter_history`
 --
 
+DROP TABLE IF EXISTS `texter_history`;
 CREATE TABLE IF NOT EXISTS `texter_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `is_deleted` tinyint(1) NOT NULL,
@@ -630,12 +678,18 @@ CREATE TABLE IF NOT EXISTS `texter_history` (
   KEY `is_deleted` (`is_deleted`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+--
+-- Дамп данных таблицы `texter_history`
+--
+
+
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -661,14 +715,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_1483A5E992FC23A8` (`username_canonical`),
   UNIQUE KEY `UNIQ_1483A5E9A0D96FBF` (`email_canonical`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Дамп данных таблицы `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`, `firstname`, `lastname`, `facebook_id`, `created`) VALUES
-(1, 'admin', 'admin', 'XeDmitry@yandex.ru', 'xedmitry@yandex.ru', 1, 'swus56uv12s8csg4s4o0cc8oc4cwswk', 'WVoNtiOEHYwzIj9jsOX+bsXDx3rhVOjPDdbrXwbVMtfjeKJYbB40+4MvnD7cyxYzyiiPqp4nCwwXM0xK44maCQ==', '2014-02-08 09:38:44', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, '', '', '', '2014-02-08 09:34:44');
+(1, 'admin', 'admin', 'XeDmitry@yandex.ru', 'xedmitry@yandex.ru', 1, 'swus56uv12s8csg4s4o0cc8oc4cwswk', 'WVoNtiOEHYwzIj9jsOX+bsXDx3rhVOjPDdbrXwbVMtfjeKJYbB40+4MvnD7cyxYzyiiPqp4nCwwXM0xK44maCQ==', '2014-02-08 15:46:29', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, '', '', '', '2014-02-08 09:34:44'),
+(2, 'root', 'root', 'root@mail.ru', 'root@mail.ru', 1, '90titcvit4w08s8ogs480cc4wkkosc', 'wyPbJ85w8lENyKs0zMTaMk0z7TycmEdcP8XshlT5u+s/sH0/L5BGOw+kB/42MBoqirKqYLUizKz73yZtJriSYw==', '2014-02-08 16:04:39', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:9:"ROLE_ROOT";}', 0, NULL, '', '', '', '2014-02-08 16:04:15');
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -727,7 +782,3 @@ ALTER TABLE `menu`
 --
 ALTER TABLE `slides`
   ADD CONSTRAINT `FK_B8C020912CCC9638` FOREIGN KEY (`slider_id`) REFERENCES `sliders` (`id`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

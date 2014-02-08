@@ -57,7 +57,7 @@
                                 <a id="login-dropdown" class="dropdown-toggle" href="#" data-toggle="dropdown">Войти <strong class="caret"></strong></a>
                                 <div class="dropdown-menu" style="padding: 16px; padding-bottom: 0px;">
 
-                                    {{ render(controller('DmitxeUserBundle:Security:headerLogin')) }}
+                                    {#{{ render(controller('DmitxeUserBundle:Security:headerLogin')) }}#}
 
                                 </div>
                             </li>
@@ -84,7 +84,7 @@
                             <div class="portlet-title">Рубрики блога</div>
                         </div>
                         <div class="portlet-content">
-                            {{ render(controller('BlogModule:BlogWidget:categoryTree')) }}
+                            {{ render(controller('3:BlogWidget:categoryTree')) }}
                         </div>
 
                         <div class="portlet-decoration">
@@ -102,7 +102,7 @@
                         </div>
 
                         <div class="portlet-content">
-                            {{ render(controller('BlogModule:BlogWidget:archiveMonthly')) }}
+                            {{ render(controller('3:BlogWidget:archiveMonthly')) }}
                         </div>
 
                         <div class="portlet-decoration">
@@ -110,7 +110,7 @@
                         </div>
 
                         <div class="portlet-content">
-                            {{ render(controller('BlogModule:BlogWidget:tagCloud')) }}
+                            {{ render(controller('3:BlogWidget:tagCloud')) }}
                         </div>
 
                     </div>
