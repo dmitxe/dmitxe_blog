@@ -24,9 +24,13 @@ class LoadMenuData extends ContainerAware implements FixtureInterface, OrderedFi
             ->setName('Главное меню')
             ->setPosition(0)
         ;
+        $manager->persist($menu_group);
         $manager->flush();
 
         $root_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'Главная']);
+        $pages_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'Pages']);
+        $blog_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'Blog']);
+        $news_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'News']);
 
         $menu_item = New Item();
         $menu_item->setCreateByUserId($user_id)
@@ -35,8 +39,34 @@ class LoadMenuData extends ContainerAware implements FixtureInterface, OrderedFi
             ->setGroup($menu_group)
             ->setIsActive(true)
         ;
+        $manager->persist($menu_item);
 
+        $menu_item = New Item();
+        $menu_item->setCreateByUserId($user_id)
+            ->setFolder($pages_folder)
+            ->setTitle('О сайте')
+            ->setGroup($menu_group)
+            ->setIsActive(true)
+        ;
+        $manager->persist($menu_item);
 
+        $menu_item = New Item();
+        $menu_item->setCreateByUserId($user_id)
+            ->setFolder($blog_folder)
+            ->setTitle('Блог')
+            ->setGroup($menu_group)
+            ->setIsActive(true)
+        ;
+        $manager->persist($menu_item);
+
+        $menu_item = New Item();
+        $menu_item->setCreateByUserId($user_id)
+            ->setFolder($news_folder)
+            ->setTitle('Новости')
+            ->setGroup($menu_group)
+            ->setIsActive(true)
+        ;
+        $manager->persist($menu_item);
 
 //        $engineFolder = $this->container->get('cms.folder');
 //        $root_folder = $engineFolder->getBy(['title'=>$root_folder->getTitle()]);

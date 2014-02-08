@@ -69,6 +69,12 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
             ->setDescr('Главное меню')
             ->setIsActive(true)
             ->setIsCached(false)
+            ->setParams([
+                'group_id'=>1,
+                'css_class'=>'nav',
+                'depth'=>'',
+                'selected_inheritance'=>false
+            ])
         ;
         $manager->persist($menu_node);
 
@@ -86,7 +92,6 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         $blog_folder = new Folder();
         $blog_folder->setTitle('Blog')
             ->setDescr('Папка блога')
-            ->setPosition(0)
             ->setParentFolder($root_folder)
             ->setHasInheritNodes(false)
             ->setUriPart('blog')
@@ -96,18 +101,27 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         $news_folder = new Folder();
         $news_folder->setTitle('News')
             ->setDescr('Папка новостей')
-            ->setPosition(0)
             ->setParentFolder($root_folder)
             ->setHasInheritNodes(false)
             ->setUriPart('news')
         ;
         $manager->persist($news_folder);
 
+        $pages_folder = new Folder();
+        $pages_folder->setTitle('Pages')
+            ->setDescr('Страницы сайта')
+            ->setParentFolder($root_folder)
+            ->setHasInheritNodes(false)
+            ->setUriPart('about')
+        ;
+        $manager->persist($pages_folder);
+
         $manager->flush();
 
-        /* var Folder $blog_folder */
+        /* var SmartCore\Bundle\CMSBundle\Entity\Folder $blog_folder */
         $blog_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'Blog']);
         $news_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'News']);
+        $pages_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'Pages']);
 
         $blog_node = new Node();
         $blog_node->setModule('Blog')
@@ -118,6 +132,13 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
             ->setIsCached(false)
         ;
         $manager->persist($blog_node);
+
+        $manager->flush();
+
+        $blog_node = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Node')->findOneBy(['descr'=>'Блог']);
+        $blog_folder->setRouterNodeId($blog_node->getId());
+        $manager->persist($blog_folder);
+
 
         $widget_blog_category_node = new Node();
         $widget_blog_category_node->setModule('Widget')
@@ -171,7 +192,21 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
                ;
                $manager->persist($news_node);
 
-               $manager->flush();
+        $widget_blog_tag_node = new Node();
+        $widget_blog_tag_node->setModule('Texter')
+            ->setBlock($content_block)
+            ->setFolder($pages_folder)
+            ->setDescr('О сайте')
+            ->setIsActive(true)
+            ->setIsCached(false)
+            ->setParams([
+                'text_item_id'=>1,
+                'editor'=>true
+            ])
+        ;
+        $manager->persist($widget_blog_tag_node);
+
+        $manager->flush();
     }
 
     /**
