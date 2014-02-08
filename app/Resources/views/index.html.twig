@@ -9,6 +9,8 @@
 {% endblock html_head_meta %}
 
 {% block html_head_styles %}{{ parent() }}
+    <link href="{{ asset('theme/js/syntaxhighlighter/styles/shCore.css') }}" rel="stylesheet">
+    <link href="{{ asset('theme/js/syntaxhighlighter/styles/shThemeDefault.css') }}" rel="stylesheet">
     <style type="text/css">
         body {
             padding-top: 60px;
@@ -23,6 +25,21 @@
 #}
 
 {% block html_head_scripts %}{{ parent() }}
+    <script src="{{ asset('theme/js/syntaxhighlighter/scripts/shCore.js') }}"></script>
+    <script src="{{ asset('theme/js/syntaxhighlighter/scripts/shBrushJScript.js') }}"></script>
+    <script src="{{ asset('theme/js/syntaxhighlighter/scripts/shBrushSql.js') }}"></script>
+    <script src="{{ asset('theme/js/syntaxhighlighter/scripts/shBrushXml.js') }}"></script>
+    <script src="{{ asset('theme/js/syntaxhighlighter/scripts/shBrushCss.js') }}"></script>
+    <script src="{{ asset('theme/js/syntaxhighlighter/scripts/shBrushPhp.js') }}"></script>
+    <script src="{{ asset('theme/js/syntaxhighlighter/scripts/shBrushCpp.js') }}"></script>
+
+    <script type="text/javascript">
+        // SyntaxHighlighter.config.bloggerMode = true;
+        SyntaxHighlighter.defaults['toolbar'] = false;
+        SyntaxHighlighter.all();
+        // hljs.initHighlightingOnLoad();
+    </script>
+
 {% endblock html_head_scripts %}
 
 {% block body %}

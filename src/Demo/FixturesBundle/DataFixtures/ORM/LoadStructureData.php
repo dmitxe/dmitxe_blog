@@ -39,7 +39,9 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         $mainmenu_block = new Block();
         $mainmenu_block->setName('main_menu')
             ->setDescr('Главное меню')
-            ->setPosition(1);
+            ->setPosition(1)
+            ->setFolder($root_folder)
+        ;
         $manager->persist($mainmenu_block);
 
         $leftsidebar_block = new Block();
