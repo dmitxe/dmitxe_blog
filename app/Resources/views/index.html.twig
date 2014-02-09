@@ -103,6 +103,8 @@
             {% endblock sidebar %}
             <div class="span9">
                 <div id="mst_content">
+                    {% include '@CMS/flash_messages.thml.twig' %}
+
                     {% block content content %}
                 </div>
             </div>

@@ -1,5 +1,41 @@
 {% form_theme form '@MopaBootstrap/Form/fields.html.twig' %}
 
-{{ form(form, {
-    'attr': {'novalidate': novalidate}
-}) }}
+{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+<fieldset>
+    <legend>Форма обратной связи</legend>
+    <div id="mremi_contact">
+       {{ form_errors(form) }}
+        <div class="control-group">
+            {{ form_label(form.title) }}
+            {{ form_errors(form.title) }}
+            <div class="controls">
+                {{ form_widget(form.title) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.email) }}
+            {{ form_errors(form.email) }}
+            <div class="controls">
+                {{ form_widget(form.email) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.text) }}
+            {{ form_errors(form.text) }}
+            <div class="controls">
+                {{ form_widget(form.text) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.captcha) }}
+            {{ form_errors(form.captcha) }}
+            <div class="controls">
+                {{ form_widget(form.captcha) }}
+            </div>
+        </div>
+        <div class="form-actions">
+           {{ form_widget(form.send) }}
+        </div>
+    </div>
+</fieldset>
+{{ form_end(form) }}

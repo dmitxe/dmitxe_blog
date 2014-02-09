@@ -125,19 +125,10 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         ;
         $manager->persist($news_folder);
 
-        $pages_folder = new Folder();
-        $pages_folder->setTitle('Pages')
-            ->setDescr('Страницы сайта')
-            ->setParentFolder($root_folder)
-            ->setHasInheritNodes(false)
-            ->setUriPart('pages')
-        ;
-        $manager->persist($pages_folder);
-
         $page_about_folder = new Folder();
         $page_about_folder->setTitle('About Us')
             ->setDescr('О сайте')
-            ->setParentFolder($pages_folder)
+            ->setParentFolder($root_folder)
             ->setHasInheritNodes(false)
             ->setUriPart('about')
         ;
@@ -146,7 +137,7 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         $feedback_folder = new Folder();
         $feedback_folder->setTitle('Feedback')
             ->setDescr('О сайте')
-            ->setParentFolder($pages_folder)
+            ->setParentFolder($root_folder)
             ->setHasInheritNodes(false)
             ->setUriPart('feedback')
         ;
@@ -178,13 +169,19 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         $widget_blog_category_node = new Node();
         $widget_blog_category_node->setModule('Widget')
             ->setBlock($leftsidebar_block)
-            ->setFolder($blog_folder)
+            ->setFolder($root_folder)
             ->setDescr('Категории блога')
             ->setIsActive(true)
             ->setIsCached(false)
             ->setParams([
                 'node_id'=>$blog_node->getId(),
-                'controller'=>'BlogWidget:categoryTree'
+                'controller'=>'BlogWidget:categoryTree',
+                'open_tag'=>'
+                <div class="portlet-decoration">
+                    <div class="portlet-title">Рубрики блога</div>
+                </div>
+                <div class="portlet-content">',
+                'close_tag'=>'</div>'
             ])
         ;
         $manager->persist($widget_blog_category_node);
@@ -192,13 +189,19 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         $widget_blog_archive_node = new Node();
         $widget_blog_archive_node->setModule('Widget')
             ->setBlock($leftsidebar_block)
-            ->setFolder($blog_folder)
+            ->setFolder($root_folder)
             ->setDescr('Архив блога')
             ->setIsActive(true)
             ->setIsCached(false)
             ->setParams([
                 'node_id'=>$blog_node->getId(),
-                'controller'=>'BlogWidget:archiveMonthly'
+                'controller'=>'BlogWidget:archiveMonthly',
+                'open_tag'=>'
+                <div class="portlet-decoration">
+                    <div class="portlet-title">Архив статей</div>
+                </div>
+                <div class="portlet-content">',
+                'close_tag'=>'</div>'
             ])
         ;
         $manager->persist($widget_blog_archive_node);
@@ -206,13 +209,19 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         $widget_blog_tag_node = new Node();
         $widget_blog_tag_node->setModule('Widget')
             ->setBlock($leftsidebar_block)
-            ->setFolder($blog_folder)
+            ->setFolder($root_folder)
             ->setDescr('Облако тегов')
             ->setIsActive(true)
             ->setIsCached(false)
             ->setParams([
                 'node_id'=>$blog_node->getId(),
-                'controller'=>'BlogWidget:tagCloud'
+                'controller'=>'BlogWidget:tagCloud',
+                'open_tag'=>'
+                <div class="portlet-decoration">
+                    <div class="portlet-title">Тэги блога</div>
+                </div>
+                <div class="portlet-content">',
+                'close_tag'=>'</div>'
             ])
         ;
         $manager->persist($widget_blog_tag_node);
