@@ -54,7 +54,7 @@ body {
 .breadcrumb .separator {
     padding: 0 4px;
 }
-.navbar-inverse .navbar-inner {
+#mainmenu .navbar-inverse .navbar-inner {
     background-color: #025f92;
     background-image: -moz-linear-gradient(top,#045987,#0069A3);
     background-image: -webkit-gradient(linear,0 0,0 100%,from(#045987),to(#0069A3));
@@ -66,40 +66,40 @@ body {
     border: 1px solid transparent;
     box-shadow: 0 0 5px #FFFFFF inset;
 }
-.navbar-inverse .brand,
-.navbar-inverse .nav > li > a {
+#mainmenu .navbar-inverse .brand,
+#mainmenu .navbar-inverse .nav > li > a {
     color: #F5F4FF;
     text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
 }
-.navbar-inverse .brand:hover,
-.navbar-inverse .nav > li > a:hover {
+#mainmenu .navbar-inverse .brand:hover,
+#mainmenu .navbar-inverse .nav > li > a:hover {
     color: #fff;
 }
-.navbar-inverse .brand {
+#mainmenu .navbar-inverse .brand {
     color: #F5F4FF;
 }
-.navbar-inverse .navbar-text {
+#mainmenu .navbar-inverse .navbar-text {
     color: #F5F4FF;
 }
-.navbar-inverse .nav > li > a:focus,
-.navbar-inverse .nav > li > a:hover {
+#mainmenu .navbar-inverse .nav > li > a:focus,
+#mainmenu .navbar-inverse .nav > li > a:hover {
     background-color: transparent;
     color: #fff;
     border: 1px solid transparent;
     box-shadow: 0 0 5px #FFFFFF inset;
 }
-.navbar-inverse .nav .active > a,
-.navbar-inverse .nav .active > a:hover,
-.navbar-inverse .nav .active > a:focus {
+#mainmenu .navbar-inverse .nav .active > a,
+#mainmenu .navbar-inverse .nav .active > a:hover,
+#mainmenu .navbar-inverse .nav .active > a:focus {
     color: #fff;
     background-color: #0069A3;
     border: 1px solid transparent;
     box-shadow: 0 0 5px #FFFFFF inset;
 }
-.navbar-inverse .navbar-link {
+#mainmenu .navbar-inverse .navbar-link {
     color: #F5F4FF;
 }
-.navbar-inverse .navbar-link:hover {
+#mainmenu .navbar-inverse .navbar-link:hover {
     color: #fff;
 }
 .top-menu .nav {
@@ -221,4 +221,9 @@ body {
 }
 .form input {
     width: auto;
+}
+#tags {
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    padding: 8px 12px;
 }

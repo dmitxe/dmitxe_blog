@@ -143,12 +143,22 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         ;
         $manager->persist($feedback_folder);
 
+        $user_folder = new Folder();
+        $user_folder->setTitle('User')
+            ->setDescr('Аккаунт пользователя')
+            ->setParentFolder($root_folder)
+            ->setHasInheritNodes(false)
+            ->setUriPart('user')
+        ;
+        $manager->persist($user_folder);
+
         $manager->flush();
 
         $blog_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'Blog']);
         $news_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'News']);
         $page_about_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'About Us']);
         $feedback_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'Feedback']);
+        $user_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'User']);
 
         $blog_node = new Node();
         $blog_node->setModule('Blog')
@@ -284,6 +294,20 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
             ])
         ;
         $manager->persist($main_widget_node);
+
+        $user_node = new Node();
+        $user_node->setModule('User')
+            ->setBlock($content_block)
+            ->setFolder($user_folder)
+            ->setDescr('Аккаунт')
+            ->setIsActive(true)
+            ->setIsCached(false)
+            ->setParams([
+                'allow_registration'=>true,
+                'allow_password_resetting'=>true
+            ])
+        ;
+        $manager->persist($user_node);
 
         $manager->flush();
     }

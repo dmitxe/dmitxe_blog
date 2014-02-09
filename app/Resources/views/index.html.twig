@@ -52,9 +52,9 @@
     </div>
 
     <div class="row">
-        <div class="span12">
+        <div id="mainmenu" class="span12">
             <div class="navbar navbar-static-top navbar-inverse">
-                <div id="mainmenu" class="navbar-inner top-menu">
+                <div class="navbar-inner top-menu">
                     {{ main_menu }}
                     <ul class="nav pull-right">
                         {% if is_granted('ROLE_USER') %}
@@ -71,12 +71,7 @@
                         {% else %}
                             <li><a href="{{ path('fos_user_registration_register') }}">Зарегистрироваться</a></li>
                             <li class="dropdown">
-                                <a id="login-dropdown" class="dropdown-toggle" href="#" data-toggle="dropdown">Войти <strong class="caret"></strong></a>
-                                <div class="dropdown-menu" style="padding: 16px; padding-bottom: 0px;">
-
-                                    {#{{ render(controller('DmitxeUserBundle:Security:headerLogin')) }}#}
-
-                                </div>
+                                <a href="{{ path('fos_user_profile_show') }}">Войти</a>
                             </li>
                         {% endif %}
                     </ul>
