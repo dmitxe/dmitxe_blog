@@ -21,13 +21,11 @@ class BlogWidgetController extends Controller
      */
     public function mainAction(Request $requst, $page = null)
     {
- /*       if (null === $page) {
+        if (null === $page) {
             $page = $requst->query->get('page', 1);
         }
 
         $articleService = $this->get('smart_blog.article');
-
-        ld($articleService);
 
         $pagerfanta = new Pagerfanta(new SimpleDoctrineORMAdapter($articleService->getFindByCategoryQuery()));
         $pagerfanta->setMaxPerPage($articleService->getItemsCountPerPage());
@@ -38,10 +36,16 @@ class BlogWidgetController extends Controller
             return $this->redirect($this->generateUrl('smart_blog.article.index'));
         }
 
-        return $this->render('BlogModule:Widget:main.html.twig', [
+        ld($pagerfanta);
+
+        $response =  $this->render('BlogModule:Widget:main.html.twig', [
             'pagerfanta' => $pagerfanta,
-        ]);*/
-        return new Response('Заглушка для блога');
+        ]);
+
+        ld($response);
+        
+        return $response;
+//        return new Response('Заглушка для блога');
     }
 
     /**
