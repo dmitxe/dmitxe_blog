@@ -46,7 +46,8 @@
         "whiteoctober/breadcrumbs-bundle": "dev-master",
         "white-october/pagerfanta-bundle": "dev-master",
         "zendframework/zend-servicemanager": "2.2.*",
-        "zendframework/zend-tag": "2.2.*"
+        "zendframework/zend-tag": "2.2.*",
+        "knplabs/knp-disqus-bundle":"dev-master"
     },
     "scripts": {
         "post-install-cmd": [

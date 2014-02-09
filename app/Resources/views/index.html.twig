@@ -9,6 +9,8 @@
 {% endblock html_head_meta %}
 
 {% block html_head_styles %}{{ parent() }}
+    <link rel="stylesheet" href="{{ asset('theme/css/comments.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('theme/js/jlike/buttons.css') }}" type="text/css" />
     <link href="{{ asset('theme/js/syntaxhighlighter/styles/shCore.css') }}" rel="stylesheet">
     <link href="{{ asset('theme/js/syntaxhighlighter/styles/shThemeDefault.css') }}" rel="stylesheet">
     <style type="text/css">
@@ -25,6 +27,14 @@
 #}
 
 {% block html_head_scripts %}{{ parent() }}
+    <script type="text/javascript">
+        var pathbs = 'http://{{ app.request.host ~ app.request.getBaseUrl() }}';
+        var typeGet="0";
+        if(!window.VK) {
+            document.write(unescape('<script type="text/javascript" src="http://vk.com/js/api/openapi.js">%3C/script%3E'));
+        }
+    </script>
+    <script type="text/javascript" src="{{ asset('theme/js/jlike/buttons.js') }}"></script>
     <script src="{{ asset('theme/js/syntaxhighlighter/scripts/shCore.js') }}"></script>
     <script src="{{ asset('theme/js/syntaxhighlighter/scripts/shBrushJScript.js') }}"></script>
     <script src="{{ asset('theme/js/syntaxhighlighter/scripts/shBrushSql.js') }}"></script>

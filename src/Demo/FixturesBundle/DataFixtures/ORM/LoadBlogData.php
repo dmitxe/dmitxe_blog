@@ -96,19 +96,25 @@ class LoadBlogData extends ContainerAware implements FixtureInterface, OrderedFi
             ->setParent($category_imposition)
         ;
 
-        $category_os = new Category();
-        $category_os
-            ->setTitle('Операционные системы')
-            ->setSlug('os')
+        $category_sysadmin = new Category();
+        $category_sysadmin
+            ->setTitle('Системное администрирование')
+            ->setSlug('system_administration')
         ;
 
         $category_debian = new Category();
         $category_debian
             ->setTitle('Debian')
             ->setSlug('debian')
-            ->setParent($category_os)
+            ->setParent($category_sysadmin)
         ;
 
+        $category_ssh = new Category();
+        $category_ssh
+            ->setTitle('SSH')
+            ->setSlug('ssh')
+            ->setParent($category_sysadmin)
+        ;
         $category_soft = new Category();
         $category_soft
             ->setTitle('Программы (софт)')
@@ -160,6 +166,7 @@ class LoadBlogData extends ContainerAware implements FixtureInterface, OrderedFi
         $tag24 = new Tag('Memcached');
         $tag25 = new Tag('Debian');
         $tag26 = new Tag('Twig');
+        $tag27 = new Tag('SSH');
 
         $article = new Article();
         $article->setTitle('Хлебные крошки в Yii')
@@ -728,6 +735,33 @@ filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr=&#39;#3437CD&#
             ->addTag($tag26)
             ->addTag($tag2)
             ->addTag($tag14)
+            ->setAuthor($user)
+        ;
+        $manager->persist($article);
+
+        $article = new Article();
+        $article->setTitle('Команды ssh')
+            ->setSlug('commands_ssh')
+            ->setAnnotation('Команды ssh через Pytty')
+            ->setText('<hr id="readmore" />
+<p>Переход в директорию path_to_dir:</p>
+<div class="highlight">	<pre class="brush: cpp">cd path_to_dir</pre></div>
+<p>Удаление файла file:</p>
+<div class="highlight">	<pre class="brush: cpp">rm file</pre></div>
+<p>Рекурсивное удаление всех файлов в папке и саму папку folder:</p>
+<div class="highlight">	<pre class="brush: cpp">rm -rf folder/</pre></div>
+<p>Упаковка папки folder в архив archive.zip:</p>
+<div class="highlight">	<pre class="brush: cpp">zip -r archive.zip folder/</pre></div>
+<p>Распаковка архива в текущую папку:</p>
+<div class="highlight">	<pre class="brush: cpp">unzip archive.zip</pre></div>
+<p>Перемещение всех папок и файлов из subdir в dir:</p>
+<div class="highlight">	<pre class="brush: cpp">mv dir/subdir/* dir/</pre></div>
+')
+            ->setCategory($category_ssh)
+            ->setDescription('Часто используемые команды ssh')
+            ->setKeywords('SSH, команды')
+            ->setCreatedAt(new \DateTime('2014-02-09 19:41:53'))
+            ->addTag($tag27)
             ->setAuthor($user)
         ;
         $manager->persist($article);

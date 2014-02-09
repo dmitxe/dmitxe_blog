@@ -55,10 +55,12 @@ class AppKernel extends Kernel
             new SmartCore\Bundle\SessionBundle\SmartCoreSessionBundle(),
             new SmartCore\Bundle\SimpleProfilerBundle\SmartSimpleProfilerBundle(),
             new SmartCore\Bundle\SitemapBundle\SmartSitemapBundle(),
+            new SmartCore\Bundle\SocialBundle\SmartSocialBundle(),
             new Sonata\IntlBundle\SonataIntlBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(), // "stfalcon/tinymce-bundle": "v0.2.1",
             new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+            new Knp\Bundle\DisqusBundle\KnpDisqusBundle(),
             new Demo\FixturesBundle\DemoFixturesBundle(),
         );
 
