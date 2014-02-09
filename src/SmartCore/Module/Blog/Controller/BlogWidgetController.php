@@ -3,12 +3,46 @@
 namespace SmartCore\Module\Blog\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Pagerfanta\Exception\NotValidCurrentPageException;
+use Pagerfanta\Pagerfanta;
+use SmartCore\Bundle\CMSBundle\Pagerfanta\SimpleDoctrineORMAdapter;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SmartCore\Bundle\CMSBundle\Module\NodeTrait;
 
 class BlogWidgetController extends Controller
 {
     use NodeTrait;
+
+    /**
+     * @param Request $requst
+     * @param integer $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function mainAction(Request $requst, $page = null)
+    {
+ /*       if (null === $page) {
+            $page = $requst->query->get('page', 1);
+        }
+
+        $articleService = $this->get('smart_blog.article');
+
+        ld($articleService);
+
+        $pagerfanta = new Pagerfanta(new SimpleDoctrineORMAdapter($articleService->getFindByCategoryQuery()));
+        $pagerfanta->setMaxPerPage($articleService->getItemsCountPerPage());
+
+        try {
+            $pagerfanta->setCurrentPage($page);
+        } catch (NotValidCurrentPageException $e) {
+            return $this->redirect($this->generateUrl('smart_blog.article.index'));
+        }
+
+        return $this->render('BlogModule:Widget:main.html.twig', [
+            'pagerfanta' => $pagerfanta,
+        ]);*/
+        return new Response('Заглушка для блога');
+    }
 
     /**
      * @param integer $limit

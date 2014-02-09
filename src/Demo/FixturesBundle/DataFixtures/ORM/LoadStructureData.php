@@ -265,6 +265,26 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         ;
         $manager->persist($feedback_node);
 
+        $main_widget_node = new Node();
+        $main_widget_node->setModule('Widget')
+            ->setBlock($content_block)
+            ->setFolder($root_folder)
+            ->setDescr('Главная страница')
+            ->setIsActive(true)
+            ->setIsCached(false)
+            ->setParams([
+                'node_id'=>$blog_node->getId(),
+                'controller'=>'BlogWidget:main',
+                'open_tag'=>'
+                    <h1>Добро пожаловать!</h1>
+                    <p>Меня зовут Дмитрий. Я веб-программист, занимаюсь созданием сайтов.
+                    На этом блоге находятся мои заметки по программированию. Многие идеи
+                    взяты у других авторов, часть текста - первод с английского, что-то придумал сам).
+                    </p>',
+            ])
+        ;
+        $manager->persist($main_widget_node);
+
         $manager->flush();
     }
 

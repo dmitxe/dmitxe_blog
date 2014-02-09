@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.10.4
+-- version 3.5.3
 -- http://www.phpmyadmin.net
 --
--- Хост: localhost:3306
--- Время создания: Фев 09 2014 г., 12:27
--- Версия сервера: 5.6.13
--- Версия PHP: 5.5.9
+-- Хост: 127.0.0.1
+-- Время создания: Фев 09 2014 г., 11:17
+-- Версия сервера: 5.6.13-log
+-- Версия PHP: 5.4.17
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -16,7 +17,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- База данных: `dmitxe_blog2`
+-- База данных: `dmitxe_smartcore`
 --
 
 -- --------------------------------------------------------
@@ -25,7 +26,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Структура таблицы `blog_articles`
 --
 
-DROP TABLE IF EXISTS `blog_articles`;
 CREATE TABLE IF NOT EXISTS `blog_articles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `author_id` int(11) DEFAULT NULL,
@@ -75,7 +75,6 @@ INSERT INTO `blog_articles` (`id`, `author_id`, `category_id`, `image_id`, `is_c
 -- Структура таблицы `blog_articles_tags_relations`
 --
 
-DROP TABLE IF EXISTS `blog_articles_tags_relations`;
 CREATE TABLE IF NOT EXISTS `blog_articles_tags_relations` (
   `article_id` int(11) NOT NULL,
   `tag_id` int(11) NOT NULL,
@@ -129,7 +128,6 @@ INSERT INTO `blog_articles_tags_relations` (`article_id`, `tag_id`) VALUES
 -- Структура таблицы `blog_categories`
 --
 
-DROP TABLE IF EXISTS `blog_categories`;
 CREATE TABLE IF NOT EXISTS `blog_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent` int(11) DEFAULT NULL,
@@ -146,19 +144,19 @@ CREATE TABLE IF NOT EXISTS `blog_categories` (
 --
 
 INSERT INTO `blog_categories` (`id`, `parent`, `slug`, `title`, `created_at`) VALUES
-(1, 2, 'yii', 'Yii', '2014-02-09 09:09:22'),
-(2, 3, 'php', 'PHP', '2014-02-09 09:09:22'),
-(3, NULL, 'programing', 'Программирование', '2014-02-09 09:09:22'),
-(4, 2, 'symfony2', 'Symfony2', '2014-02-09 09:09:22'),
-(5, 3, 'js', 'JavaScript', '2014-02-09 09:09:22'),
-(6, 7, 'debian', 'Debian', '2014-02-09 09:09:22'),
-(7, NULL, 'os', 'Операционные системы', '2014-02-09 09:09:22'),
-(8, 9, 'css', 'CSS', '2014-02-09 09:09:22'),
-(9, NULL, 'imposition', 'Верстка', '2014-02-09 09:09:22'),
-(10, 8, 'twitter_bootstrap', 'Twitter Bootstrap', '2014-02-09 09:09:22'),
-(11, 3, 'cpp', 'C++', '2014-02-09 09:09:22'),
-(12, NULL, 'soft', 'Программы (софт)', '2014-02-09 09:09:22'),
-(13, NULL, 'other', 'Другое', '2014-02-09 09:09:22');
+(1, 2, 'yii', 'Yii', '2014-02-09 11:16:37'),
+(2, 3, 'php', 'PHP', '2014-02-09 11:16:37'),
+(3, NULL, 'programing', 'Программирование', '2014-02-09 11:16:37'),
+(4, 2, 'symfony2', 'Symfony2', '2014-02-09 11:16:37'),
+(5, 3, 'js', 'JavaScript', '2014-02-09 11:16:37'),
+(6, 7, 'debian', 'Debian', '2014-02-09 11:16:37'),
+(7, NULL, 'os', 'Операционные системы', '2014-02-09 11:16:37'),
+(8, 9, 'css', 'CSS', '2014-02-09 11:16:37'),
+(9, NULL, 'imposition', 'Верстка', '2014-02-09 11:16:37'),
+(10, 8, 'twitter_bootstrap', 'Twitter Bootstrap', '2014-02-09 11:16:37'),
+(11, 3, 'cpp', 'C++', '2014-02-09 11:16:37'),
+(12, NULL, 'soft', 'Программы (софт)', '2014-02-09 11:16:37'),
+(13, NULL, 'other', 'Другое', '2014-02-09 11:16:37');
 
 -- --------------------------------------------------------
 
@@ -166,7 +164,6 @@ INSERT INTO `blog_categories` (`id`, `parent`, `slug`, `title`, `created_at`) VA
 -- Структура таблицы `blog_tags`
 --
 
-DROP TABLE IF EXISTS `blog_tags`;
 CREATE TABLE IF NOT EXISTS `blog_tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `slug` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -184,30 +181,30 @@ CREATE TABLE IF NOT EXISTS `blog_tags` (
 --
 
 INSERT INTO `blog_tags` (`id`, `slug`, `title`, `created_at`, `weight`) VALUES
-(1, 'breadcrumbs', 'Breadcrumbs', '2014-02-09 09:09:22', 0),
-(2, 'yii', 'Yii', '2014-02-09 09:09:22', 0),
-(3, 'ckeditor', 'Ckeditor', '2014-02-09 09:09:22', 0),
-(4, 'connect', 'Подключение', '2014-02-09 09:09:22', 0),
-(5, 'formatting', 'Форматирование', '2014-02-09 09:09:22', 0),
-(6, 'date_and_time', 'Дата и время', '2014-02-09 09:09:22', 0),
-(7, 'symfony2', 'Symfony2', '2014-02-09 09:09:22', 0),
-(8, 'commands', 'Консольные команды', '2014-02-09 09:09:22', 0),
-(9, 'code_illumination', 'Подсветка кода', '2014-02-09 09:09:22', 0),
-(10, 'phpstorm', 'phpStorm', '2014-02-09 09:09:22', 0),
-(11, 'php', 'PHP', '2014-02-09 09:09:22', 0),
-(12, 'memcached', 'Memcached', '2014-02-09 09:09:22', 0),
-(13, 'debian', 'Debian', '2014-02-09 09:09:22', 0),
-(14, 'css', 'CSS', '2014-02-09 09:09:22', 0),
-(15, 'linear_gradient', 'Линейный градиент', '2014-02-09 09:09:22', 0),
-(16, 'twitter_bootstrap', 'Twitter Bootstrap', '2014-02-09 09:09:22', 0),
-(17, 'forms', 'Формы', '2014-02-09 09:09:22', 0),
-(18, 'visual_sStudio_2012_cpp', 'Visual Studio 2012 C++', '2014-02-09 09:09:22', 0),
-(19, 'editor', 'Редактор', '2014-02-09 09:09:22', 0),
-(20, 'encoding', 'Кодировка', '2014-02-09 09:09:22', 0),
-(21, 'framework', 'Фреймворк', '2014-02-09 09:09:22', 0),
-(22, 'cms', 'CMS', '2014-02-09 09:09:22', 0),
-(23, 'select', 'Выбор', '2014-02-09 09:09:22', 0),
-(24, 'twig', 'Twig', '2014-02-09 09:09:22', 0);
+(1, 'breadcrumbs', 'Breadcrumbs', '2014-02-09 11:16:37', 0),
+(2, 'yii', 'Yii', '2014-02-09 11:16:37', 0),
+(3, 'ckeditor', 'Ckeditor', '2014-02-09 11:16:37', 0),
+(4, 'connect', 'Подключение', '2014-02-09 11:16:37', 0),
+(5, 'formatting', 'Форматирование', '2014-02-09 11:16:37', 0),
+(6, 'date_and_time', 'Дата и время', '2014-02-09 11:16:37', 0),
+(7, 'symfony2', 'Symfony2', '2014-02-09 11:16:37', 0),
+(8, 'commands', 'Консольные команды', '2014-02-09 11:16:37', 0),
+(9, 'code_illumination', 'Подсветка кода', '2014-02-09 11:16:37', 0),
+(10, 'phpstorm', 'phpStorm', '2014-02-09 11:16:37', 0),
+(11, 'php', 'PHP', '2014-02-09 11:16:37', 0),
+(12, 'memcached', 'Memcached', '2014-02-09 11:16:37', 0),
+(13, 'debian', 'Debian', '2014-02-09 11:16:37', 0),
+(14, 'css', 'CSS', '2014-02-09 11:16:37', 0),
+(15, 'linear_gradient', 'Линейный градиент', '2014-02-09 11:16:37', 0),
+(16, 'twitter_bootstrap', 'Twitter Bootstrap', '2014-02-09 11:16:37', 0),
+(17, 'forms', 'Формы', '2014-02-09 11:16:37', 0),
+(18, 'visual_sStudio_2012_cpp', 'Visual Studio 2012 C++', '2014-02-09 11:16:37', 0),
+(19, 'editor', 'Редактор', '2014-02-09 11:16:37', 0),
+(20, 'encoding', 'Кодировка', '2014-02-09 11:16:37', 0),
+(21, 'framework', 'Фреймворк', '2014-02-09 11:16:37', 0),
+(22, 'cms', 'CMS', '2014-02-09 11:16:37', 0),
+(23, 'select', 'Выбор', '2014-02-09 11:16:37', 0),
+(24, 'twig', 'Twig', '2014-02-09 11:16:37', 0);
 
 -- --------------------------------------------------------
 
@@ -215,7 +212,6 @@ INSERT INTO `blog_tags` (`id`, `slug`, `title`, `created_at`, `weight`) VALUES
 -- Структура таблицы `engine_blocks`
 --
 
-DROP TABLE IF EXISTS `engine_blocks`;
 CREATE TABLE IF NOT EXISTS `engine_blocks` (
   `block_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `position` smallint(6) DEFAULT NULL,
@@ -233,11 +229,11 @@ CREATE TABLE IF NOT EXISTS `engine_blocks` (
 --
 
 INSERT INTO `engine_blocks` (`block_id`, `position`, `name`, `descr`, `create_by_user_id`, `create_datetime`) VALUES
-(1, 0, 'content', 'Рабочая область', 0, '2014-02-09 09:09:22'),
-(2, 1, 'main_menu', 'Главное меню', 0, '2014-02-09 09:09:22'),
-(3, 2, 'left_sidebar', 'Левый сайдбар', 0, '2014-02-09 09:09:22'),
-(4, 3, 'breadcrumbs', 'Хлебные крошки', 0, '2014-02-09 09:09:22'),
-(5, 4, 'footer', 'Подвал', 0, '2014-02-09 09:09:22');
+(1, 0, 'content', 'Рабочая область', 0, '2014-02-09 11:16:37'),
+(2, 1, 'main_menu', 'Главное меню', 0, '2014-02-09 11:16:37'),
+(3, 2, 'left_sidebar', 'Левый сайдбар', 0, '2014-02-09 11:16:37'),
+(4, 3, 'breadcrumbs', 'Хлебные крошки', 0, '2014-02-09 11:16:37'),
+(5, 4, 'footer', 'Подвал', 0, '2014-02-09 11:16:37');
 
 -- --------------------------------------------------------
 
@@ -245,7 +241,6 @@ INSERT INTO `engine_blocks` (`block_id`, `position`, `name`, `descr`, `create_by
 -- Структура таблицы `engine_blocks_inherit`
 --
 
-DROP TABLE IF EXISTS `engine_blocks_inherit`;
 CREATE TABLE IF NOT EXISTS `engine_blocks_inherit` (
   `block_id` smallint(6) NOT NULL,
   `folder_id` int(11) NOT NULL,
@@ -270,7 +265,6 @@ INSERT INTO `engine_blocks_inherit` (`block_id`, `folder_id`) VALUES
 -- Структура таблицы `engine_folders`
 --
 
-DROP TABLE IF EXISTS `engine_folders`;
 CREATE TABLE IF NOT EXISTS `engine_folders` (
   `folder_id` int(11) NOT NULL AUTO_INCREMENT,
   `folder_pid` int(11) DEFAULT NULL,
@@ -297,19 +291,18 @@ CREATE TABLE IF NOT EXISTS `engine_folders` (
   KEY `is_active` (`is_active`),
   KEY `is_deleted` (`is_deleted`),
   KEY `position` (`position`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
 -- Дамп данных таблицы `engine_folders`
 --
 
 INSERT INTO `engine_folders` (`folder_id`, `folder_pid`, `title`, `is_file`, `position`, `uri_part`, `is_active`, `is_deleted`, `descr`, `meta`, `redirect_to`, `router_node_id`, `has_inherit_nodes`, `permissions`, `lockout_nodes`, `template_inheritable`, `template_self`, `create_by_user_id`, `create_datetime`) VALUES
-(1, NULL, 'Главная', 0, 0, NULL, 1, 0, 'Корневая папка', 'N;', NULL, NULL, 1, 'N;', 'N;', NULL, NULL, 1, '2014-02-09 09:09:22'),
-(2, 1, 'Blog', 0, 0, 'blog', 1, 0, 'Папка блога', 'N;', NULL, 3, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-09 09:09:22'),
-(3, 1, 'News', 0, 0, 'news', 1, 0, 'Папка новостей', 'N;', NULL, 7, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-09 09:09:22'),
-(4, 1, 'Pages', 0, 0, 'pages', 1, 0, 'Страницы сайта', 'N;', NULL, NULL, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-09 09:09:22'),
-(5, 1, 'About Us', 0, 0, 'about', 1, 0, 'О сайте', 'N;', NULL, NULL, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-09 09:09:22'),
-(6, 1, 'Feedback', 0, 0, 'feedback', 1, 0, 'О сайте', 'N;', NULL, NULL, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-09 09:09:22');
+(1, NULL, 'Главная', 0, 0, NULL, 1, 0, 'Корневая папка', 'N;', NULL, NULL, 1, 'N;', 'N;', NULL, NULL, 1, '2014-02-09 11:16:37'),
+(2, 1, 'Blog', 0, 0, 'blog', 1, 0, 'Папка блога', 'N;', NULL, 3, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-09 11:16:37'),
+(3, 1, 'News', 0, 0, 'news', 1, 0, 'Папка новостей', 'N;', NULL, 7, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-09 11:16:37'),
+(4, 1, 'About Us', 0, 0, 'about', 1, 0, 'О сайте', 'N;', NULL, NULL, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-09 11:16:37'),
+(5, 1, 'Feedback', 0, 0, 'feedback', 1, 0, 'О сайте', 'N;', NULL, NULL, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-09 11:16:37');
 
 -- --------------------------------------------------------
 
@@ -317,7 +310,6 @@ INSERT INTO `engine_folders` (`folder_id`, `folder_pid`, `title`, `is_file`, `po
 -- Структура таблицы `engine_nodes`
 --
 
-DROP TABLE IF EXISTS `engine_nodes`;
 CREATE TABLE IF NOT EXISTS `engine_nodes` (
   `node_id` int(11) NOT NULL AUTO_INCREMENT,
   `folder_id` int(11) DEFAULT NULL,
@@ -338,22 +330,23 @@ CREATE TABLE IF NOT EXISTS `engine_nodes` (
   KEY `is_active` (`is_active`),
   KEY `position` (`position`),
   KEY `module` (`module`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
 
 --
 -- Дамп данных таблицы `engine_nodes`
 --
 
 INSERT INTO `engine_nodes` (`node_id`, `folder_id`, `block_id`, `is_active`, `module`, `params`, `template`, `position`, `priority`, `is_cached`, `descr`, `create_by_user_id`, `create_datetime`) VALUES
-(1, 1, 2, 1, 'Menu', 'a:4:{s:5:"depth";d:0;s:8:"group_id";i:1;s:9:"css_class";s:3:"nav";s:20:"selected_inheritance";b:0;}', NULL, 0, 0, 0, 'Главное меню', 0, '2014-02-09 09:09:22'),
-(2, 1, 4, 1, 'Breadcrumbs', 'a:2:{s:9:"delimiter";s:2:"»";s:17:"hide_if_only_home";b:1;}', NULL, 0, 0, 0, 'Хлебные крошки', 0, '2014-02-09 09:09:22'),
-(3, 2, 1, 1, 'Blog', 'a:0:{}', NULL, 0, 0, 0, 'Блог', 0, '2014-02-09 09:09:22'),
-(4, 1, 3, 1, 'Widget', 'a:3:{s:7:"node_id";s:1:"3";s:10:"controller";s:23:"BlogWidget:categoryTree";s:6:"params";N;}', NULL, 0, 0, 0, 'Категории блога', 0, '2014-02-09 09:09:22'),
-(5, 1, 3, 1, 'Widget', 'a:3:{s:7:"node_id";s:1:"3";s:10:"controller";s:25:"BlogWidget:archiveMonthly";s:6:"params";N;}', NULL, 0, 0, 0, 'Архив блога', 0, '2014-02-09 09:09:22'),
-(6, 1, 3, 1, 'Widget', 'a:3:{s:7:"node_id";s:1:"3";s:10:"controller";s:19:"BlogWidget:tagCloud";s:6:"params";N;}', NULL, 0, 0, 0, 'Облако тегов', 0, '2014-02-09 09:09:22'),
-(7, 3, 1, 1, 'News', 'a:0:{}', NULL, 0, 0, 0, 'Новости', 0, '2014-02-09 09:09:22'),
-(8, 5, 1, 1, 'Texter', 'a:2:{s:12:"text_item_id";i:1;s:6:"editor";b:1;}', NULL, 0, 0, 0, 'О сайте', 0, '2014-02-09 09:09:22'),
-(9, 6, 1, 1, 'Feedback', 'a:0:{}', NULL, 0, 0, 0, 'Обратная связь', 0, '2014-02-09 09:09:22');
+(1, 1, 2, 1, 'Menu', 'a:4:{s:5:"depth";d:0;s:8:"group_id";i:1;s:9:"css_class";s:3:"nav";s:20:"selected_inheritance";b:0;}', NULL, 0, 0, 0, 'Главное меню', 0, '2014-02-09 11:16:37'),
+(2, 1, 4, 1, 'Breadcrumbs', 'a:2:{s:9:"delimiter";s:2:"»";s:17:"hide_if_only_home";b:1;}', NULL, 0, 0, 0, 'Хлебные крошки', 0, '2014-02-09 11:16:37'),
+(3, 2, 1, 1, 'Blog', 'a:0:{}', NULL, 0, 0, 0, 'Блог', 0, '2014-02-09 11:16:37'),
+(4, 1, 3, 1, 'Widget', 'a:4:{s:7:"node_id";i:3;s:10:"controller";s:23:"BlogWidget:categoryTree";s:8:"open_tag";s:201:"\r\n                <div class="portlet-decoration">\r\n                    <div class="portlet-title">Рубрики блога</div>\r\n                </div>\r\n                <div class="portlet-content">";s:9:"close_tag";s:6:"</div>";}', NULL, 0, 0, 0, 'Категории блога', 0, '2014-02-09 11:16:37'),
+(5, 1, 3, 1, 'Widget', 'a:4:{s:7:"node_id";i:3;s:10:"controller";s:25:"BlogWidget:archiveMonthly";s:8:"open_tag";s:199:"\r\n                <div class="portlet-decoration">\r\n                    <div class="portlet-title">Архив статей</div>\r\n                </div>\r\n                <div class="portlet-content">";s:9:"close_tag";s:6:"</div>";}', NULL, 0, 0, 0, 'Архив блога', 0, '2014-02-09 11:16:37'),
+(6, 1, 3, 1, 'Widget', 'a:4:{s:7:"node_id";i:3;s:10:"controller";s:19:"BlogWidget:tagCloud";s:8:"open_tag";s:195:"\r\n                <div class="portlet-decoration">\r\n                    <div class="portlet-title">Тэги блога</div>\r\n                </div>\r\n                <div class="portlet-content">";s:9:"close_tag";s:6:"</div>";}', NULL, 0, 0, 0, 'Облако тегов', 0, '2014-02-09 11:16:37'),
+(7, 3, 1, 1, 'News', 'a:0:{}', NULL, 0, 0, 0, 'Новости', 0, '2014-02-09 11:16:37'),
+(8, 4, 1, 1, 'Texter', 'a:2:{s:12:"text_item_id";i:1;s:6:"editor";b:1;}', NULL, 0, 0, 0, 'О сайте', 0, '2014-02-09 11:16:37'),
+(9, 5, 1, 1, 'Feedback', 'a:0:{}', NULL, 0, 0, 0, 'Обратная связь', 0, '2014-02-09 11:16:37'),
+(10, 1, 1, 1, 'Widget', 'a:3:{s:7:"node_id";i:3;s:10:"controller";s:15:"BlogWidget:main";s:8:"open_tag";s:551:"\r\n                    <h1>Добро пожаловать!</h1>\r\n                    <p>Меня зовут Дмитрий. Я веб-программист, занимаюсь созданием сайтов.\r\n                    На этом блоге находятся мои заметки по программированию. Многие идеи\r\n                    взяты у других авторов, часть текста - первод с английского, что-то придумал сам).\r\n                    </p>";}', NULL, 0, 0, 0, 'Главная страница', 0, '2014-02-09 11:16:37');
 
 -- --------------------------------------------------------
 
@@ -361,7 +354,6 @@ INSERT INTO `engine_nodes` (`node_id`, `folder_id`, `block_id`, `is_active`, `mo
 -- Структура таблицы `engine_roles`
 --
 
-DROP TABLE IF EXISTS `engine_roles`;
 CREATE TABLE IF NOT EXISTS `engine_roles` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -370,18 +362,12 @@ CREATE TABLE IF NOT EXISTS `engine_roles` (
   UNIQUE KEY `UNIQ_9B56FA8C5E237E06` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
--- Дамп данных таблицы `engine_roles`
---
-
-
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `feedbacks`
 --
 
-DROP TABLE IF EXISTS `feedbacks`;
 CREATE TABLE IF NOT EXISTS `feedbacks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -391,18 +377,12 @@ CREATE TABLE IF NOT EXISTS `feedbacks` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
--- Дамп данных таблицы `feedbacks`
---
-
-
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `front_end_libraries`
 --
 
-DROP TABLE IF EXISTS `front_end_libraries`;
 CREATE TABLE IF NOT EXISTS `front_end_libraries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
@@ -430,7 +410,6 @@ INSERT INTO `front_end_libraries` (`id`, `name`, `related_by`, `proirity`, `curr
 -- Структура таблицы `front_end_libraries_paths`
 --
 
-DROP TABLE IF EXISTS `front_end_libraries_paths`;
 CREATE TABLE IF NOT EXISTS `front_end_libraries_paths` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `lib_id` int(11) NOT NULL,
@@ -456,7 +435,6 @@ INSERT INTO `front_end_libraries_paths` (`id`, `lib_id`, `version`, `path`) VALU
 -- Структура таблицы `menu`
 --
 
-DROP TABLE IF EXISTS `menu`;
 CREATE TABLE IF NOT EXISTS `menu` (
   `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `pid` int(11) DEFAULT NULL,
@@ -482,11 +460,11 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`item_id`, `pid`, `group_id`, `folder_id`, `is_active`, `position`, `title`, `descr`, `url`, `properties`, `create_by_user_id`, `created`, `updated`) VALUES
-(1, NULL, 1, 1, 1, 0, 'Главная', NULL, NULL, 'N;', 1, '2014-02-09 09:09:22', NULL),
-(2, NULL, 1, 5, 1, 0, 'О сайте', NULL, NULL, 'N;', 1, '2014-02-09 09:09:22', NULL),
-(3, NULL, 1, 6, 1, 0, 'Контакты', NULL, NULL, 'N;', 1, '2014-02-09 09:09:22', NULL),
-(4, NULL, 1, 2, 1, 0, 'Блог', NULL, NULL, 'N;', 1, '2014-02-09 09:09:22', NULL),
-(5, NULL, 1, 3, 1, 0, 'Новости', NULL, NULL, 'N;', 1, '2014-02-09 09:09:22', NULL);
+(1, NULL, 1, 1, 1, 0, 'Главная', NULL, NULL, 'N;', 1, '2014-02-09 11:16:37', NULL),
+(2, NULL, 1, 4, 1, 0, 'О сайте', NULL, NULL, 'N;', 1, '2014-02-09 11:16:37', NULL),
+(3, NULL, 1, 5, 1, 0, 'Контакты', NULL, NULL, 'N;', 1, '2014-02-09 11:16:37', NULL),
+(4, NULL, 1, 2, 1, 0, 'Блог', NULL, NULL, 'N;', 1, '2014-02-09 11:16:37', NULL),
+(5, NULL, 1, 3, 1, 0, 'Новости', NULL, NULL, 'N;', 1, '2014-02-09 11:16:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -494,7 +472,6 @@ INSERT INTO `menu` (`item_id`, `pid`, `group_id`, `folder_id`, `is_active`, `pos
 -- Структура таблицы `menu_groups`
 --
 
-DROP TABLE IF EXISTS `menu_groups`;
 CREATE TABLE IF NOT EXISTS `menu_groups` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `position` smallint(6) DEFAULT NULL,
@@ -512,7 +489,7 @@ CREATE TABLE IF NOT EXISTS `menu_groups` (
 --
 
 INSERT INTO `menu_groups` (`group_id`, `position`, `name`, `descr`, `properties`, `create_by_user_id`, `created`) VALUES
-(1, 0, 'Главное меню', NULL, NULL, 1, '2014-02-09 09:09:22');
+(1, 0, 'Главное меню', NULL, NULL, 1, '2014-02-09 11:16:37');
 
 -- --------------------------------------------------------
 
@@ -520,7 +497,6 @@ INSERT INTO `menu_groups` (`group_id`, `position`, `name`, `descr`, `properties`
 -- Структура таблицы `news`
 --
 
-DROP TABLE IF EXISTS `news`;
 CREATE TABLE IF NOT EXISTS `news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -538,8 +514,8 @@ CREATE TABLE IF NOT EXISTS `news` (
 --
 
 INSERT INTO `news` (`id`, `title`, `slug`, `annotation`, `text`, `created`, `updated`) VALUES
-(1, 'Сайт перешел на фреймворк Symfony2', 'moving_on_symfony2', 'Свершилось! После месяца интенсивных работ над движком SmartCore мы смогли перевести мой блог на Symfony2.', 'До этого момента блог работал на фреймворке Yii. Yii весьма неплох, но все же было принято решение осваивать Symfony2 и развивать движок SmartCore.Работа над ним и над самим сайтом продолжается. В планах создать функционал, не хуже чем на CMS Wordpress, а так же перевести магазин с CMS Joomla…', '2014-02-09 09:09:22', '2013-09-05 11:49:32'),
-(2, 'Переезд с шаред-хостинга на VPS', 'moving_from_shared-hosting_on_vps', 'Наконец-то блог переместился с шаред-хостинга на VPS.', 'По цене получилось примерно тоже самое, но возможностей на VPS гораздо больше. И сайт шустрее работать стал.', '2014-02-09 09:09:22', '2013-09-05 09:10:55');
+(1, 'Сайт перешел на фреймворк Symfony2', 'moving_on_symfony2', 'Свершилось! После месяца интенсивных работ над движком SmartCore мы смогли перевести мой блог на Symfony2.', 'До этого момента блог работал на фреймворке Yii. Yii весьма неплох, но все же было принято решение осваивать Symfony2 и развивать движок SmartCore.Работа над ним и над самим сайтом продолжается. В планах создать функционал, не хуже чем на CMS Wordpress, а так же перевести магазин с CMS Joomla…', '2014-02-09 11:16:37', '2013-09-05 11:49:32'),
+(2, 'Переезд с шаред-хостинга на VPS', 'moving_from_shared-hosting_on_vps', 'Наконец-то блог переместился с шаред-хостинга на VPS.', 'По цене получилось примерно тоже самое, но возможностей на VPS гораздо больше. И сайт шустрее работать стал.', '2014-02-09 11:16:37', '2013-09-05 09:10:55');
 
 -- --------------------------------------------------------
 
@@ -547,7 +523,6 @@ INSERT INTO `news` (`id`, `title`, `slug`, `annotation`, `text`, `created`, `upd
 -- Структура таблицы `session`
 --
 
-DROP TABLE IF EXISTS `session`;
 CREATE TABLE IF NOT EXISTS `session` (
   `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -563,10 +538,8 @@ CREATE TABLE IF NOT EXISTS `session` (
 --
 
 INSERT INTO `session` (`id`, `user_id`, `data`, `time`) VALUES
-('6gan8bjt3h8tb2s8qd15fcrtt6', 2, '_sf2_attributes|a:9:{s:27:"genemu_form.captcha.options";a:12:{s:5:"width";i:100;s:6:"height";i:30;s:6:"format";s:3:"png";s:16:"background_color";s:6:"DDDDDD";s:12:"border_color";s:6:"000000";s:5:"chars";a:10:{i:0;i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;i:4;i:5;i:5;i:6;i:6;i:7;i:7;i:8;i:8;i:9;i:9;}s:6:"length";i:4;s:5:"fonts";a:5:{i:0;s:75:"E:/www/loc/Dmitxe/dmitxe_blog/app/../web/bundles/genemuform/fonts/akbar.ttf";i:1;s:78:"E:/www/loc/Dmitxe/dmitxe_blog/app/../web/bundles/genemuform/fonts/brushcut.ttf";i:2;s:76:"E:/www/loc/Dmitxe/dmitxe_blog/app/../web/bundles/genemuform/fonts/molten.ttf";i:3;s:78:"E:/www/loc/Dmitxe/dmitxe_blog/app/../web/bundles/genemuform/fonts/planetbe.ttf";i:4;s:77:"E:/www/loc/Dmitxe/dmitxe_blog/app/../web/bundles/genemuform/fonts/whoobub.ttf";}s:9:"font_size";i:18;s:10:"font_color";a:5:{i:0;s:6:"252525";i:1;s:6:"8B8787";i:2;s:6:"550707";i:3;s:6:"3526E6";i:4;s:6:"88531E";}s:9:"grayscale";b:0;s:4:"code";N;}s:19:"genemu_form.captcha";s:32:"38e0fea70e6ca1b6d7ce6f6d62f6b3ce";s:27:"_csrf/smart_module_feedback";s:43:"clI_1uZyq6sR-IWKe06IMKdTl97h_2oszdP_LEJa6js";s:18:"_csrf/authenticate";s:43:"0NkXUEzdAX-4yL-fMI7mGhM9tTST7Slv8j0Sy9XQ1Io";s:24:"_security_smart_core_cms";s:743:"C:74:"Symfony\\Component\\Security\\Core\\Authentication\\Token\\UsernamePasswordToken":655:{a:3:{i:0;N;i:1;s:11:"admin_login";i:2;s:607:"a:4:{i:0;C:42:"SmartCore\\Bundle\\FOSUserBundle\\Entity\\User":249:{a:2:{i:0;s:0:"";i:1;s:219:"a:9:{i:0;s:88:"mme+A0hyKPL1yoAef1fYD0NpKjDuRZyX+r/Pjss0BlGkyv5/kCMVSNvWjlY71KP48fzPaq9jeUeHQ+0i6rfCJg==";i:1;s:31:"la6i928s7y8w8wwg0w8ggo8880w84ww";i:2;s:4:"root";i:3;s:4:"root";i:4;b:0;i:5;b:0;i:6;b:0;i:7;b:1;i:8;i:2;}";}}i:1;b:1;i:2;a:2:{i:0;O:41:"Symfony\\Component\\Security\\Core\\Role\\Role":1:{s:47:"\0Symfony\\Component\\Security\\Core\\Role\\Role\0role";s:16:"ROLE_SUPER_ADMIN";}i:1;O:41:"Symfony\\Component\\Security\\Core\\Role\\Role":1:{s:47:"\0Symfony\\Component\\Security\\Core\\Role\\Role\0role";s:9:"ROLE_USER";}}i:3;a:0:{}}";}}";s:23:"_csrf/smart_core_folder";s:43:"wGQ9FPrbPeREHWN_NilQ4rh5iABBi4CJuu_WelSHzYM";s:21:"_csrf/smart_core_node";s:43:"ZiOlqRbY45ENUyKz27JPKOsP7nWfVBywXSCa9swvgW8";s:22:"_csrf/smart_core_block";s:43:"OPjrZBs1aWIV_5qB91EoQtHUzq5KwVevWguwa-x2IJk";s:21:"_csrf/smart_core_user";s:43:"VEFBJbQN4dx0gDYKo73BmAkF535vlFkCVt5pfZlvVS8";}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1391923643;s:1:"c";i:1391923435;s:1:"l";s:1:"0";}', '2014-02-09 12:27:23'),
-('9d5l7kqp2b8qsfjj0mrif415n5', 0, '_sf2_attributes|a:2:{s:33:"_security.admin_login.target_path";s:45:"http://dmitxe.mysite/admin/structure/block/3/";s:18:"_csrf/authenticate";s:43:"4o4JGELYmVkWAIqhaWfJl4a0ws-RNjTLXy1wI3BjYbQ";}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1391922575;s:1:"c";i:1391922574;s:1:"l";s:1:"0";}', '2014-02-09 09:09:35'),
-('eqa9migctlbd39tf4pf7okad06', 0, '_sf2_attributes|a:5:{s:27:"genemu_form.captcha.options";a:12:{s:5:"width";i:100;s:6:"height";i:30;s:6:"format";s:3:"png";s:16:"background_color";s:6:"DDDDDD";s:12:"border_color";s:6:"000000";s:5:"chars";a:10:{i:0;i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;i:4;i:5;i:5;i:6;i:6;i:7;i:7;i:8;i:8;i:9;i:9;}s:6:"length";i:4;s:5:"fonts";a:5:{i:0;s:75:"E:/www/loc/Dmitxe/dmitxe_blog/app/../web/bundles/genemuform/fonts/akbar.ttf";i:1;s:78:"E:/www/loc/Dmitxe/dmitxe_blog/app/../web/bundles/genemuform/fonts/brushcut.ttf";i:2;s:76:"E:/www/loc/Dmitxe/dmitxe_blog/app/../web/bundles/genemuform/fonts/molten.ttf";i:3;s:78:"E:/www/loc/Dmitxe/dmitxe_blog/app/../web/bundles/genemuform/fonts/planetbe.ttf";i:4;s:77:"E:/www/loc/Dmitxe/dmitxe_blog/app/../web/bundles/genemuform/fonts/whoobub.ttf";}s:9:"font_size";i:18;s:10:"font_color";a:5:{i:0;s:6:"252525";i:1;s:6:"8B8787";i:2;s:6:"550707";i:3;s:6:"3526E6";i:4;s:6:"88531E";}s:9:"grayscale";b:0;s:4:"code";N;}s:19:"genemu_form.captcha";s:32:"744078b7e19d39d1b0607b716e3268b9";s:27:"_csrf/smart_module_feedback";s:43:"clI_1uZyq6sR-IWKe06IMKdTl97h_2oszdP_LEJa6js";s:33:"_security.admin_login.target_path";s:28:"http://dmitxe-blog:88/admin/";s:18:"_csrf/authenticate";s:43:"0NkXUEzdAX-4yL-fMI7mGhM9tTST7Slv8j0Sy9XQ1Io";}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1391923449;s:1:"c";i:1391923435;s:1:"l";s:1:"0";}', '2014-02-09 12:24:09'),
-('esgbv56gpp768ttpdidbv099c5', 1, '_sf2_attributes|a:7:{s:18:"_csrf/authenticate";s:43:"4o4JGELYmVkWAIqhaWfJl4a0ws-RNjTLXy1wI3BjYbQ";s:24:"_security_smart_core_cms";s:745:"C:74:"Symfony\\Component\\Security\\Core\\Authentication\\Token\\UsernamePasswordToken":657:{a:3:{i:0;N;i:1;s:11:"admin_login";i:2;s:609:"a:4:{i:0;C:42:"SmartCore\\Bundle\\FOSUserBundle\\Entity\\User":251:{a:2:{i:0;s:0:"";i:1;s:221:"a:9:{i:0;s:88:"yAHc2VTy9+rgG1THHjcYqEXCx7KSgJ0xOwmLI/9kStyv/ZGcd0vISe01R6+RNWdCX9RAob2XVFIyEW3T268eYw==";i:1;s:31:"8nq4tqgz0cso808sc84kcoos40c8s00";i:2;s:5:"admin";i:3;s:5:"admin";i:4;b:0;i:5;b:0;i:6;b:0;i:7;b:1;i:8;i:1;}";}}i:1;b:1;i:2;a:2:{i:0;O:41:"Symfony\\Component\\Security\\Core\\Role\\Role":1:{s:47:"\0Symfony\\Component\\Security\\Core\\Role\\Role\0role";s:16:"ROLE_SUPER_ADMIN";}i:1;O:41:"Symfony\\Component\\Security\\Core\\Role\\Role":1:{s:47:"\0Symfony\\Component\\Security\\Core\\Role\\Role\0role";s:9:"ROLE_USER";}}i:3;a:0:{}}";}}";s:22:"_csrf/smart_core_block";s:43:"4OLxFzPGa4cCLWx6G-TKtCjGTH6W3kz2iStTgTPXwG0";s:27:"genemu_form.captcha.options";a:12:{s:5:"width";i:100;s:6:"height";i:30;s:6:"format";s:3:"png";s:16:"background_color";s:6:"DDDDDD";s:12:"border_color";s:6:"000000";s:5:"chars";a:10:{i:0;i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;i:4;i:5;i:5;i:6;i:6;i:7;i:7;i:8;i:8;i:9;i:9;}s:6:"length";i:4;s:5:"fonts";a:5:{i:0;s:82:"D:/WebServers/home/dmitxe.mysite/www/app/../web/bundles/genemuform/fonts/akbar.ttf";i:1;s:85:"D:/WebServers/home/dmitxe.mysite/www/app/../web/bundles/genemuform/fonts/brushcut.ttf";i:2;s:83:"D:/WebServers/home/dmitxe.mysite/www/app/../web/bundles/genemuform/fonts/molten.ttf";i:3;s:85:"D:/WebServers/home/dmitxe.mysite/www/app/../web/bundles/genemuform/fonts/planetbe.ttf";i:4;s:84:"D:/WebServers/home/dmitxe.mysite/www/app/../web/bundles/genemuform/fonts/whoobub.ttf";}s:9:"font_size";i:18;s:10:"font_color";a:5:{i:0;s:6:"252525";i:1;s:6:"8B8787";i:2;s:6:"550707";i:3;s:6:"3526E6";i:4;s:6:"88531E";}s:9:"grayscale";b:0;s:4:"code";N;}s:19:"genemu_form.captcha";s:32:"b6f8d7bf9ae426aff4db46de660992a9";s:27:"_csrf/smart_module_feedback";s:43:"QD9Nw1PLrX_Lfc6ExRj0OnMOfo_bpwl2P836auSQd3c";s:21:"_csrf/smart_core_node";s:43:"k0rZ6CpV9JKD9Fcg5eKxgJOluukaQjSlaWumLN9fvUM";}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1391923058;s:1:"c";i:1391922574;s:1:"l";s:1:"0";}', '2014-02-09 09:17:41');
+('6llgda0p5h5qu7fgvej6ofgvd6', 0, '_sf2_attributes|a:2:{s:33:"_security.admin_login.target_path";s:37:"http://dmitxe.mysite/admin/structure/";s:18:"_csrf/authenticate";s:43:"8aLJXnoBcT4m8FbSurjsaeglQROkdjPFY77UloG33Ro";}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1391930210;s:1:"c";i:1391930209;s:1:"l";s:1:"0";}', '2014-02-09 11:16:50'),
+('ehilhj2ls08kde9ce913oruuh4', 1, '_sf2_attributes|a:3:{s:18:"_csrf/authenticate";s:43:"8aLJXnoBcT4m8FbSurjsaeglQROkdjPFY77UloG33Ro";s:24:"_security_smart_core_cms";s:745:"C:74:"Symfony\\Component\\Security\\Core\\Authentication\\Token\\UsernamePasswordToken":657:{a:3:{i:0;N;i:1;s:11:"admin_login";i:2;s:609:"a:4:{i:0;C:42:"SmartCore\\Bundle\\FOSUserBundle\\Entity\\User":251:{a:2:{i:0;s:0:"";i:1;s:221:"a:9:{i:0;s:88:"6RvGc2OngVoCtod3VUE7TPyOiTMbyBtPTcZxTNSFslPnE9Y1zZH6ezPLhmKzOIt1rCj/prmONOVlEHK62Dr1Ow==";i:1;s:31:"abe3qe82s4ookk88oc4w4448k4g008w";i:2;s:5:"admin";i:3;s:5:"admin";i:4;b:0;i:5;b:0;i:6;b:0;i:7;b:1;i:8;i:1;}";}}i:1;b:1;i:2;a:2:{i:0;O:41:"Symfony\\Component\\Security\\Core\\Role\\Role":1:{s:47:"\0Symfony\\Component\\Security\\Core\\Role\\Role\0role";s:16:"ROLE_SUPER_ADMIN";}i:1;O:41:"Symfony\\Component\\Security\\Core\\Role\\Role":1:{s:47:"\0Symfony\\Component\\Security\\Core\\Role\\Role\0role";s:9:"ROLE_USER";}}i:3;a:0:{}}";}}";s:21:"_csrf/smart_core_node";s:43:"o03PdZel-wsdCydwh0qC1QQyojxZRCPxRdUxSVKdLsY";}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1391930230;s:1:"c";i:1391930209;s:1:"l";s:1:"0";}', '2014-02-09 11:17:10');
 
 -- --------------------------------------------------------
 
@@ -574,7 +547,6 @@ INSERT INTO `session` (`id`, `user_id`, `data`, `time`) VALUES
 -- Структура таблицы `sitemap_urls`
 --
 
-DROP TABLE IF EXISTS `sitemap_urls`;
 CREATE TABLE IF NOT EXISTS `sitemap_urls` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `is_visited` tinyint(1) NOT NULL,
@@ -592,18 +564,12 @@ CREATE TABLE IF NOT EXISTS `sitemap_urls` (
   KEY `title_hash` (`title_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
--- Дамп данных таблицы `sitemap_urls`
---
-
-
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `sliders`
 --
 
-DROP TABLE IF EXISTS `sliders`;
 CREATE TABLE IF NOT EXISTS `sliders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -615,18 +581,12 @@ CREATE TABLE IF NOT EXISTS `sliders` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
--- Дамп данных таблицы `sliders`
---
-
-
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `slides`
 --
 
-DROP TABLE IF EXISTS `slides`;
 CREATE TABLE IF NOT EXISTS `slides` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `slider_id` int(11) DEFAULT NULL,
@@ -645,18 +605,12 @@ CREATE TABLE IF NOT EXISTS `slides` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
--- Дамп данных таблицы `slides`
---
-
-
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `texter`
 --
 
-DROP TABLE IF EXISTS `texter`;
 CREATE TABLE IF NOT EXISTS `texter` (
   `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `locale` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -673,7 +627,7 @@ CREATE TABLE IF NOT EXISTS `texter` (
 --
 
 INSERT INTO `texter` (`item_id`, `locale`, `editor`, `text`, `meta`, `created`, `user_id`) VALUES
-(1, 'ru', 1, '<p>На этом сайте собраны различная полезная информация по тематике сайтостроения.</p>\r\n<p>Информация больше собрана для себя, впрочем, надеюсь, что она будет также полезна и другим программистам.</p>\r\n<p>Если Вам нужно создать сайт под ключ - свяжитесь со мной через <a href="/contacts/">форму обратной связи</a>.</p>\r\n<p>Данный блог написан на фреймворке <a href="http://symfony.com/" target="_blank">Symfony2</a>.</p>', 'a:0:{}', '2014-02-09 09:09:22', 1);
+(1, 'ru', 1, '<p>На этом сайте собраны различная полезная информация по тематике сайтостроения.</p>\r\n<p>Информация больше собрана для себя, впрочем, надеюсь, что она будет также полезна и другим программистам.</p>\r\n<p>Если Вам нужно создать сайт под ключ - свяжитесь со мной через <a href="/contacts/">форму обратной связи</a>.</p>\r\n<p>Данный блог написан на фреймворке <a href="http://symfony.com/" target="_blank">Symfony2</a>.</p>', 'a:0:{}', '2014-02-09 11:16:37', 1);
 
 -- --------------------------------------------------------
 
@@ -681,7 +635,6 @@ INSERT INTO `texter` (`item_id`, `locale`, `editor`, `text`, `meta`, `created`, 
 -- Структура таблицы `texter_history`
 --
 
-DROP TABLE IF EXISTS `texter_history`;
 CREATE TABLE IF NOT EXISTS `texter_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `is_deleted` tinyint(1) NOT NULL,
@@ -697,18 +650,12 @@ CREATE TABLE IF NOT EXISTS `texter_history` (
   KEY `is_deleted` (`is_deleted`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
--- Дамп данных таблицы `texter_history`
---
-
-
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -741,9 +688,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`, `firstname`, `lastname`, `facebook_id`, `created`) VALUES
-(1, 'admin', 'admin', 'XeDmitry@yandex.ru', 'xedmitry@yandex.ru', 1, '8nq4tqgz0cso808sc84kcoos40c8s00', 'yAHc2VTy9+rgG1THHjcYqEXCx7KSgJ0xOwmLI/9kStyv/ZGcd0vISe01R6+RNWdCX9RAob2XVFIyEW3T268eYw==', '2014-02-09 09:09:38', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, '', '', '', '2014-02-09 09:09:22'),
-(2, 'root', 'root', 'root@mail.ru', 'root@mail.ru', 1, 'la6i928s7y8w8wwg0w8ggo8880w84ww', 'mme+A0hyKPL1yoAef1fYD0NpKjDuRZyX+r/Pjss0BlGkyv5/kCMVSNvWjlY71KP48fzPaq9jeUeHQ+0i6rfCJg==', '2014-02-09 12:24:12', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, '', '', '', '2014-02-09 09:09:22'),
-(3, 'tester', 'tester', 'tester@mail.ru', 'tester@mail.ru', 1, 'm0pqnyqmd00c04cccgwkggkcggwkgkk', '9aE8CM1KWaZ0dkewc9KPFBnbr6ljh+P0sYuMseEXNp3uZ7NUwyujwQ/VUpSqFEGXIeendlp4CjNOD2KOtsIdTw==', NULL, 0, 0, NULL, NULL, NULL, 'a:0:{}', 0, NULL, '', '', '', '2014-02-09 09:09:22');
+(1, 'admin', 'admin', 'XeDmitry@yandex.ru', 'xedmitry@yandex.ru', 1, 'abe3qe82s4ookk88oc4w4448k4g008w', '6RvGc2OngVoCtod3VUE7TPyOiTMbyBtPTcZxTNSFslPnE9Y1zZH6ezPLhmKzOIt1rCj/prmONOVlEHK62Dr1Ow==', '2014-02-09 11:16:52', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, '', '', '', '2014-02-09 11:16:37'),
+(2, 'root', 'root', 'root@mail.ru', 'root@mail.ru', 1, 'jpt20vppaw0kww4os4c084cowsosko4', 'DvVmsIAZiZhQ0DO2GspEQ+qhlN9BC1eylF69OQXSD1wd8ltguMoWCcneLlWHHuo9en14ZBSlC/SBoVK7hbZVJQ==', NULL, 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, '', '', '', '2014-02-09 11:16:37'),
+(3, 'tester', 'tester', 'tester@mail.ru', 'tester@mail.ru', 1, 'ecjmrv976o84og4o4s4sswkk8kwwgw8', '+QgqlTjsdfBgf8KtFFSUoymGEJYkYE+nvpouq5wU9V/Jj2o2iY9pVnyLtf/BYVh5gtoOOhLc4vYt67Q/8iIp3g==', NULL, 0, 0, NULL, NULL, NULL, 'a:0:{}', 0, NULL, '', '', '', '2014-02-09 11:16:37');
 
 -- --------------------------------------------------------
 
@@ -751,7 +698,6 @@ INSERT INTO `users` (`id`, `username`, `username_canonical`, `email`, `email_can
 -- Структура таблицы `users_groups`
 --
 
-DROP TABLE IF EXISTS `users_groups`;
 CREATE TABLE IF NOT EXISTS `users_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -825,3 +771,7 @@ ALTER TABLE `menu`
 --
 ALTER TABLE `slides`
   ADD CONSTRAINT `FK_B8C020912CCC9638` FOREIGN KEY (`slider_id`) REFERENCES `sliders` (`id`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
