@@ -23,6 +23,8 @@
 
 {% if pagerfanta.haveToPaginate %}
     {{ pagerfanta(pagerfanta, 'twitter_bootstrap_translated', {
+            'routeName': 'smart_blog.article.index.page',
+            'routeParams': {'_basePath': app.request.attributes.get('_route_params')['_basePath']},
             'css_container_class': 'pagination pagination-centered',
         })
     }}

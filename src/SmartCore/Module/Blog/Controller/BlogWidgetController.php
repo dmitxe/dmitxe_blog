@@ -19,33 +19,16 @@ class BlogWidgetController extends Controller
      * @param integer $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function mainAction(Request $requst, $page = null)
+    public function mainAction()
     {
-        if (null === $page) {
-            $page = $requst->query->get('page', 1);
-        }
-
         $articleService = $this->get('smart_blog.article');
 
         $pagerfanta = new Pagerfanta(new SimpleDoctrineORMAdapter($articleService->getFindByCategoryQuery()));
         $pagerfanta->setMaxPerPage($articleService->getItemsCountPerPage());
 
-        try {
-            $pagerfanta->setCurrentPage($page);
-        } catch (NotValidCurrentPageException $e) {
-            return $this->redirect($this->generateUrl('smart_blog.article.index'));
-        }
-
-        ld($pagerfanta);
-
-        $response =  $this->render('BlogModule:Widget:main.html.twig', [
+        return $this->render('BlogModule:Widget:main.html.twig', [
             'pagerfanta' => $pagerfanta,
         ]);
-
-        ld($response);
-        
-        return $response;
-//        return new Response('Заглушка для блога');
     }
 
     /**
