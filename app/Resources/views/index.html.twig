@@ -97,39 +97,7 @@
             {% block sidebar %}
                 <div id="sidebar" class="span3">
                     <div class="portlet">
-                        <div class="portlet-decoration">
-                            <div class="portlet-title">Рубрики блога</div>
-                        </div>
-                        <div class="portlet-content">
-                            {{ render(controller('2:BlogWidget:categoryTree')) }}
-                        </div>
-
-                        <div class="portlet-decoration">
-                            <div class="portlet-title">Ближайшие задачи в разработке</div>
-                        </div>
-                        <div class="portlet-content">
-                            <ul class="nav nav-tabs nav-stacked">
-                                <li><a href="#">Разработка &laquo;Бандла&raquo; для распределённого хранения файлов.</a></li>
-                                <li><a href="#">Фабрики для форм блога.</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="portlet-decoration">
-                            <div class="portlet-title">Архив статей</div>
-                        </div>
-
-                        <div class="portlet-content">
-                            {{ render(controller('2:BlogWidget:archiveMonthly')) }}
-                        </div>
-
-                        <div class="portlet-decoration">
-                            <div class="portlet-title">Тэги блога</div>
-                        </div>
-
-                        <div class="portlet-content">
-                            {{ render(controller('2:BlogWidget:tagCloud')) }}
-                        </div>
-
+                        {{ left_sidebar }}
                     </div>
                 </div>
             {% endblock sidebar %}

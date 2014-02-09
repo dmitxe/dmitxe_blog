@@ -50,19 +50,24 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         $leftsidebar_block = new Block();
         $leftsidebar_block->setName('left_sidebar')
             ->setDescr('Левый сайдбар')
-            ->setPosition(2);
+            ->setPosition(2)
+            ->setFolder($root_folder);
         $manager->persist($leftsidebar_block);
 
         $breadcrumbs_block = new Block();
         $breadcrumbs_block->setName('breadcrumbs')
             ->setDescr('Хлебные крошки')
-            ->setPosition(3);
+            ->setPosition(3)
+            ->setFolder($root_folder)
+        ;
         $manager->persist($breadcrumbs_block);
 
         $footer_block = new Block();
         $footer_block->setName('footer')
             ->setDescr('Подвал')
-            ->setPosition(4);
+            ->setPosition(4)
+            ->setFolder($root_folder)
+        ;
         $manager->persist($footer_block);
 
         $manager->flush();
@@ -83,9 +88,23 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         ;
         $manager->persist($menu_node);
 
- /*       $menu_group = New GroupMenu();
-        $menu_group->setCreateByUserId($user_id)
-            ->setName('Главное меню');*/
+        $breadcrumbs_node = new Node();
+        $breadcrumbs_node->setModule('Breadcrumbs')
+            ->setBlock($breadcrumbs_block)
+            ->setFolder($root_folder)
+            ->setDescr('Хлебные крошки')
+            ->setIsActive(true)
+            ->setIsCached(false)
+            ->setParams([
+                'delimiter'=>'»',
+                'hide_if_only_home'=>true,
+            ])
+        ;
+        $manager->persist($breadcrumbs_node);
+
+        /*       $menu_group = New GroupMenu();
+               $menu_group->setCreateByUserId($user_id)
+                   ->setName('Главное меню');*/
 
 //        ld($root_folder->getId());
         $blog_folder = new Folder();
@@ -111,15 +130,34 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
             ->setDescr('Страницы сайта')
             ->setParentFolder($root_folder)
             ->setHasInheritNodes(false)
-            ->setUriPart('about')
+            ->setUriPart('pages')
         ;
         $manager->persist($pages_folder);
 
+        $page_about_folder = new Folder();
+        $page_about_folder->setTitle('About Us')
+            ->setDescr('О сайте')
+            ->setParentFolder($pages_folder)
+            ->setHasInheritNodes(false)
+            ->setUriPart('about')
+        ;
+        $manager->persist($page_about_folder);
+
+        $feedback_folder = new Folder();
+        $feedback_folder->setTitle('Feedback')
+            ->setDescr('О сайте')
+            ->setParentFolder($pages_folder)
+            ->setHasInheritNodes(false)
+            ->setUriPart('feedback')
+        ;
+        $manager->persist($feedback_folder);
+
         $manager->flush();
 
-         $blog_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'Blog']);
+        $blog_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'Blog']);
         $news_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'News']);
-        $pages_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'Pages']);
+        $page_about_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'About Us']);
+        $feedback_folder = $em->getRepository('SmartCore\Bundle\CMSBundle\Entity\Folder')->findOneBy(['title'=>'Feedback']);
 
         $blog_node = new Node();
         $blog_node->setModule('Blog')
@@ -145,7 +183,7 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
             ->setIsActive(true)
             ->setIsCached(false)
             ->setParams([
-                'node_id'=>$blog_folder->getId(),
+                'node_id'=>$blog_node->getId(),
                 'controller'=>'BlogWidget:categoryTree'
             ])
         ;
@@ -159,7 +197,7 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
             ->setIsActive(true)
             ->setIsCached(false)
             ->setParams([
-                'node_id'=>$blog_folder->getId(),
+                'node_id'=>$blog_node->getId(),
                 'controller'=>'BlogWidget:archiveMonthly'
             ])
         ;
@@ -173,7 +211,7 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
             ->setIsActive(true)
             ->setIsCached(false)
             ->setParams([
-                'node_id'=>$blog_folder->getId(),
+                'node_id'=>$blog_node->getId(),
                 'controller'=>'BlogWidget:tagCloud'
             ])
         ;
@@ -194,10 +232,10 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
         $news_folder->setRouterNodeId($news_node->getId());
         $manager->persist($news_folder);
 
-        $widget_blog_tag_node = new Node();
-        $widget_blog_tag_node->setModule('Texter')
+        $page_about_node = new Node();
+        $page_about_node->setModule('Texter')
             ->setBlock($content_block)
-            ->setFolder($pages_folder)
+            ->setFolder($page_about_folder)
             ->setDescr('О сайте')
             ->setIsActive(true)
             ->setIsCached(false)
@@ -206,7 +244,17 @@ class LoadStructureData extends ContainerAware implements FixtureInterface, Orde
                 'editor'=>true
             ])
         ;
-        $manager->persist($widget_blog_tag_node);
+        $manager->persist($page_about_node);
+
+        $feedback_node = new Node();
+        $feedback_node->setModule('Feedback')
+            ->setBlock($content_block)
+            ->setFolder($feedback_folder)
+            ->setDescr('Обратная связь')
+            ->setIsActive(true)
+            ->setIsCached(false)
+        ;
+        $manager->persist($feedback_node);
 
         $manager->flush();
     }
