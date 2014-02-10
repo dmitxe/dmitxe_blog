@@ -33,3 +33,11 @@ parameters:
     secret: SmartCoreThisTokenIsNotSoSecretChangeIt
 
     session_handler: smart_core_session.handler
+
+    knp_disqus.api_key:    YOUR_PUBLIC_API_KEY
+    knp_disqus.secret_key: YOUR_SECRET_API_KEY # optional, for SSO auth only
+    # Insert your disqus shortname
+    # it's the unique identifier for your website as registered on Disqus
+    knp_disqus.lorem.shortname: "dmitryxepersonalblog"
+    # you can also register more than one forum
+    knp_disqus.ipsum.shortname: "amet"
