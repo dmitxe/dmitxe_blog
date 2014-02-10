@@ -24,3 +24,6 @@
         <a href="{{ path('smart_blog.category.articles', {'slug': article.category.slugFull}) }}/"><span class="label label-success">{{ article.category }}</span></a>
     {% endif %}
 
+    <div>
+    {{ knp_disqus_render('dmitryxepersonalblog', {'identifier': path('smart_blog.article.show', {'slug': article.slug}), 'limit': 10}) }}
+    </div>

@@ -525,6 +525,8 @@ SyntaxHighlighter.all();</pre>
 <div class="highlight">	<pre class="brush: cpp">/etc/init.d/apache2 stop</pre></div>
 <p>Перезапуск apache:</p>
 <div class="highlight">	<pre class="brush: cpp"> /etc/init.d/apache2 restart</pre></div>
+<p>Безопасный рестарт apache:</p>
+<div class="highlight">	<pre class="brush: cpp"> /etc/init.d/apache2 reload</pre></div>
 ')
             ->setCategory($category_debian)
             ->setDescription('Часто используемые команды в Debain7')
