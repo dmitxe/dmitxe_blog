@@ -39,7 +39,7 @@ class LoadNewsData extends ContainerAware implements FixtureInterface, OrderedFi
             ->setSlug('site_updating')
             ->setAnnotation('Сайт полностью перешел на CMS SmartCore.')
             ->setText('Сайт полностью перешел на CMS SmartCore. До этого использовались отдельные бандлы из движка, теперь же сайт переписан начисто.
-            Былв отключана система комментариев от FOS, вместо них используется Disqus.')
+            Была отключана система комментариев от FOS, вместо них используется Disqus.')
             ->setUpdated(new \DateTime('2014-02-10 13:48:42'))
         ;
         $manager->persist($article);

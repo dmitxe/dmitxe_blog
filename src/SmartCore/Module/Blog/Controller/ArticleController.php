@@ -2,6 +2,7 @@
 
 namespace SmartCore\Module\Blog\Controller;
 
+use Faker\Provider\DateTime;
 use Pagerfanta\Exception\NotValidCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use SmartCore\Bundle\CMSBundle\Pagerfanta\SimpleDoctrineORMAdapter;
@@ -87,6 +88,14 @@ class ArticleController extends Controller
         } catch (NotValidCurrentPageException $e) {
             return $this->redirect($this->generateUrl('smart_blog.article.index'));
         }
+
+        $date_archive = new \DateTime("$year-$month-01");
+
+        $formatter = new \IntlDateFormatter(\Locale::getDefault(), \IntlDateFormatter::NONE, \IntlDateFormatter::NONE);
+        $formatter->setPattern("LLLL YYYY года");
+        $date_archive = $formatter->format($date_archive);
+        $breadchumbs = $this->get('cms.breadcrumbs');
+        $breadchumbs->add('Archive', 'Архив статей за '.$date_archive);
 
         return $this->render('BlogModule:Article:archive_list.html.twig', [
             'pagerfanta' => $pagerfanta,
