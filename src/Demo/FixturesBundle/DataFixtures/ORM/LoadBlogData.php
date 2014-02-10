@@ -355,8 +355,7 @@ php app/console container:debug</pre>
 	Показать приватные сервисы :</p>
 <pre class="brush: php; toolbar: true;">
 php app/console container:debug --show-private</pre>
-<p>
-	Показать сервис по его id :</p>
+<p>	Показать сервис по его id :</p>
 <pre class="brush: php; toolbar: true;">
 php app/console container:debug my_mailer</pre>
 <p>
@@ -367,6 +366,9 @@ php app/console container:debug my_mailer</pre>
 </pre>
 <p>
 	Примечание. Иногда бывает нужно явно указать --env=prod</p>
+<p>	Генерация карты сайта в SmartCore :</p>
+<pre class="brush: php; toolbar: true;">
+php app/console smart:sitemap:crawler</pre>
 ')
             ->setAuthor($user)
             ->setDescription('Самые часто используемые команды  Symfony2')

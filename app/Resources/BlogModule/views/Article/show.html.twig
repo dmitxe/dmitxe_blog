@@ -25,5 +25,6 @@
     {% endif %}
 
     <div>
+        <h3>Комментарии к статье</h3>
     {{ knp_disqus_render('dmitryxepersonalblog', {'identifier': path('smart_blog.article.show', {'slug': article.slug}), 'limit': 10}) }}
     </div>
