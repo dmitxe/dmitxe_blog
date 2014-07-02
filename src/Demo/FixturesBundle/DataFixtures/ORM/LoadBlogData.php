@@ -167,6 +167,7 @@ class LoadBlogData extends ContainerAware implements FixtureInterface, OrderedFi
         $tag25 = new Tag('Debian');
         $tag26 = new Tag('Twig');
         $tag27 = new Tag('SSH');
+        $tag28 = new Tag('Переводы');
 
         $article = new Article();
         $article->setTitle('Хлебные крошки в Yii')
@@ -766,6 +767,45 @@ filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr=&#39;#3437CD&#
             ->setKeywords('SSH, команды')
             ->setCreatedAt(new \DateTime('2014-02-09 19:41:53'))
             ->addTag($tag27)
+            ->setAuthor($user)
+        ;
+        $manager->persist($article);
+
+        $article = new Article();
+        $article->setTitle('Переводы (локализация) в Symfony 2')
+            ->setSlug('translations_in_symfony2')
+            ->setAnnotation('Вызовы переводов в различных частях Symfony: в шаблонах (твиг), контроллере, форме и меню.')
+            ->setText('<hr id="readmore" />
+<h3>В твиге:</h3>
+<pre class="brush: php; toolbar: true;">{{ message|trans({"%name%": "Fabien"}, "app") }}</pre>
+<p>В самом файле переводов так и пишем:</p>
+<pre class="brush: php; toolbar: true;">message: This is %name% </pre>
+<h3>В контроллере:</h3>
+<pre class="brush: php; toolbar: true;">$translated = $this-&gt;get("translator")-&gt;trans("Symfony2 is great");</pre>
+<h3>В форме:</h3>
+<p>Просто пишем метки на английском, в файлах перевода пишем</p>
+<pre class="brush: php; toolbar: true;">Label: Метка</pre>
+<h3>В меню:</h3>
+<p>С меню наверное надо было подключать сервис translator прямо в меню. Но было лень делать лишние телодвижения, поэтому решил переопределить твиг.</p>
+<p>В конфиге пишем:</p>
+<pre class="brush: php; toolbar: true;">knp_menu:
+  twig:
+    template: AcmeDemoBundle::knp_menu.html.twig&nbsp; # your custom knp_menu template
+</pre>
+<p>В knp_menu.html.twig ставим это:</p>
+<pre class="brush: php; toolbar: true;">{% extends "knp_menu.html.twig" %}
+{% block label %}
+    {{ item.label|trans }}
+{% endblock %}
+</pre>
+<p>И все, в метках пишем английский вариант, подхватит.</p>
+')
+            ->setCategory($category_symfony2)
+            ->setDescription('Вызовы переводов в различных частях Symfony: в шаблонах (твиг), контроллере, форме и меню.')
+            ->setKeywords('Symfony, переводы')
+            ->setCreatedAt(new \DateTime('2017-02-02 19:17:25'))
+            ->addTag($tag2)
+            ->addTag($tag28)
             ->setAuthor($user)
         ;
         $manager->persist($article);
