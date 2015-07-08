@@ -2,17 +2,18 @@
 
 namespace SmartCore\Module\Blog\Controller\Admin;
 
+use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use SmartCore\Bundle\CMSBundle\Pagerfanta\SimpleDoctrineORMAdapter;
 
 class ArticleController extends Controller
 {
     /**
      * @param Request $requst
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function indexAction(Request $requst)
@@ -20,7 +21,7 @@ class ArticleController extends Controller
         /** @var \SmartCore\Module\Blog\Service\ArticleService $articleService */
         $articleService = $this->get('smart_blog.article');
 
-        $pagerfanta = new Pagerfanta(new SimpleDoctrineORMAdapter($articleService->getFindByCategoryQuery()));
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($articleService->getFindByCategoryQuery()));
         $pagerfanta->setMaxPerPage($articleService->getItemsCountPerPage());
 
         try {
@@ -37,7 +38,9 @@ class ArticleController extends Controller
     /**
      * @param Request $request
      * @param int $id
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function editAction(Request $request, $id)
@@ -55,9 +58,7 @@ class ArticleController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $article = $form->getData();
-                $article->setAuthor($this->getUser());
-                $articleService->update($article);
+                $articleService->update($form->getData());
 
                 return $this->redirect($this->generateUrl('smart_blog_admin_article'));
             }
@@ -70,6 +71,7 @@ class ArticleController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function createAction(Request $request)
@@ -83,9 +85,7 @@ class ArticleController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $article = $form->getData();
-                $article->setAuthor($this->getUser());
-                $articleService->update($article, false);
+                $articleService->update($form->getData(), false);
 
                 return $this->redirect($this->generateUrl('smart_blog_admin_article'));
             }

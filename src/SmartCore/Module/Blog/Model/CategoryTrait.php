@@ -5,6 +5,8 @@ namespace SmartCore\Module\Blog\Model;
 trait CategoryTrait
 {
     /**
+     * @var Category
+     *
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="articles", cascade={"persist"})
      * @ORM\JoinColumn(name="category_id")
      */
@@ -20,6 +22,7 @@ trait CategoryTrait
 
     /**
      * @param Category $category
+     *
      * @return $this
      */
     public function setCategory(CategoryInterface $category = null)

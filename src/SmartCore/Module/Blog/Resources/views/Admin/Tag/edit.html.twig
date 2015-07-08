@@ -1,9 +1,17 @@
 {% extends 'BlogModule:Admin:layout.html.twig' %}
 
-{% block html_head_title %} {{ 'Edit tag'|trans }} / {{ parent() }} {% endblock html_head_title %}
+{% block title %} {{ 'Edit tag'|trans }} / {{ parent() }} {% endblock %}
 
 {% block content %}
 
+<div class="box box-primary">
+    <div class="box-header with-border">
+
+        <h3>{{ 'Edit tag'|trans }}</h3>
+
     {{ form(form) }}
+
+    </div>
+</div>
 
 {% endblock content %}

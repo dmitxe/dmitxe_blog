@@ -20,12 +20,13 @@ interface TagInterface
     public function getId();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSlug();
 
     /**
      * @param string $slug
+     *
      * @return $this
      */
     public function setSlug($slug);
@@ -37,8 +38,8 @@ interface TagInterface
 
     /**
      * @param string $title
+     *
      * @return $this
      */
     public function setTitle($title);
 }
-

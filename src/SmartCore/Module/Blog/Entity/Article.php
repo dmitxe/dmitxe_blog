@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SmartCore\Module\Blog\Repository\ArticleRepository")
  * @ORM\Table(name="blog_articles",
  *      indexes={
- *          @ORM\Index(name="created_at", columns={"created_at"})
+ *          @ORM\Index(columns={"created_at"})
  *      }
  * )
  */
@@ -26,10 +26,24 @@ class Article extends SmartArticle implements SignedArticleInterface, ImagedArti
     use TagTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SmartCore\Bundle\FOSUserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="SmartCore\Bundle\CMSBundle\Entity\User")
      * @ORM\JoinColumn(name="author_id")
      */
     protected $author;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $image_id;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $is_commentable;
 
     /**
      * @Assert\File(
@@ -37,19 +51,9 @@ class Article extends SmartArticle implements SignedArticleInterface, ImagedArti
      *     mimeTypes={"image/png", "image/jpeg", "image/pjpeg"}
      * )
      *
-     * @var UploadedFile $image
+     * @var UploadedFile
      */
     protected $image;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    protected $image_id;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $is_commentable;
 
     /**
      * Constructor.
@@ -63,6 +67,7 @@ class Article extends SmartArticle implements SignedArticleInterface, ImagedArti
 
     /**
      * @param UserInterface $author
+     *
      * @return $this
      */
     public function setAuthor(UserInterface $author)
@@ -73,7 +78,7 @@ class Article extends SmartArticle implements SignedArticleInterface, ImagedArti
     }
 
     /**
-     * @return mixed
+     * @return UserInterface
      */
     public function getAuthor()
     {
@@ -82,6 +87,7 @@ class Article extends SmartArticle implements SignedArticleInterface, ImagedArti
 
     /**
      * @param UploadedFile $image
+     *
      * @return $this
      */
     public function setImage(UploadedFile $image)
@@ -100,7 +106,8 @@ class Article extends SmartArticle implements SignedArticleInterface, ImagedArti
     }
 
     /**
-     * @param integer $image_id
+     * @param int $image_id
+     *
      * @return $this
      */
     public function setImageId($image_id)
@@ -111,7 +118,7 @@ class Article extends SmartArticle implements SignedArticleInterface, ImagedArti
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getImageId()
     {
@@ -120,6 +127,7 @@ class Article extends SmartArticle implements SignedArticleInterface, ImagedArti
 
     /**
      * @param bool $is_commentable
+     *
      * @return $this
      */
     public function setIsCommentable($is_commentable)
@@ -138,13 +146,10 @@ class Article extends SmartArticle implements SignedArticleInterface, ImagedArti
     }
 
     /**
-     * @param \DateTime $createdAt
-     * @return $this
+     * @return bool
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function isCommentable()
     {
-        $this->created_at = $createdAt;
-
-        return $this;
+        return $this->is_commentable;
     }
 }

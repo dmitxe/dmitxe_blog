@@ -2,11 +2,9 @@
 
 namespace SmartCore\Module\Blog\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Pagerfanta\Exception\NotValidCurrentPageException;
 use Pagerfanta\Pagerfanta;
-use SmartCore\Bundle\CMSBundle\Pagerfanta\SimpleDoctrineORMAdapter;
-use Symfony\Component\HttpFoundation\Request;
+use Smart\CoreBundle\Pagerfanta\SimpleDoctrineORMAdapter;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use SmartCore\Bundle\CMSBundle\Module\NodeTrait;
 
@@ -32,7 +30,8 @@ class BlogWidgetController extends Controller
     }
 
     /**
-     * @param integer $limit
+     * @param int $limit
+     *
      * @return Response
      */
     public function archiveMonthlyAction($limit = 24)

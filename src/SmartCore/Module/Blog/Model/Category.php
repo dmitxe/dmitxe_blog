@@ -4,6 +4,7 @@ namespace SmartCore\Module\Blog\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Smart\CoreBundle\Doctrine\ColumnTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -11,46 +12,39 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 abstract class Category implements CategoryInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    use ColumnTrait\Id;
+    use ColumnTrait\CreatedAt;
+    use ColumnTrait\Title;
 
     /**
+     * @var Category
+     *
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="children", cascade={"persist"})
      * @ORM\JoinColumn(name="parent")
-     *
-     * @var Category
-     **/
+     */
     protected $parent;
 
     /**
+     * @var Category[]|ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
      * ORM\OrderBy({"position" = "ASC"})
      */
     protected $children;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=32, unique=true)
      */
     protected $slug;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    protected $title;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Article", mappedBy="category")
+     * @var Article[]
+     *
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="category", fetch="EXTRA_LAZY")
      */
     protected $articles;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created_at;
 
     /**
      * Constructor.
@@ -79,14 +73,6 @@ abstract class Category implements CategoryInterface
     }
 
     /**
-     * @return \Datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->created_at;
-    }
-
-    /**
      * @return Article[]
      */
     public function getArticles()
@@ -95,15 +81,8 @@ abstract class Category implements CategoryInterface
     }
 
     /**
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * @param CategoryInterface $parent
+     *
      * @return $this
      */
     public function setParent(CategoryInterface $parent)
@@ -140,7 +119,6 @@ abstract class Category implements CategoryInterface
      * Рекурсивный обход для построение списка всех родительских категорий.
      *
      * @param ArrayCollection $parents
-     * @return void
      */
     protected function buildParents(ArrayCollection $parents)
     {
@@ -153,26 +131,8 @@ abstract class Category implements CategoryInterface
     }
 
     /**
-     * @param string $title
-     * @return $this
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
      * @param string $slug
+     *
      * @return $this
      */
     public function setSlug($slug)
@@ -200,7 +160,7 @@ abstract class Category implements CategoryInterface
         $slug = $this->getSlug();
 
         if ($this->getParent()) {
-            $slug  = $this->getParent()->getSlugFull() . '/' . $slug;
+            $slug  = $this->getParent()->getSlugFull().'/'.$slug;
         }
 
         return $slug;

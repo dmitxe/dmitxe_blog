@@ -1,12 +1,20 @@
 {% extends 'BlogModule:Admin:layout.html.twig' %}
 
-{% block html_head_title %} {{ 'Create article'|trans }} / {{ parent() }} {% endblock html_head_title %}
+{% block title %} {{ 'Create article'|trans }} / {{ parent() }} {% endblock %}
 
 {% block content %}
 
+<div class="box box-primary">
+    <div class="box-header with-border">
+
+        <h3>{{ 'Create article'|trans }}</h3>
+
     {{ form(form) }}
 
-    {{ tinymce_init() }}
+    {{ tinymce_init3() }}
     {{ elfinder_tinymce_init() }}
+
+    </div>
+</div>
 
 {% endblock content %}

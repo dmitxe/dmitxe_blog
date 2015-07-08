@@ -4,6 +4,7 @@ namespace SmartCore\Module\Blog\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Smart\CoreBundle\Doctrine\ColumnTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,60 +13,55 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class Article implements ArticleInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    use ColumnTrait\Id;
+    use ColumnTrait\IsEnabled;
+    use ColumnTrait\CreatedAt;
+    use ColumnTrait\UpdatedAt;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $enabled;
-
-    /**
+     * @var string
+     *
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
     protected $title;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=128, unique=true)
      * @Assert\NotBlank()
      */
     protected $slug;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     protected $annotation;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
     protected $text;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $keywords;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $description;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created_at;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $updated_at;
 
     /**
      * Constructor.
@@ -73,7 +69,7 @@ abstract class Article implements ArticleInterface
     public function __construct()
     {
         $this->created_at = new \DateTime();
-        $this->enabled    = true;
+        $this->is_enabled = true;
 
         if (array_key_exists('SmartCore\Module\Blog\Model\TagTrait', class_uses($this, false))
             or array_key_exists('SmartCore\Module\Blog\Model\TaggableInterface', class_implements($this, false))
@@ -91,15 +87,8 @@ abstract class Article implements ArticleInterface
     }
 
     /**
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * @param string $annotation
+     *
      * @return $this
      */
     public function setAnnotation($annotation)
@@ -118,15 +107,8 @@ abstract class Article implements ArticleInterface
     }
 
     /**
-     * @return \Datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->created_at;
-    }
-
-    /**
      * @param string $description
+     *
      * @return $this
      */
     public function setDescription($description)
@@ -146,6 +128,7 @@ abstract class Article implements ArticleInterface
 
     /**
      * @param string $keywords
+     *
      * @return $this
      */
     public function setKeywords($keywords)
@@ -164,26 +147,8 @@ abstract class Article implements ArticleInterface
     }
 
     /**
-     * @param bool $enabled
-     * @return $this
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
      * @param string $text
+     *
      * @return $this
      */
     public function setText($text)
@@ -203,6 +168,7 @@ abstract class Article implements ArticleInterface
 
     /**
      * @param string $title
+     *
      * @return $this
      */
     public function setTitle($title)
@@ -221,25 +187,8 @@ abstract class Article implements ArticleInterface
     }
 
     /**
-     * @return \DateTime|null
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updated_at;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setUpdated()
-    {
-        $this->updated_at = new \DateTime();
-
-        return $this;
-    }
-
-    /**
      * @param string $slug
+     *
      * @return $this
      */
     public function setSlug($slug)

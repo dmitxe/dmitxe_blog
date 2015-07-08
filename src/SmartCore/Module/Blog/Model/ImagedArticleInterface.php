@@ -8,6 +8,7 @@ interface ImagedArticleInterface
 {
     /**
      * @param UploadedFile $image
+     *
      * @return $this
      */
     public function setImage(UploadedFile $image);
@@ -18,13 +19,14 @@ interface ImagedArticleInterface
     public function getImage();
 
     /**
-     * @param integer $image_id
+     * @param int $image_id
+     *
      * @return $this
      */
     public function setImageId($image_id);
 
     /**
-     * @return integer
+     * @return int
      */
     public function getImageId();
 }

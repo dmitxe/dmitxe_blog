@@ -2,17 +2,20 @@
 
 namespace SmartCore\Module\Blog\Controller;
 
-use Faker\Provider\DateTime;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
 use Pagerfanta\Pagerfanta;
-use SmartCore\Bundle\CMSBundle\Pagerfanta\SimpleDoctrineORMAdapter;
+use SmartCore\Bundle\CMSBundle\Module\NodeTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class ArticleController extends Controller
 {
+    use NodeTrait;
+
     /**
      * @param string $slug
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -28,11 +31,16 @@ class ArticleController extends Controller
         $breadchumbs = $this->get('cms.breadcrumbs');
         if ($article->getCategory()) {
             foreach ($article->getCategory()->getParents() as $category) {
-                $breadchumbs->add($this->generateUrl('smart_blog.category.articles', ['slug'=> $category->getSlugFull()]) . '/', $category->getTitle());
+                $breadchumbs->add($this->generateUrl('smart_blog.category.articles', ['slug' => $category->getSlugFull()]).'/', $category->getTitle());
             }
-            $breadchumbs->add($this->generateUrl('smart_blog.category.articles', ['slug'=> $article->getCategory()->getSlugFull()]) . '/', $article->getCategory());
+            $breadchumbs->add($this->generateUrl('smart_blog.category.articles', ['slug' => $article->getCategory()->getSlugFull()]).'/', $article->getCategory());
         }
         $breadchumbs->add($article->getTitle(), $article->getTitle());
+
+        $this->node->addFrontControl('edit')
+            ->setTitle('Редактировать статью')
+            ->setUri($this->generateUrl('smart_blog_admin_article_edit', ['id' => $article->getId()]))
+            ->setIsDefault(true);
 
         return $this->render('BlogModule:Article:show.html.twig', [
             'article' => $article,
@@ -41,7 +49,8 @@ class ArticleController extends Controller
 
     /**
      * @param Request $requst
-     * @param integer $page
+     * @param int $page
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $requst, $page = null)
@@ -52,7 +61,7 @@ class ArticleController extends Controller
 
         $articleService = $this->getArticleService();
 
-        $pagerfanta = new Pagerfanta(new SimpleDoctrineORMAdapter($articleService->getFindByCategoryQuery()));
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($articleService->getFindByCategoryQuery()));
         $pagerfanta->setMaxPerPage($articleService->getItemsCountPerPage());
 
         try {
@@ -61,6 +70,10 @@ class ArticleController extends Controller
             return $this->redirect($this->generateUrl('smart_blog.article.index'));
         }
 
+        $this->node->addFrontControl('create')
+            ->setTitle('Добавить статью')
+            ->setUri($this->generateUrl('smart_blog_admin_article_create'));
+
         return $this->render('BlogModule:Article:index.html.twig', [
             'pagerfanta' => $pagerfanta,
         ]);
@@ -68,19 +81,20 @@ class ArticleController extends Controller
 
     /**
      * @param Request $requst
-     * @param integer $year
-     * @param integer $month
+     * @param int $year
+     * @param int $month
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function archiveMonthlyAction(Request $requst, $year = 1970, $month = 1)
     {
-        $firstDate = new \Datetime($year . '-' . $month . '-1');
+        $firstDate = new \Datetime($year.'-'.$month.'-1');
         $lastDate  = clone $firstDate;
         $lastDate->modify('+1 month');
 
         $articleService = $this->getArticleService();
 
-        $pagerfanta = new Pagerfanta(new SimpleDoctrineORMAdapter($articleService->getFindByDateQuery($firstDate, $lastDate)));
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($articleService->getFindByDateQuery($firstDate, $lastDate)));
         $pagerfanta->setMaxPerPage($articleService->getItemsCountPerPage());
 
         try {
@@ -96,7 +110,6 @@ class ArticleController extends Controller
         $date_archive = $formatter->format($date_archive);
         $breadchumbs = $this->get('cms.breadcrumbs');
         $breadchumbs->add('Archive', 'Архив статей за '.$date_archive);
-
         return $this->render('BlogModule:Article:archive_list.html.twig', [
             'pagerfanta' => $pagerfanta,
             'year'       => $year,
@@ -107,6 +120,7 @@ class ArticleController extends Controller
     /**
      * @param Request $request
      * @param int $id
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -126,21 +140,20 @@ class ArticleController extends Controller
 
             if ($form->isValid()) {
                 $article = $form->getData();
-                $article->setAuthor($this->getUser());
                 $articleService->update($article);
 
-                return $this->redirect($this->generateUrl('smart_blog.article.show', ['slug' => $article->getSlug()] ));
+                return $this->redirect($this->generateUrl('smart_blog.article.show', ['slug' => $article->getSlug()]));
             }
         }
 
         $breadchumbs = $this->get('cms.breadcrumbs');
         if ($article->getCategory()) {
             foreach ($article->getCategory()->getParents() as $category) {
-                $breadchumbs->add($this->generateUrl('smart_blog.category.articles', ['slug'=> $category->getSlugFull()]), $category->getTitle());
+                $breadchumbs->add($this->generateUrl('smart_blog.category.articles', ['slug' => $category->getSlugFull()]), $category->getTitle());
             }
-            $breadchumbs->add($this->generateUrl('smart_blog.category.articles', ['slug'=> $article->getCategory()->getSlugFull()]), $article->getCategory());
+            $breadchumbs->add($this->generateUrl('smart_blog.category.articles', ['slug' => $article->getCategory()->getSlugFull()]), $article->getCategory());
         }
-        $breadchumbs->add($this->generateUrl('smart_blog.article.show', ['slug'=> $article->getSlug()]), $article->getTitle());
+        $breadchumbs->add($this->generateUrl('smart_blog.article.show', ['slug' => $article->getSlug()]), $article->getTitle());
         $breadchumbs->add('Редактирование', 'Редактирование');
 
         return $this->render('BlogModule:Article:edit.html.twig', [
@@ -150,6 +163,7 @@ class ArticleController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
@@ -163,10 +177,9 @@ class ArticleController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $article->setAuthor($this->getUser());
                 $articleService->update($article, false);
 
-                return $this->redirect($this->generateUrl('smart_blog.article.show', ['slug' => $article->getSlug()] ));
+                return $this->redirect($this->generateUrl('smart_blog.article.show', ['slug' => $article->getSlug()]));
             }
         }
 
