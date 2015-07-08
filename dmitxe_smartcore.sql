@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost:3306
--- Время создания: Июл 09 2015 г., 01:33
+-- Время создания: Июл 09 2015 г., 04:31
 -- Версия сервера: 5.6.13
 -- Версия PHP: 5.6.10
 
@@ -27,12 +27,12 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 DROP TABLE IF EXISTS `blog_articles`;
 CREATE TABLE IF NOT EXISTS `blog_articles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `author_id` int(11) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
+  `category_id` int(10) unsigned DEFAULT NULL,
   `image_id` int(11) DEFAULT NULL,
   `is_commentable` tinyint(1) NOT NULL,
-  `enabled` tinyint(1) NOT NULL,
+  `is_enabled` tinyint(1) DEFAULT '1',
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `slug` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `annotation` longtext COLLATE utf8_unicode_ci,
@@ -45,14 +45,14 @@ CREATE TABLE IF NOT EXISTS `blog_articles` (
   UNIQUE KEY `UNIQ_CB80154F989D9B62` (`slug`),
   KEY `IDX_CB80154FF675F31B` (`author_id`),
   KEY `IDX_CB80154F12469DE2` (`category_id`),
-  KEY `created_at` (`created_at`)
+  KEY `IDX_CB80154F8B8E8428` (`created_at`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=26 ;
 
 --
 -- Дамп данных таблицы `blog_articles`
 --
 
-INSERT INTO `blog_articles` (`id`, `author_id`, `category_id`, `image_id`, `is_commentable`, `enabled`, `title`, `slug`, `annotation`, `text`, `keywords`, `description`, `created_at`, `updated_at`) VALUES
+INSERT INTO `blog_articles` (`id`, `author_id`, `category_id`, `image_id`, `is_commentable`, `is_enabled`, `title`, `slug`, `annotation`, `text`, `keywords`, `description`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, NULL, 1, 1, 'Хлебные крошки в Yii', 'breadcrumbs_yii', 'Хлебные крошки (Breadcrumbs) - это строка навигации до текущей страницы, сделанная из ссылок на родительские элементы. В Yii есть удобное средство для работы с хлебными крошками - виджет zii CBreadcrumbs http://www.yiiframework.com/doc/api/1.1/CBreadcrumbs<br />\n	Хочу описать, как подключить CBreadcrumbs.', '<p></p>\n<hr id="readmore" />\n<p>\n	В контроллере определяем общедоступную переменную-массив хлебных крошек. public $breadcrumbs=array();<br />\n	В layout view вставляем</p>\n<div class="highlight">\n	<pre class="brush:php">\n	&lt;?php if(isset($this-&gt;breadcrumbs)):?&gt;\n		&lt;?php $this-&gt;widget(&#39;zii.widgets.CBreadcrumbs&#39;, array(\n			&#39;links&#39;=&gt;$this-&gt;breadcrumbs,\n                        &#39;homeLink&#39;=&gt;CHtml::link(&#39;Главная&#39;,&#39;/&#39; ),\n		)); ?&gt;&lt;!-- breadcrumbs --&gt;\n	&lt;?php endif?&gt;</pre>\n</div>\n<p>\n	Здесь links &ndash; массив ссылок навигации, мы берём его из текущего контроллера.<br />\n	homeLink &ndash; ссылка на главную страницу.<br />\n	Теперь во view не забываем определить массив:</p>\n<div class="highlight">\n	<pre class="brush:php">\n$this-&gt;breadcrumbs=array(\n	&#39;Записи&#39;=&gt;array(&#39;index&#39;),\n	$model-&gt;title,\n);</pre>\n</div>\n<p>\n	Вот и всё.</p>\n', 'Yii, хлебные крошки', 'Как создать хлебные крошки в Yii', '2011-11-26 10:06:15', NULL),
 (2, 1, 1, NULL, 1, 1, 'Как подключить Ckeditor к фреймворку Yii', 'how_to_connect_ckeditor_to_framework_yii', 'Часто возникает необходимость использовать визуальный редактор на сайте. Есть несколько весьма популярных WYSIWYNG-редакторов. Один из них - Ckeditor. Сегодня я расскажу, как подключить Ckeditor к Yii.', '<p></p>\n<hr id="readmore" />\n<p>\n	Шаг первый: скачиваем сам редактор с официального сайта: <a href="http://ckeditor.com/download" target="_blank">http://ckeditor.com/download</a><br />\n	Распаковываем архив в корень сайта.<br />\n	Шаг второй: скачиваем расширение Yii ckeditor-integration <a href="http://www.yiiframework.com/extension/ckeditor-integration/">отсюда</a>.<br />\n	Распаковываем в папку protected/extensions.<br />\n	Шаг третий: подключаем к форме наш редактор:</p>\n<div class="highlight">\n	<pre class="brush: php">\n&lt;?php\n$this-&gt;widget(&#39;ext.ckeditor.CKEditorWidget&#39;,array(\n  &quot;model&quot;=&gt;$model,                 # Модель данных\n  &quot;attribute&quot;=&gt;&#39;content&#39;,          # Аттрибут в модели\n  &quot;defaultValue&quot;=&gt;$model-&gt;content, #Значение по умолчанию\n\n  &quot;config&quot; =&gt; array(\n      &quot;height&quot;=&gt;&quot;400px&quot;,\n      &quot;width&quot;=&gt;&quot;100%&quot;,\n      &quot;toolbar&quot;=&gt;&quot;Full&quot;, #панель инструментов\n      &quot;defaultLanguage&quot;=&gt;&quot;ru&quot;, # Язык по умолчанию\n      ),\n   &quot;ckEditor&quot;=&gt;Yii::app()-&gt;basePath.&quot;/../ckeditor/ckeditor.php&quot;,\n                                  # Путь к ckeditor.php\n  &quot;ckBasePath&quot;=&gt;Yii::app()-&gt;baseUrl.&quot;/ckeditor/&quot;,\n                                  # адрес к редактору\n  ) ); ?&gt;</pre>\n</div>\n<div class="code">\n	Все параметры конфига редактора смотрим <a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html">здесь</a></div>\n', 'Yii, Ckeditor, подключение', 'В статье рассказывается о том, как быстро и правильно подключить Ckeditor к Yii', '2011-11-23 13:20:50', NULL),
 (3, 1, 1, NULL, 1, 1, 'Форматирование даты и времени в Yii', 'formatting_of_date_and_time_in_yii', 'Передо мной встала такая задача: как в Yii вывести дату, отформатированную в родном, русском формате. Оказывается, очень просто. Во-первых, надо установить русский язык в конфигурационном файле приложения, и, во-вторых, воспользоваться методом компонента&nbsp; приложения CDateFormatter-&gt;format().', '<p></p>\n<hr id="readmore" />\n<p>\n	Итак, приступим. В конфигурационном файле пропишем две строчки, которые установят русификацию для сайта:</p>\n<div class="highlight">\n	<pre class="brush: php">\n   &#39;sourceLanguage&#39; =&gt; &#39;en&#39;,\n    &#39;language&#39; =&gt; &#39;ru&#39;,</pre>\n</div>\n<p>\n	Здесь sourceLanguage &ndash; язык, на котором написан сам сайт. У меня он, естественно, английский. Ну а текущий язык &ndash; language &ndash; русский.<br />\n	Теперь в том месте, где хотим вывести отформатированную дату, добавим такой код:</p>\n<div class="highlight">\n	<pre class="brush: php">\n	echo Yii::app()-&gt;dateFormatter-&gt;format(&quot;dd MMMM y, HH:mm&quot;, $vardatetime);</pre>\n</div>\n<p>\n	Выведет дату и время в таком формате:&nbsp; 29 ноября 2011, 16:41<br />\n	Метод format принимает два параметра: первый &ndash; шаблон времени в стандарте Юникода, второй &ndash; время в unix timestamp или Mysql DATETIME. Вот и всё.<br />\n	Более подробно о CDateFormatter смотрите <a href="http://www.yiiframework.com/doc/api/1.1/CDateFormatter" target="_blank">здесь</a><br />\n	&nbsp;</p>\n<p>\n	&nbsp;</p>\n', 'Yii, формат, дата', 'Как правильно и грамотно отформатировать дату и время в Yii', '2012-02-25 15:28:38', NULL),
@@ -73,7 +73,7 @@ INSERT INTO `blog_articles` (`id`, `author_id`, `category_id`, `image_id`, `is_c
 (18, 1, 4, NULL, 1, 1, 'Слушатель события Входа на сайт в Symfony 2', 'login-event-listener-in-symfony2', 'После успешного входа на сайт бывает необходимо сделать какие-то дополнительные действия. Например, в моем случае нужно было обновить время последнего посещения сайта пользователем.', '<p>Для этих целей будем использовать Event Listener (слушатель событий). Будем использовать глобальный сервис &laquo;security.context&raquo; и его событие &laquo;security.interactive_login&raquo;</p>\r\n<p>В services.yml пишем</p>\r\n<pre class="brush: php; toolbar: true;">login_listener:\r\n   class: Acme\\UserBundle\\Listener\\LoginListener\r\n        arguments: [@security.context, @doctrine.orm.entity_manager]\r\n        tags:\r\n            - { name: kernel.event_listener, event: security.interactive_login }\r\n</pre>\r\n<p>В LoginListener.php</p>\r\n<pre class="brush: php; toolbar: true;">&lt;?php\r\n \r\nnamespace Acme\\UserBundle\\Listener;\r\n \r\nuse Symfony\\Component\\Security\\Http\\Event\\InteractiveLoginEvent;\r\nuse Symfony\\Component\\Security\\Core\\SecurityContext;\r\nuse Doctrine\\ORM\\EntityManager; \r\n/**\r\n * Custom login listener.\r\n */\r\nclass LoginListener\r\n{\r\n	/** @var \\Symfony\\Component\\Security\\Core\\SecurityContext */\r\n	private $securityContext;\r\n	\r\n	/** @var \\Doctrine\\ORM\\EntityManager */\r\n	private $em;\r\n	\r\n	/**\r\n	 * Constructor\r\n	 * \r\n	 * @param SecurityContext $securityContext\r\n	 * @param EntityManager $em\r\n	 */\r\n	public function __construct(SecurityContext $securityContext, EntityManager $em)\r\n	{\r\n		$this-&gt;securityContext = $securityContext;\r\n		$this-&gt;em = $em;\r\n	}\r\n	\r\n	/**\r\n	 * Do the magic.\r\n	 * \r\n	 * @param InteractiveLoginEvent $event\r\n	 */\r\n	public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)\r\n	{\r\n		if ($this-&gt;securityContext-&gt;isGranted(''IS_AUTHENTICATED_FULLY'')) {\r\n			// user has just logged in\r\n		}\r\n		\r\n		if ($this-&gt;securityContext-&gt;isGranted(''IS_AUTHENTICATED_REMEMBERED'')) {\r\n			// user has logged in using remember_me cookie\r\n		}\r\n		\r\n		// do some other magic here\r\n		$user = $event-&gt;getAuthenticationToken()-&gt;getUser();\r\n		\r\n		// ...\r\n	}\r\n}\r\n</pre>\r\n<p>По материалам статьи <a href="http://www.metod.si/login-event-listener-in-symfony2/">http://www.metod.si/login-event-listener-in-symfony2/</a></p>', 'Symfony 2, событие входа', 'Слушатель события Входа на сайт в Symfony 2', '2014-07-04 10:40:55', '2014-07-04 10:45:14'),
 (19, 1, 3, NULL, 1, 1, 'Mysql вставка по полю из другой таблицы', 'mysql-an-insert-across-the-field-from-other-table', 'Возникла задача - написать одним запросом вставку строк в таблицу, основанных на на данных из другой таблицы. Пока помню, пишу.', '<pre class="brush: php; toolbar: true;">  INSERT INTO money(user_id, money)\r\n  SELECT id, 6 \r\n  FROM users\r\n</pre>', NULL, 'Mysql вставка по полю из другой таблицы', '2014-07-09 12:10:25', '2014-07-09 12:13:10'),
 (20, 1, 12, NULL, 1, 1, 'Отключаем рекламу в скайпе', 'we-disconnect-advertising-in-skype', 'Недавно скайп порадовал меня надписью о необходимости обновиться до последней версии. В противном случае грозился выкинуть из учетной записи. Пришлось обновляться... Поставил новую версию - и тут заметил, что при просмотре диалога СВЕРХУ опускалось окошко с рекламой и уроками. Это окошко окончательно опустило скайп в моих глазах (одно то, что в скайпе нет проверки правописания чего стоит!). Пошел гуглить, и вот решение как избавиться от рекламы:', '<ol>\r\n<li>В скайпе идем в Инструмент-&gt;Настройки-&gt;Оповещения-&gt;Извещения и сообщения - снимаем там все галки</li>\r\n<li>Идем в файл C:\\Windows\\System32\\drivers\\etc\\hosts и вносим туда такую запись:\r\n<pre class="brush: php; toolbar: true;">   127.0.0.1	rad.msn.com\r\n</pre>\r\n<p>Люди советуют еще внести эти строчки</p>\r\n<pre class="brush: php; toolbar: true;">   127.0.0.1    download.skype.com \r\n   127.0.0.1    apps.skype.com \r\n</pre>\r\n<p>- но я побоялся (вдруг думаю это проверка обновлений или вообще сам чат). А потом говорили перезагрузить комп, но я спокойно обошелся без перезегрузки Винды... Реклама сразу исчезла после перезапуска скайпа</p>\r\n</li>\r\n</ol>\r\n<p>P.S. Версия скайпа 6.18</p>', 'реклама, скайп, отключение', 'Отключаем надоедливую рекламу в скайпе', '2014-07-24 12:22:08', '2014-07-24 15:24:34');
-INSERT INTO `blog_articles` (`id`, `author_id`, `category_id`, `image_id`, `is_commentable`, `enabled`, `title`, `slug`, `annotation`, `text`, `keywords`, `description`, `created_at`, `updated_at`) VALUES
+INSERT INTO `blog_articles` (`id`, `author_id`, `category_id`, `image_id`, `is_commentable`, `is_enabled`, `title`, `slug`, `annotation`, `text`, `keywords`, `description`, `created_at`, `updated_at`) VALUES
 (21, 1, 15, NULL, 1, 1, 'Chromium', 'chromium', 'Chromium – это компонент браузера для Delphi, основанный на движке Chrome. Собственно, в этом и есть его главное преимущество перед стандартным WebBrowser (который основывается на IE).\r\nДругое преимущество Chromium – это удобная работа с куками, что незаменимо при работе с социальными сетями. Может, и WebBrowser тоже такое умеет, но даже не стал глубоко копать – т.к. IE – это абсолютное зло)', '<p>В этой статье речь пойдет о Chromium под Delphi 7. В принципе теоретически он наверное встанет и под Lazarus, особенно старая версия: <a href="https://code.google.com/p/delphichromiumembedded/">https://code.google.com/p/delphichromiumembedded/</a></p>\r\n<h2>Установка</h2>\r\n<p>Идем за самой свежей версией: <a href="https://code.google.com/p/dcef3/">https://code.google.com/p/dcef3/</a></p>\r\n<p>Качаем себе на комп, распаковываем сюда: c:\\Program Files (x86)\\Borland\\Delphi7\\Lib\\dcef3\\</p>\r\n<p>Копируем все файлы исходников из c:\\Program Files (x86)\\Borland\\Delphi7\\Lib\\dcef3\\src в c:\\Program Files (x86)\\Borland\\Delphi7\\Lib</p>\r\n<p>Открываем через Delphi 7 пакет &nbsp;c:\\Program Files (x86)\\Borland\\Delphi7\\Lib\\dcef3\\packages\\DCEF_D7.dpk</p>\r\n<p>Делаем компиляцию, инсталлируем.</p>\r\n<p>Теперь в конце списка вкладок должна появиться новая вкладка&nbsp; Chromium.</p>\r\n<p>Закрываем пакет, изменения не сохраняем, перезапускаем Delphi.</p>\r\n<h2>Работа с компонентом</h2>\r\n<h3>Куки</h3>\r\n<p>Создадим новый проект, назовем его допустим DelphiBrowser.</p>\r\n<p>Давайте попробуем загрузить страничку ВК.</p>\r\n<p>На форме размещаем компонент TChromium &nbsp;и кнопку TBitBtn, вешаем событие на кнопку</p>\r\n<pre class="brush: php; toolbar: true;">procedure TForm1.BitBtn1Click(Sender: TObject);\r\nvar\r\n  CookieManager: ICefCookieManager;\r\n  CookiesPath : String;\r\nbegin\r\n  CookiesPath := ExtractFilePath(Application.ExeName) + '' Cookies/User1'';\r\n  CookieManager := TCefCookieManagerRef.Global;\r\n  CookieManager.SetStoragePath(CookiesPath, TRUE );\r\n  Chromium1.Load(''http://vk.com/'');\r\nend;\r\n</pre>\r\n<p>В uses проверяем, чтобы был подключен модуль ceflib</p>\r\n<p>В папку с проектом метаем содержимое из c:\\Program Files (x86)\\Borland\\Delphi7\\Lib\\dcef3\\bin\\Win32\\</p>\r\n<p>Создаем папку Cookies, в ней подпапку User1. Здесь будут лежать куки первого пользователя. Можно создать папку User2 и т.д. и потом переключаться между ними.</p>\r\n<p>Сохраняем изменения и запускаем прогу.</p>\r\n<p>Если все сделано правильно, то при клике на кнопку загрузиться ВК. Войдите под своим логином на сайт, закройте программу. Запустите её снова, нажмите на кнопку. Вы должны оказаться под своим логином, т.е. куки сработали.</p>\r\n<h3>Адресная строка</h3>\r\n<p>Давайте теперь добавим &laquo;адресную строку&raquo;. Возьмите компонент TLabeledEdit, в заголовок вбейте &laquo;Адрес&raquo;. Поместите вторую кнопку TBitBtn, и повесьте не неё такой обработчик:</p>\r\n<pre class="brush: php; toolbar: true;">procedure TForm1.BitBtn2Click (Sender: TObject);\r\nbegin\r\n  Chromium1.Load(LabeledEdit1.Text);\r\nend;\r\n</pre>\r\n<p>Теперь, если мы вобьем в поле адрес и нажмем на кнопку, то произойдет загрузка нужной страницы.</p>\r\n<p>Давайте чуть усложним задачу. Пусть при переходе по ссылкам значение адреса в поле синхронно изменяется.</p>\r\n<p>Выделяем Chromium1 на форме, жмем F11 (вызов Инспектора), переходим на вкладку Events и дважды кликаем на OnAddressChange. Добавляем код</p>\r\n<pre class="brush: php; toolbar: true;">procedure TForm1.Chromium1AddressChange(Sender: TObject;\r\n  const browser: ICefBrowser; const frame: ICefFrame; const url: ustring);\r\nbegin\r\n  LabeledEdit1.Text:=url;\r\nend;\r\n</pre>\r\n<p>Все, теперь при переходе на другую страницу из браузера её адрес отобразиться в поле.</p>\r\n<h3>Скрипты</h3>\r\n<p>Теперь рассмотрим как подгружать код JavaScript.</p>\r\n<p>Добавим третью кнопку и прицепим к ней такой обработчик:</p>\r\n<pre class="brush: php; toolbar: true;">procedure TForm1.BitBtn3Click(Sender: TObject);\r\nvar\r\n  code: ustring; \r\nbegin\r\nif (Chromium1.Browser.GetMainFrame&lt;&gt;nil) then\r\n  begin\r\n  code:=''alert("Hello!");'';\r\n  Chromium1.Browser.GetMainFrame.ExecuteJavaScript(code,'''',0);\r\n  end\r\n  else ShowMessage(''FatalError'');\r\nend; \r\n</pre>\r\n<p>GetMainFrame проверяет, загружена ли страница. GetMainFrame.ExecuteJavaScript выполняет код JS, в данном случае выводит "Hello!". Но понятно что через JS мы можем манипулировать деревом DOM, совершать различные действия (вбивать в поля данные, кликать по кнопкам, получать значения).</p>\r\n<h3>Консоль</h3>\r\n<p>Давайте теперь зацепим консоль.</p>\r\n<p>Добавим на форму компонент TMemo.</p>\r\n<p>Повесим обработчик в Chromium на OnConsoleMessage, напишем там такой код:</p>\r\n<pre class="brush: php; toolbar: true;">procedure TForm1.Chromium1ConsoleMessage(Sender: TObject;\r\n  const browser: ICefBrowser; const message, source: ustring;\r\n  line: Integer; out Result: Boolean);\r\nbegin\r\n  Memo1.Lines.Add(message);\r\nend;\r\n</pre>\r\n<h3>Исходный код страницы</h3>\r\n<p>Давайте получим весь html код страницы.</p>\r\n<p>Добавим на форму еще один компонент TMemo.</p>\r\n<p>Повесим обработчик в Chromium на OnLoadEnd, напишем там такой код:</p>\r\n<pre class="brush: php; toolbar: true;">procedure TForm1.Chromium1LoadEnd(Sender: TObject;\r\n  const browser: ICefBrowser; const frame: ICefFrame;\r\n  httpStatusCode: Integer);\r\nbegin\r\n if (frame &lt;&gt; nil) and frame.IsMain  then\r\n begin\r\n    Memo1.Lines.Add(''Загрузка страницы завершена!''); // для вывода в консоль\r\n    frame.GetSourceProc(callback);\r\n  end;\r\nend;\r\n\r\nprocedure callback(const str: ustring);\r\nbegin\r\n  Form1.Memo2.Lines.Clear; // очищаем Memo\r\n  Form1.Memo2.Lines.Add(str);\r\n  Form1.Memo2.Lines.Add(''------------end-frame--------------'');\r\n  Application.ProcessMessages;\r\nend;\r\n</pre>\r\n<h3>Блокируем ресурсы</h3>\r\n<p>Допустим мы не хотим видет какую-то рекламу. Как заблокировать загрузку ресурса по адресу? Очень просто:</p>\r\n<p>Повесим обработчик в Chromium на OnBeforeResourceLoad, напишем там такой код:</p>\r\n<pre class="brush: php; toolbar: true;">procedure TForm1.Chromium1BeforeResourceLoad(Sender: TObject;\r\n  const browser: ICefBrowser; const frame: ICefFrame;\r\n  const request: ICefRequest; out Result: Boolean);\r\nvar\r\n  url: String;\r\n  pos: Integer;\r\nbegin\r\n  Result := False; //по умолчанию разрешаем загрузку ресурса (страницы, изображения, видео...)\r\n  url:=request.GetUrl; //получаем текущий урл\r\n  pos:=PosEx(''youtube.com'', url); //ищем вхождение слова "youtube.com" в урл\r\n  if pos&gt;0 then //если слово содержиться, то\r\n  begin\r\n    Result := True; //запрещаем его загрузку. Таким образом я избавился от лишнего мусора...\r\n  end;  \r\nend;\r\n</pre>\r\n<h3>Настройка прокси</h3>\r\n<p>Обнаружилась одна неприятная особенность: своего прокси у Chromium нет. Вообще нет и похоже не предвидеться. Глянул браузеры Google Chrome и Opera - все они используют настройки прокси от системы (т.е. IE). Только Mozilla Firefox продолжает использовать собственные настройки. После долгих часов поиска понял, что похоже единственное решение - подмена каким-то образом системных настроек. Но как конкретно это сделать - не нашел, встречал только упоминания. Буду благодарен, если в комментариях оставите ссылки. Ну а сейчас единственный рабочий вариант - это прописывать параметры прокси в командной строке:</p>\r\n<pre class="brush: php; toolbar: true;">  test.exe --proxy-server=255.255.0.1:80\r\n</pre>\r\n<p>Соотвественно чтобы программно менять прокси - нужно создать две программы - одна вызывает другую с нужными параметрами...</p>\r\n<p>В параметрах командной строки также можно сменить user-agent:</p>\r\n<pre class="brush: php; toolbar: true;">  test.exe --user-agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; en)"\r\n</pre>\r\n<h2>Еще исследуются&hellip;</h2>\r\n<p>Собственно, на этом и закончились мои успехи. Непонятно, как получать данные из DOM? Чтобы они были доступны не только скрипту, но и самой проге. Конечно, получив исходный код страницы можно распарсить его, но во-первых, это не универсальное решение, а во-вторых - динамически подгружаемый контент по-прежнему остается недоступным... Как получить всю DOM модель документа в любой момент времени с помощью самого компонента &ndash; увы, не разобрался. Т.е. пока что реальная польза от программы &ndash; это заполнение полей своими данными, а до полноценного парсера она не дотягивает&hellip;. &nbsp;</p>\r\n<p>&nbsp;</p>', 'chromium, delphi7', 'Работа с комопнентом Chromium в Delphi 7', '2014-08-26 09:25:29', '2014-09-22 16:17:28'),
 (22, 1, 13, NULL, 1, 1, 'Регистрация доменов', 'registration-domains', 'Для регистрации доменов использую <a href="http://2domains.ru" target="_blank">2domains.ru</a>. Это партнер рег.ру, стоимость домена в зонe .ru и .рф – 99 рублей. Домен покупается на 1 год. Продление еще на год – 250 рублей.', '<p>Проверить, не занят ли домен можно <a href="http://2domains.ru/whois/whois.php" target="_blank">тут</a> , не входя в Панель управления. &nbsp;&nbsp;</p>\r\n<p>При регистрации укажите свои настоящие данные и номер телефона.</p>\r\n<p>Чтобы купить новый домен, входим в Панель Управления, пополняем счет на 99 рублей (в верхнем меню кликаем Баланс-&gt;Пополнить баланс).</p>\r\n<p>В верхнем меню кликаем Домены-&gt;Регистрация-&gt;Зарегистрировать домен. Вводим выбранное ранее имя домена, жмем на кнопку Проверить и если имя еще никто не занял &ndash; то совершаем покупку.</p>\r\n<p>Оставьте DNS сервера регистратора. Каждая смена DNS сервера &ndash; это примерно трое суток простоя. Лучше направляйте сервер по ip.</p>\r\n<p>Если Вы используете DNS сервера регистратора, то Вам доступно для редактирования управление зоной ДНС. Перейдите в Домены-&gt;Мои домены, нажмите на свой домен, откроется меню, в нем будет пункт &laquo;Управление зоной ДНС&raquo;. При клике на нем откроется редактор записей. В раздел &laquo;Добавление записей типов: A, AAAA, CNAME, MX, NS, TXT&raquo; добавьте три записи &laquo;*&raquo;, &laquo;@&raquo; и &laquo;www&raquo;, для всех записей укажите IP адрес сервера, на котором будет находиться ваш сайт.</p>\r\n<p>Не забудьте сохранить изменения.</p>\r\n<p>К сожалению в этом редакторе не поддерживается правка записей. Чтобы сменить ip на другой, удалите старые записи и добавьте их заново, с новым ip.</p>', 'Регистрация, домен, 2domains', 'Регистрация доменов', '2014-08-31 10:04:35', '2014-08-31 10:05:59'),
 (23, 1, 15, NULL, 1, 1, 'Воспроизведение музыки в Delphi', 'music_reproduction_in_delphi', 'Иногда после длительного процесса надо как-то уведомить пользователя, что процесс завершился. Например, проиграть какую-то мелодию. Как это сделать с минимум усилий, не устанавливая полноценный проигрыватель?', '<p>В Delphi есть Beep (звук системного динамика), но его конечно мало, да и звучит не важно (каждый раз вздрагиваю).</p>\r\n<p>Поэтому будем использовать API функцию PlaySound.</p>\r\n<p>Подключаем в раздел uses библиотеку mmsystem.</p>\r\n<p>Вызываем асинхронное (чтобы программа не блокировалась) воспроизведение музыки:</p>\r\n<pre class="brush: php; toolbar: true;">    PlaySound(PChar(''music.wav''),0,SND_FILENAME+SND_ASYNC );\r\n</pre>\r\n<p>Проблема этой функции &ndash; что она может воспроизвести только wav. Говорят, что для прямого воспроизведения mp3 надо использовать библиотеку bass. Но мне было влом её подключать (вот если бы допустим нужно было сделать плеер &ndash; то да, но тогда уж проще воспользоваться компонентом). Решил просто переконвертировать mp3 в wav&hellip; Скачал AudioEdit Deluxe, открыл файл music.mp3 и сохранил его как ''music.wav''. Особенность &ndash; в настройках при сохранении надо указать режим Моно. Если сохранить как Стерео &ndash; то Delphi не может воспроизвести файл&hellip;.</p>', 'Delphi, mp3, AudioEdit Deluxe', 'Воспроизведение музыки в Delphi', '2014-09-03 08:01:32', NULL),
@@ -88,8 +88,8 @@ INSERT INTO `blog_articles` (`id`, `author_id`, `category_id`, `image_id`, `is_c
 
 DROP TABLE IF EXISTS `blog_articles_tags_relations`;
 CREATE TABLE IF NOT EXISTS `blog_articles_tags_relations` (
-  `article_id` int(11) NOT NULL,
-  `tag_id` int(11) NOT NULL,
+  `article_id` int(10) unsigned NOT NULL,
+  `tag_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`article_id`,`tag_id`),
   KEY `IDX_512A6F437294869C` (`article_id`),
   KEY `IDX_512A6F43BAD26311` (`tag_id`)
@@ -155,10 +155,10 @@ INSERT INTO `blog_articles_tags_relations` (`article_id`, `tag_id`) VALUES
 
 DROP TABLE IF EXISTS `blog_categories`;
 CREATE TABLE IF NOT EXISTS `blog_categories` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `parent` int(11) DEFAULT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent` int(10) unsigned DEFAULT NULL,
   `slug` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_DC356481989D9B62` (`slug`),
@@ -194,7 +194,7 @@ INSERT INTO `blog_categories` (`id`, `parent`, `slug`, `title`, `created_at`) VA
 
 DROP TABLE IF EXISTS `blog_tags`;
 CREATE TABLE IF NOT EXISTS `blog_tags` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `slug` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `blog_tags` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8F6C18B6989D9B62` (`slug`),
   UNIQUE KEY `UNIQ_8F6C18B62B36786B` (`title`),
-  KEY `weight` (`weight`)
+  KEY `IDX_8F6C18B67CD5541` (`weight`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=32 ;
 
 --
@@ -245,57 +245,59 @@ INSERT INTO `blog_tags` (`id`, `slug`, `title`, `created_at`, `weight`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_blocks`
+-- Структура таблицы `elfinder_file`
 --
 
-DROP TABLE IF EXISTS `engine_blocks`;
-CREATE TABLE IF NOT EXISTS `engine_blocks` (
-  `block_id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `position` smallint(6) DEFAULT NULL,
-  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `descr` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `create_by_user_id` int(11) NOT NULL,
-  `create_datetime` datetime NOT NULL,
-  PRIMARY KEY (`block_id`),
-  UNIQUE KEY `UNIQ_2FCE65B45E237E06` (`name`),
-  KEY `position` (`position`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+DROP TABLE IF EXISTS `elfinder_file`;
+CREATE TABLE IF NOT EXISTS `elfinder_file` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `content` longblob NOT NULL,
+  `size` int(11) NOT NULL,
+  `mtime` int(11) NOT NULL,
+  `mime` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `read` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `write` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `locked` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `hidden` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `width` int(11) NOT NULL,
+  `height` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `parent_name` (`parent_id`,`name`),
+  KEY `parent_id` (`parent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
--- Дамп данных таблицы `engine_blocks`
+-- Дамп данных таблицы `elfinder_file`
 --
 
-INSERT INTO `engine_blocks` (`block_id`, `position`, `name`, `descr`, `create_by_user_id`, `create_datetime`) VALUES
-(1, 0, 'content', 'Рабочая область', 0, '2014-02-10 07:02:14'),
-(2, 1, 'main_menu', 'Главное меню', 0, '2014-02-10 07:02:14'),
-(3, 2, 'left_sidebar', 'Левый сайдбар', 0, '2014-02-10 07:02:14'),
-(4, 3, 'breadcrumbs', 'Хлебные крошки', 0, '2014-02-10 07:02:14'),
-(5, 4, 'footer', 'Подвал', 0, '2014-02-10 07:02:14');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_blocks_inherit`
+-- Структура таблицы `engine_appearance_history`
 --
 
-DROP TABLE IF EXISTS `engine_blocks_inherit`;
-CREATE TABLE IF NOT EXISTS `engine_blocks_inherit` (
-  `block_id` smallint(6) NOT NULL,
-  `folder_id` int(11) NOT NULL,
-  PRIMARY KEY (`block_id`,`folder_id`),
-  KEY `IDX_372DC759E9ED820C` (`block_id`),
-  KEY `IDX_372DC759162CB942` (`folder_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+DROP TABLE IF EXISTS `engine_appearance_history`;
+CREATE TABLE IF NOT EXISTS `engine_appearance_history` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `filename` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `code` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `hash` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_9078E776D1B862B8` (`hash`),
+  KEY `IDX_9078E776B548B0F` (`path`),
+  KEY `IDX_9078E7763C0BE965` (`filename`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
--- Дамп данных таблицы `engine_blocks_inherit`
+-- Дамп данных таблицы `engine_appearance_history`
 --
 
-INSERT INTO `engine_blocks_inherit` (`block_id`, `folder_id`) VALUES
-(2, 1),
-(3, 1),
-(4, 1),
-(5, 1);
 
 -- --------------------------------------------------------
 
@@ -305,44 +307,69 @@ INSERT INTO `engine_blocks_inherit` (`block_id`, `folder_id`) VALUES
 
 DROP TABLE IF EXISTS `engine_folders`;
 CREATE TABLE IF NOT EXISTS `engine_folders` (
-  `folder_id` int(11) NOT NULL AUTO_INCREMENT,
-  `folder_pid` int(11) DEFAULT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `folder_pid` int(10) unsigned DEFAULT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `is_file` tinyint(1) DEFAULT NULL,
-  `position` smallint(6) DEFAULT NULL,
+  `is_file` tinyint(1) NOT NULL,
+  `position` smallint(6) DEFAULT '0',
   `uri_part` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `is_active` tinyint(1) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT NULL,
-  `descr` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `description` longtext COLLATE utf8_unicode_ci,
   `meta` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:array)',
   `redirect_to` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `router_node_id` int(11) DEFAULT NULL,
-  `has_inherit_nodes` tinyint(1) DEFAULT NULL,
   `permissions` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:array)',
   `lockout_nodes` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:array)',
   `template_inheritable` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `template_self` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `create_by_user_id` int(11) NOT NULL,
-  `create_datetime` datetime NOT NULL,
-  PRIMARY KEY (`folder_id`),
-  UNIQUE KEY `folder_pid_uri_part` (`folder_pid`,`uri_part`),
+  `user_id` int(10) unsigned NOT NULL,
+  `created_at` datetime NOT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_6C047E64A640A07B79628CD` (`folder_pid`,`uri_part`),
   KEY `IDX_6C047E64A640A07B` (`folder_pid`),
-  KEY `is_active` (`is_active`),
-  KEY `is_deleted` (`is_deleted`),
-  KEY `position` (`position`)
+  KEY `IDX_6C047E641B5771DD` (`is_active`),
+  KEY `IDX_6C047E64FD07C8FB` (`is_deleted`),
+  KEY `IDX_6C047E64462CE4F5` (`position`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
 -- Дамп данных таблицы `engine_folders`
 --
 
-INSERT INTO `engine_folders` (`folder_id`, `folder_pid`, `title`, `is_file`, `position`, `uri_part`, `is_active`, `is_deleted`, `descr`, `meta`, `redirect_to`, `router_node_id`, `has_inherit_nodes`, `permissions`, `lockout_nodes`, `template_inheritable`, `template_self`, `create_by_user_id`, `create_datetime`) VALUES
-(1, NULL, 'Главная', 0, 0, NULL, 1, 0, 'Корневая папка', 'N;', NULL, NULL, 1, 'N;', 'N;', NULL, NULL, 1, '2014-02-10 07:02:14'),
-(2, 1, 'Blog', 0, 0, 'blog', 1, 0, 'Папка блога', 'N;', NULL, 3, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-10 07:02:14'),
-(3, 1, 'News', 0, 0, 'news', 1, 0, 'Папка новостей', 'N;', NULL, 7, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-10 07:02:14'),
-(4, 1, 'About Us', 0, 0, 'about', 1, 0, 'О сайте', 'N;', NULL, NULL, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-10 07:02:14'),
-(5, 1, 'Feedback', 0, 0, 'feedback', 1, 0, 'О сайте', 'N;', NULL, NULL, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-10 07:02:14'),
-(6, 1, 'User', 0, 0, 'user', 1, 0, 'Аккаунт пользователя', 'N;', NULL, NULL, 0, 'N;', 'N;', NULL, NULL, 0, '2014-02-10 07:02:14');
+INSERT INTO `engine_folders` (`id`, `folder_pid`, `title`, `is_file`, `position`, `uri_part`, `is_active`, `is_deleted`, `description`, `meta`, `redirect_to`, `router_node_id`, `permissions`, `lockout_nodes`, `template_inheritable`, `template_self`, `user_id`, `created_at`, `deleted_at`) VALUES
+(1, NULL, 'Главная', 0, 0, NULL, 1, 0, 'Корневая папка', 'N;', NULL, NULL, 'N;', 'N;', NULL, NULL, 1, '2014-02-10 07:02:14', NULL),
+(2, 1, 'Blog', 0, 0, 'blog', 1, 0, 'Папка блога', 'N;', NULL, 3, 'N;', 'N;', NULL, NULL, 0, '2014-02-10 07:02:14', NULL),
+(3, 1, 'News', 0, 0, 'news', 1, 0, 'Папка новостей', 'N;', NULL, 7, 'N;', 'N;', NULL, NULL, 0, '2014-02-10 07:02:14', NULL),
+(4, 1, 'About Us', 0, 0, 'about', 1, 0, 'О сайте', 'N;', NULL, NULL, 'N;', 'N;', NULL, NULL, 0, '2014-02-10 07:02:14', NULL),
+(5, 1, 'Feedback', 0, 0, 'feedback', 1, 0, 'О сайте', 'N;', NULL, NULL, 'N;', 'N;', NULL, NULL, 0, '2014-02-10 07:02:14', NULL),
+(6, 1, 'User', 0, 0, 'user', 1, 0, 'Аккаунт пользователя', 'N;', NULL, NULL, 'N;', 'N;', NULL, NULL, 0, '2014-02-10 07:02:14', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `engine_modules`
+--
+
+DROP TABLE IF EXISTS `engine_modules`;
+CREATE TABLE IF NOT EXISTS `engine_modules` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `class` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `is_enabled` tinyint(1) DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`id`),
+  KEY `IDX_BC84EEBC46C53D4C` (`is_enabled`),
+  KEY `IDX_BC84EEBC8B8E8428` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `engine_modules`
+--
+
 
 -- --------------------------------------------------------
 
@@ -352,43 +379,103 @@ INSERT INTO `engine_folders` (`folder_id`, `folder_pid`, `title`, `is_file`, `po
 
 DROP TABLE IF EXISTS `engine_nodes`;
 CREATE TABLE IF NOT EXISTS `engine_nodes` (
-  `node_id` int(11) NOT NULL AUTO_INCREMENT,
-  `folder_id` int(11) DEFAULT NULL,
-  `block_id` smallint(6) DEFAULT NULL,
-  `is_active` tinyint(1) DEFAULT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `folder_id` int(10) unsigned DEFAULT NULL,
+  `region_id` int(10) unsigned DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
   `module` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `params` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:array)',
   `template` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `position` smallint(6) DEFAULT NULL,
+  `position` smallint(6) DEFAULT '0',
   `priority` smallint(6) NOT NULL,
-  `is_cached` tinyint(1) DEFAULT NULL,
-  `descr` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `create_by_user_id` int(11) NOT NULL,
-  `create_datetime` datetime NOT NULL,
-  PRIMARY KEY (`node_id`),
+  `is_cached` tinyint(1) NOT NULL,
+  `description` longtext COLLATE utf8_unicode_ci,
+  `user_id` int(10) unsigned NOT NULL,
+  `created_at` datetime NOT NULL,
+  `controls_in_toolbar` smallint(6) NOT NULL,
+  `is_use_eip` tinyint(1) NOT NULL DEFAULT '1',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `IDX_3055D1B7162CB942` (`folder_id`),
-  KEY `IDX_3055D1B7E9ED820C` (`block_id`),
-  KEY `is_active` (`is_active`),
-  KEY `position` (`position`),
-  KEY `module` (`module`)
+  KEY `IDX_3055D1B71B5771DD` (`is_active`),
+  KEY `IDX_3055D1B7FD07C8FB` (`is_deleted`),
+  KEY `IDX_3055D1B7462CE4F5` (`position`),
+  KEY `IDX_3055D1B798260155` (`region_id`),
+  KEY `IDX_3055D1B7C242628` (`module`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
 
 --
 -- Дамп данных таблицы `engine_nodes`
 --
 
-INSERT INTO `engine_nodes` (`node_id`, `folder_id`, `block_id`, `is_active`, `module`, `params`, `template`, `position`, `priority`, `is_cached`, `descr`, `create_by_user_id`, `create_datetime`) VALUES
-(1, 1, 2, 1, 'Menu', 'a:4:{s:5:"depth";d:0;s:8:"group_id";i:1;s:9:"css_class";s:3:"nav";s:20:"selected_inheritance";b:0;}', NULL, 0, 0, 0, 'Главное меню', 0, '2014-02-10 07:02:14'),
-(2, 1, 4, 1, 'Breadcrumbs', 'a:2:{s:9:"delimiter";s:2:"»";s:17:"hide_if_only_home";b:1;}', NULL, 0, 0, 0, 'Хлебные крошки', 0, '2014-02-10 07:02:14'),
-(3, 2, 1, 1, 'Blog', 'a:0:{}', NULL, 0, 0, 0, 'Блог', 0, '2014-02-10 07:02:14'),
-(4, 1, 3, 1, 'Widget', 'a:4:{s:7:"node_id";i:3;s:10:"controller";s:23:"BlogWidget:categoryTree";s:8:"open_tag";s:197:"\n                <div class="portlet-decoration">\n                    <div class="portlet-title">Рубрики блога</div>\n                </div>\n                <div class="portlet-content">";s:9:"close_tag";s:6:"</div>";}', NULL, 0, 0, 0, 'Категории блога', 0, '2014-02-10 07:02:14'),
-(5, 1, 3, 1, 'Widget', 'a:4:{s:7:"node_id";i:3;s:10:"controller";s:25:"BlogWidget:archiveMonthly";s:8:"open_tag";s:195:"\n                <div class="portlet-decoration">\n                    <div class="portlet-title">Архив статей</div>\n                </div>\n                <div class="portlet-content">";s:9:"close_tag";s:6:"</div>";}', NULL, 0, 0, 0, 'Архив блога', 0, '2014-02-10 07:02:14'),
-(6, 1, 3, 1, 'Widget', 'a:4:{s:7:"node_id";i:3;s:10:"controller";s:19:"BlogWidget:tagCloud";s:8:"open_tag";s:191:"\n                <div class="portlet-decoration">\n                    <div class="portlet-title">Тэги блога</div>\n                </div>\n                <div class="portlet-content">";s:9:"close_tag";s:6:"</div>";}', NULL, 0, 0, 0, 'Облако тегов', 0, '2014-02-10 07:02:14'),
-(7, 3, 1, 1, 'News', 'a:0:{}', NULL, 0, 0, 0, 'Новости', 0, '2014-02-10 07:02:14'),
-(8, 4, 1, 1, 'Texter', 'a:2:{s:12:"text_item_id";i:1;s:6:"editor";b:1;}', NULL, 0, 0, 0, 'О сайте', 0, '2014-02-10 07:02:14'),
-(9, 5, 1, 1, 'Feedback', 'a:0:{}', NULL, 0, 0, 0, 'Обратная связь', 0, '2014-02-10 07:02:14'),
-(10, 1, 1, 1, 'Widget', 'a:3:{s:7:"node_id";i:3;s:10:"controller";s:15:"BlogWidget:main";s:8:"open_tag";s:546:"\n                    <h1>Добро пожаловать!</h1>\n                    <p>Меня зовут Дмитрий. Я веб-программист, занимаюсь созданием сайтов.\n                    На этом блоге находятся мои заметки по программированию. Многие идеи\n                    взяты у других авторов, часть текста - первод с английского, что-то придумал сам).\n                    </p>";}', NULL, 0, 0, 0, 'Главная страница', 0, '2014-02-10 07:02:14'),
-(11, 6, 1, 1, 'User', 'a:2:{s:18:"allow_registration";b:1;s:24:"allow_password_resetting";b:1;}', NULL, 0, 0, 0, 'Аккаунт', 0, '2014-02-10 07:02:14');
+INSERT INTO `engine_nodes` (`id`, `folder_id`, `region_id`, `is_active`, `module`, `params`, `template`, `position`, `priority`, `is_cached`, `description`, `user_id`, `created_at`, `controls_in_toolbar`, `is_use_eip`, `is_deleted`, `deleted_at`) VALUES
+(1, 1, 2, 1, 'Menu', 'a:6:{s:5:"depth";N;s:8:"group_id";i:1;s:9:"css_class";s:13:"nav main_menu";s:20:"selected_inheritance";b:0;s:13:"current_class";N;s:7:"menu_id";i:1;}', NULL, 0, 0, 0, 'Главное меню', 0, '2014-02-10 07:02:14', 0, 1, 0, NULL),
+(2, 1, 4, 1, 'Breadcrumbs', 'a:2:{s:9:"delimiter";s:2:"»";s:17:"hide_if_only_home";b:1;}', NULL, 0, 0, 0, 'Хлебные крошки', 0, '2014-02-10 07:02:14', 0, 1, 0, NULL),
+(3, 2, 1, 1, 'Blog', 'a:0:{}', NULL, 0, 0, 0, 'Блог', 0, '2014-02-10 07:02:14', 0, 1, 0, NULL),
+(4, 1, 3, 1, 'Widget', 'a:4:{s:7:"node_id";i:3;s:10:"controller";s:23:"BlogWidget:categoryTree";s:8:"open_tag";s:197:"\n                <div class="portlet-decoration">\n                    <div class="portlet-title">Рубрики блога</div>\n                </div>\n                <div class="portlet-content">";s:9:"close_tag";s:6:"</div>";}', NULL, 0, 0, 0, 'Категории блога', 0, '2014-02-10 07:02:14', 0, 1, 0, NULL),
+(5, 1, 3, 1, 'Widget', 'a:4:{s:7:"node_id";i:3;s:10:"controller";s:25:"BlogWidget:archiveMonthly";s:8:"open_tag";s:195:"\n                <div class="portlet-decoration">\n                    <div class="portlet-title">Архив статей</div>\n                </div>\n                <div class="portlet-content">";s:9:"close_tag";s:6:"</div>";}', NULL, 0, 0, 0, 'Архив блога', 0, '2014-02-10 07:02:14', 0, 1, 0, NULL),
+(6, 1, 3, 1, 'Widget', 'a:4:{s:7:"node_id";i:3;s:10:"controller";s:19:"BlogWidget:tagCloud";s:8:"open_tag";s:191:"\n                <div class="portlet-decoration">\n                    <div class="portlet-title">Тэги блога</div>\n                </div>\n                <div class="portlet-content">";s:9:"close_tag";s:6:"</div>";}', NULL, 0, 0, 0, 'Облако тегов', 0, '2014-02-10 07:02:14', 0, 1, 0, NULL),
+(7, 3, 1, 1, 'SimpleNews', 'a:1:{s:14:"items_per_page";i:10;}', NULL, 0, 0, 0, 'Новости', 0, '2014-02-10 07:02:14', 1, 1, 0, NULL),
+(8, 4, 1, 1, 'Texter', 'a:2:{s:12:"text_item_id";i:1;s:6:"editor";b:1;}', NULL, 0, 0, 0, 'О сайте', 0, '2014-02-10 07:02:14', 0, 1, 0, NULL),
+(9, 5, 1, 1, 'Feedback', 'a:0:{}', NULL, 0, 0, 0, 'Обратная связь', 0, '2014-02-10 07:02:14', 0, 1, 0, NULL),
+(10, 1, 1, 1, 'Widget', 'a:3:{s:7:"node_id";i:3;s:10:"controller";s:15:"BlogWidget:main";s:8:"open_tag";s:546:"\n                    <h1>Добро пожаловать!</h1>\n                    <p>Меня зовут Дмитрий. Я веб-программист, занимаюсь созданием сайтов.\n                    На этом блоге находятся мои заметки по программированию. Многие идеи\n                    взяты у других авторов, часть текста - первод с английского, что-то придумал сам).\n                    </p>";}', NULL, 0, 0, 0, 'Главная страница', 0, '2014-02-10 07:02:14', 0, 1, 0, NULL),
+(11, 6, 1, 1, 'User', 'a:2:{s:18:"allow_registration";b:1;s:24:"allow_password_resetting";b:1;}', NULL, 0, 0, 0, 'Аккаунт', 0, '2014-02-10 07:02:14', 0, 1, 0, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `engine_regions`
+--
+
+DROP TABLE IF EXISTS `engine_regions`;
+CREATE TABLE IF NOT EXISTS `engine_regions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `position` smallint(6) DEFAULT '0',
+  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8_unicode_ci,
+  `user_id` int(10) unsigned NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_3054D4985E237E06` (`name`),
+  KEY `IDX_3054D498462CE4F5` (`position`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+
+--
+-- Дамп данных таблицы `engine_regions`
+--
+
+INSERT INTO `engine_regions` (`id`, `position`, `name`, `description`, `user_id`, `created_at`) VALUES
+(1, 0, 'content', 'Рабочая область', 0, '2014-02-10 07:02:14'),
+(2, 1, 'main_menu', 'Главное меню', 0, '2014-02-10 07:02:14'),
+(3, 2, 'left_sidebar', 'Левый сайдбар', 0, '2014-02-10 07:02:14'),
+(4, 3, 'breadcrumbs', 'Хлебные крошки', 0, '2014-02-10 07:02:14'),
+(5, 4, 'footer', 'Подвал', 0, '2014-02-10 07:02:14');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `engine_regions_inherit`
+--
+
+DROP TABLE IF EXISTS `engine_regions_inherit`;
+CREATE TABLE IF NOT EXISTS `engine_regions_inherit` (
+  `region_id` int(10) unsigned NOT NULL,
+  `folder_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`region_id`,`folder_id`),
+  KEY `IDX_41BBC12298260155` (`region_id`),
+  KEY `IDX_41BBC122162CB942` (`folder_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Дамп данных таблицы `engine_regions_inherit`
+--
+
+INSERT INTO `engine_regions_inherit` (`region_id`, `folder_id`) VALUES
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1);
 
 -- --------------------------------------------------------
 
@@ -398,9 +485,9 @@ INSERT INTO `engine_nodes` (`node_id`, `folder_id`, `block_id`, `is_active`, `mo
 
 DROP TABLE IF EXISTS `engine_roles`;
 CREATE TABLE IF NOT EXISTS `engine_roles` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `position` smallint(6) NOT NULL,
+  `position` smallint(6) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_9B56FA8C5E237E06` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
@@ -439,148 +526,275 @@ INSERT INTO `feedbacks` (`id`, `title`, `email`, `text`, `created`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `front_end_libraries`
+-- Структура таблицы `galleries`
 --
 
-DROP TABLE IF EXISTS `front_end_libraries`;
-CREATE TABLE IF NOT EXISTS `front_end_libraries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `related_by` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `proirity` smallint(6) NOT NULL,
-  `current_version` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
-  `files` longtext COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_1786D7FB5E237E06` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
-
---
--- Дамп данных таблицы `front_end_libraries`
---
-
-INSERT INTO `front_end_libraries` (`id`, `name`, `related_by`, `proirity`, `current_version`, `files`) VALUES
-(1, 'jquery', NULL, 1000, '1.9.1', 'jquery.min.js'),
-(2, 'bootstrap', 'jquery', 0, '2.3.2', 'css/bootstrap.min.css,css/bootstrap-responsive.min.css,js/bootstrap.min.js'),
-(3, 'jquery-cookie', 'jquery', 0, '1.3.1', 'jquery.cookie.js'),
-(4, 'less', NULL, 0, '1.3.3', 'less.min.js');
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `front_end_libraries_paths`
---
-
-DROP TABLE IF EXISTS `front_end_libraries_paths`;
-CREATE TABLE IF NOT EXISTS `front_end_libraries_paths` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `lib_id` int(11) NOT NULL,
-  `version` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
-  `path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `version_lib` (`version`,`lib_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
-
---
--- Дамп данных таблицы `front_end_libraries_paths`
---
-
-INSERT INTO `front_end_libraries_paths` (`id`, `lib_id`, `version`, `path`) VALUES
-(1, 1, '1.9.1', 'jquery/1.9.1/'),
-(2, 2, '2.3.2', 'bootstrap/2.3.2/'),
-(3, 3, '1.3.1', 'jquery-cookie/1.3.1/'),
-(4, 4, '1.3.3', 'less/1.3.3/');
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `menu`
---
-
-DROP TABLE IF EXISTS `menu`;
-CREATE TABLE IF NOT EXISTS `menu` (
-  `item_id` int(11) NOT NULL AUTO_INCREMENT,
-  `pid` int(11) DEFAULT NULL,
-  `group_id` int(11) DEFAULT NULL,
-  `folder_id` int(11) DEFAULT NULL,
-  `is_active` tinyint(1) DEFAULT NULL,
-  `position` smallint(6) DEFAULT NULL,
+DROP TABLE IF EXISTS `galleries`;
+CREATE TABLE IF NOT EXISTS `galleries` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `media_collection_id` int(10) unsigned NOT NULL,
+  `order_albums_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `descr` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `properties` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:array)',
-  `create_by_user_id` int(11) NOT NULL,
-  `created` datetime NOT NULL,
-  `updated` datetime DEFAULT NULL,
-  PRIMARY KEY (`item_id`),
-  KEY `IDX_7D053A935550C4ED` (`pid`),
-  KEY `IDX_7D053A93FE54D947` (`group_id`),
-  KEY `IDX_7D053A93162CB942` (`folder_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_F70E6EB7B52E685C` (`media_collection_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
--- Дамп данных таблицы `menu`
+-- Дамп данных таблицы `galleries`
 --
 
-INSERT INTO `menu` (`item_id`, `pid`, `group_id`, `folder_id`, `is_active`, `position`, `title`, `descr`, `url`, `properties`, `create_by_user_id`, `created`, `updated`) VALUES
-(1, NULL, 1, 1, 1, 0, 'Главная', NULL, NULL, 'N;', 1, '2014-02-10 07:02:14', NULL),
-(2, NULL, 1, 4, 1, 0, 'О сайте', NULL, NULL, 'N;', 1, '2014-02-10 07:02:14', NULL),
-(3, NULL, 1, 5, 1, 0, 'Контакты', NULL, NULL, 'N;', 1, '2014-02-10 07:02:14', NULL),
-(4, NULL, 1, 2, 1, 0, 'Блог', NULL, NULL, 'N;', 1, '2014-02-10 07:02:14', NULL),
-(5, NULL, 1, 3, 1, 0, 'Новости', NULL, NULL, 'N;', 1, '2014-02-10 07:02:14', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `menu_groups`
+-- Структура таблицы `gallery_albums`
 --
 
-DROP TABLE IF EXISTS `menu_groups`;
-CREATE TABLE IF NOT EXISTS `menu_groups` (
-  `group_id` int(11) NOT NULL AUTO_INCREMENT,
-  `position` smallint(6) DEFAULT NULL,
+DROP TABLE IF EXISTS `gallery_albums`;
+CREATE TABLE IF NOT EXISTS `gallery_albums` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `gallery_id` int(10) unsigned DEFAULT NULL,
+  `cover_image_id` int(11) DEFAULT NULL,
+  `last_image_id` int(11) DEFAULT NULL,
+  `photos_count` int(11) NOT NULL,
+  `is_enabled` tinyint(1) DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `description` longtext COLLATE utf8_unicode_ci,
+  `position` smallint(6) DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_5661ABED4E7AF8F` (`gallery_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `gallery_albums`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `gallery_photos`
+--
+
+DROP TABLE IF EXISTS `gallery_photos`;
+CREATE TABLE IF NOT EXISTS `gallery_photos` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `album_id` int(10) unsigned DEFAULT NULL,
+  `image_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `description` longtext COLLATE utf8_unicode_ci,
+  `position` smallint(6) DEFAULT '0',
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_AAF50C7B1137ABCF` (`album_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `gallery_photos`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `media_categories`
+--
+
+DROP TABLE IF EXISTS `media_categories`;
+CREATE TABLE IF NOT EXISTS `media_categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned DEFAULT NULL,
+  `slug` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_30D688FC727ACA70` (`parent_id`),
+  KEY `IDX_30D688FC989D9B62` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `media_categories`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `media_collections`
+--
+
+DROP TABLE IF EXISTS `media_collections`;
+CREATE TABLE IF NOT EXISTS `media_collections` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `default_storage_id` int(10) unsigned NOT NULL,
+  `default_filter` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `params` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:array)',
+  `relative_path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `file_relative_path_pattern` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `filename_pattern` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_244DA17D14E68FF3` (`default_storage_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `media_collections`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `media_files`
+--
+
+DROP TABLE IF EXISTS `media_files`;
+CREATE TABLE IF NOT EXISTS `media_files` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `collection_id` int(10) unsigned NOT NULL,
+  `category_id` int(10) unsigned DEFAULT NULL,
+  `storage_id` int(10) unsigned NOT NULL,
+  `is_preuploaded` tinyint(1) NOT NULL,
+  `relative_path` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `filename` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `original_filename` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
+  `mime_type` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `original_size` int(11) NOT NULL,
+  `size` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_192C84E8514956FD` (`collection_id`),
+  KEY `IDX_192C84E812469DE2` (`category_id`),
+  KEY `IDX_192C84E85CC5DB90` (`storage_id`),
+  KEY `IDX_192C84E88CDE5729` (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `media_files`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `media_files_transformed`
+--
+
+DROP TABLE IF EXISTS `media_files_transformed`;
+CREATE TABLE IF NOT EXISTS `media_files_transformed` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `file_id` int(10) unsigned NOT NULL,
+  `collection_id` int(10) unsigned NOT NULL,
+  `storage_id` int(10) unsigned NOT NULL,
+  `filter` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
+  `size` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_1084B87D7FC45F1D93CB796C` (`filter`,`file_id`),
+  KEY `IDX_1084B87D93CB796C` (`file_id`),
+  KEY `IDX_1084B87D514956FD` (`collection_id`),
+  KEY `IDX_1084B87D5CC5DB90` (`storage_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `media_files_transformed`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `media_storages`
+--
+
+DROP TABLE IF EXISTS `media_storages`;
+CREATE TABLE IF NOT EXISTS `media_storages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `provider` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `relative_path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `params` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:array)',
+  `created_at` datetime NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `media_storages`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `menus`
+--
+
+DROP TABLE IF EXISTS `menus`;
+CREATE TABLE IF NOT EXISTS `menus` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `position` smallint(6) DEFAULT '0',
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `descr` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8_unicode_ci,
   `properties` longtext COLLATE utf8_unicode_ci,
-  `create_by_user_id` int(11) NOT NULL,
-  `created` datetime NOT NULL,
-  PRIMARY KEY (`group_id`),
-  UNIQUE KEY `UNIQ_232A61A85E237E06` (`name`)
+  `user_id` int(10) unsigned NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_727508CF5E237E06` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
--- Дамп данных таблицы `menu_groups`
+-- Дамп данных таблицы `menus`
 --
 
-INSERT INTO `menu_groups` (`group_id`, `position`, `name`, `descr`, `properties`, `create_by_user_id`, `created`) VALUES
+INSERT INTO `menus` (`id`, `position`, `name`, `description`, `properties`, `user_id`, `created_at`) VALUES
 (1, 0, 'Главное меню', NULL, NULL, 1, '2014-02-10 07:02:14');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `news`
+-- Структура таблицы `menu_items`
 --
 
-DROP TABLE IF EXISTS `news`;
-CREATE TABLE IF NOT EXISTS `news` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `slug` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `annotation` longtext COLLATE utf8_unicode_ci,
-  `text` longtext COLLATE utf8_unicode_ci,
-  `created` datetime NOT NULL,
-  `updated` datetime DEFAULT NULL,
+DROP TABLE IF EXISTS `menu_items`;
+CREATE TABLE IF NOT EXISTS `menu_items` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `pid` int(10) unsigned DEFAULT NULL,
+  `menu_id` int(10) unsigned DEFAULT NULL,
+  `folder_id` int(10) unsigned DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  `position` smallint(6) DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8_unicode_ci,
+  `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `properties` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:array)',
+  `user_id` int(10) unsigned NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `open_in_new_window` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_1DD39950989D9B62` (`slug`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  KEY `IDX_70B2CA2A5550C4ED` (`pid`),
+  KEY `IDX_70B2CA2ACCD7E912` (`menu_id`),
+  KEY `IDX_70B2CA2A162CB942` (`folder_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
--- Дамп данных таблицы `news`
+-- Дамп данных таблицы `menu_items`
 --
 
-INSERT INTO `news` (`id`, `title`, `slug`, `annotation`, `text`, `created`, `updated`) VALUES
-(1, 'Переезд с шаред-хостинга на VPS', 'moving_from_shared-hosting_on_vps', 'Наконец-то блог переместился с шаред-хостинга на VPS.', 'Наконец-то блог переместился с шаред-хостинга на VPS. По цене получилось примерно тоже самое, но возможностей на VPS гораздо больше. И сайт шустрее работать стал.', '2014-02-10 07:02:14', '2013-09-05 09:10:55'),
-(2, 'Сайт перешел на фреймворк Symfony2', 'moving_on_symfony2', 'Свершилось! После месяца интенсивных работ над движком SmartCore мы смогли перевести мой блог на Symfony2.', 'Свершилось! После месяца интенсивных работ над движком SmartCore мы смогли перевести мой блог на Symfony2.\n            До этого момента блог работал на фреймворке Yii. Yii весьма неплох, но все же было принято решение осваивать Symfony2 и развивать движок SmartCore.Работа над ним и над самим сайтом продолжается. В планах создать функционал, не хуже чем на CMS Wordpress, а так же перевести магазин с CMS Joomla…', '2014-02-10 07:02:14', '2013-09-05 11:49:32'),
-(3, 'Обновление ядра сайта', 'site_updating', 'Сайт полностью перешел на CMS SmartCore.', 'Сайт полностью перешел на CMS SmartCore. До этого использовались отдельные бандлы из движка, теперь же сайт переписан начисто.\n            Былв отключана система комментариев от FOS, вместо них используется Disqus.', '2014-02-10 07:02:14', '2014-02-10 13:48:42');
+INSERT INTO `menu_items` (`id`, `pid`, `menu_id`, `folder_id`, `is_active`, `position`, `title`, `description`, `url`, `properties`, `user_id`, `created_at`, `updated_at`, `open_in_new_window`) VALUES
+(1, NULL, 1, 1, 1, 0, 'Главная', NULL, NULL, 'N;', 1, '2014-02-10 07:02:14', NULL, 0),
+(2, NULL, 1, 4, 1, 0, 'О сайте', NULL, NULL, 'N;', 1, '2014-02-10 07:02:14', NULL, 0),
+(3, NULL, 1, 5, 1, 0, 'Контакты', NULL, NULL, 'N;', 1, '2014-02-10 07:02:14', NULL, 0),
+(4, NULL, 1, 2, 1, 0, 'Блог', NULL, NULL, 'N;', 1, '2014-02-10 07:02:14', NULL, 0),
+(5, NULL, 1, 3, 1, 0, 'Новости', NULL, NULL, 'N;', 1, '2014-02-10 07:02:14', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -592,7 +806,7 @@ DROP TABLE IF EXISTS `session`;
 CREATE TABLE IF NOT EXISTS `session` (
   `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
-  `data` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `data` longblob NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
@@ -603,6 +817,105 @@ CREATE TABLE IF NOT EXISTS `session` (
 -- Дамп данных таблицы `session`
 --
 
+INSERT INTO `session` (`id`, `user_id`, `data`, `time`) VALUES
+('j2nt06m5pc8d2re8g67pji1js3', 2, 0x5f7366325f617474726962757465737c613a323a7b733a32353a225f637372662f736d6172745f636f72655f73657474696e6773223b733a34333a22374378727350495a523349716a6b4f642d5946424861695843422d33317054316d53304d51676358536d38223b733a32343a225f73656375726974795f736d6172745f636f72655f636d73223b733a3731393a22433a36383a2253796d666f6e795c436f6d706f6e656e745c53656375726974795c436f72655c41757468656e7469636174696f6e5c546f6b656e5c52656d656d6265724d65546f6b656e223a3633373a7b613a333a7b693a303b733a31373a227361726730343874307364686673646667223b693a313b733a353a2261646d696e223b693a323b733a3537333a22613a343a7b693a303b433a33383a22536d617274436f72655c42756e646c655c434d5342756e646c655c456e746974795c55736572223a3231393a7b613a393a7b693a303b733a38383a227133347942553246682b754f4c6a38742b7359754d52333632486e624862696d33704e693833462b4b692f53696741464f5150594f7453677669714338794c796d6735573664464c4d6b745a2f4b636e4241715677673d3d223b693a313b733a33313a22636d776d787061723833776f386b6b346b306b676f6b38676f7363676f6363223b693a323b733a343a22726f6f74223b693a333b733a343a22726f6f74223b693a343b623a303b693a353b623a303b693a363b623a303b693a373b623a313b693a383b693a323b7d7d693a313b623a313b693a323b613a323a7b693a303b4f3a34313a2253796d666f6e795c436f6d706f6e656e745c53656375726974795c436f72655c526f6c655c526f6c65223a313a7b733a34373a220053796d666f6e795c436f6d706f6e656e745c53656375726974795c436f72655c526f6c655c526f6c6500726f6c65223b733a31363a22524f4c455f53555045525f41444d494e223b7d693a313b4f3a34313a2253796d666f6e795c436f6d706f6e656e745c53656375726974795c436f72655c526f6c655c526f6c65223a313a7b733a34373a220053796d666f6e795c436f6d706f6e656e745c53656375726974795c436f72655c526f6c655c526f6c6500726f6c65223b733a393a22524f4c455f55534552223b7d7d693a333b613a303a7b7d7d223b7d7d223b7d5f7366325f666c61736865737c613a303a7b7d5f7366325f6d6574617c613a333a7b733a313a2275223b693a313433363339303238353b733a313a2263223b693a313433363339303238353b733a313a226c223b733a313a2230223b7d, '2015-07-09 03:18:05');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `settings`
+--
+
+DROP TABLE IF EXISTS `settings`;
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bundle` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `value` longtext COLLATE utf8_unicode_ci,
+  `serialized` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_E545A0C5A57B32FD5E237E06` (`bundle`,`name`),
+  KEY `IDX_E545A0C5A57B32FD` (`bundle`),
+  KEY `IDX_E545A0C55E237E06` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+
+--
+-- Дамп данных таблицы `settings`
+--
+
+INSERT INTO `settings` (`id`, `bundle`, `name`, `value`, `serialized`) VALUES
+(1, 'cms', 'site_full_name', 'Dmitry Xe''s Personal Site', 0),
+(2, 'cms', 'site_short_name', 'dmitxe.ru', 0),
+(3, 'cms', 'html_title_delimiter', '&ndash;', 0),
+(4, 'cms', 'appearance_editor', 'ace', 0),
+(5, 'cms', 'appearance_editor_theme', 'idle_fingers', 0),
+(6, 'cms', 'twitter_bootstrap_version', '2', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `simple_news`
+--
+
+DROP TABLE IF EXISTS `simple_news`;
+CREATE TABLE IF NOT EXISTS `simple_news` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `slug` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `annotation` longtext COLLATE utf8_unicode_ci,
+  `text` longtext COLLATE utf8_unicode_ci,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `instance_id` int(10) unsigned DEFAULT NULL,
+  `image_id` bigint(20) DEFAULT NULL,
+  `annotation_widget` longtext COLLATE utf8_unicode_ci,
+  `publish_date` datetime NOT NULL,
+  `end_publish_date` datetime DEFAULT NULL,
+  `is_enabled` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_B232FBE9989D9B62` (`slug`),
+  KEY `IDX_B232FBE93A51721D` (`instance_id`),
+  KEY `IDX_B232FBE946C53D4C` (`is_enabled`),
+  KEY `IDX_B232FBE98B8E8428` (`created_at`),
+  KEY `IDX_B232FBE978B553BA` (`publish_date`),
+  KEY `IDX_B232FBE9B80531F1` (`end_publish_date`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+
+--
+-- Дамп данных таблицы `simple_news`
+--
+
+INSERT INTO `simple_news` (`id`, `title`, `slug`, `annotation`, `text`, `created_at`, `updated_at`, `instance_id`, `image_id`, `annotation_widget`, `publish_date`, `end_publish_date`, `is_enabled`) VALUES
+(1, 'Переезд с шаред-хостинга на VPS', 'moving_from_shared-hosting_on_vps', 'Наконец-то блог переместился с шаред-хостинга на VPS.', 'Наконец-то блог переместился с шаред-хостинга на VPS. По цене получилось примерно тоже самое, но возможностей на VPS гораздо больше. И сайт шустрее работать стал.', '2014-02-10 07:02:14', '2013-09-05 09:10:55', 1, NULL, NULL, '2014-02-10 07:02:14', NULL, 1),
+(2, 'Сайт перешел на фреймворк Symfony2', 'moving_on_symfony2', 'Свершилось! После месяца интенсивных работ над движком SmartCore мы смогли перевести мой блог на Symfony2.', 'Свершилось! После месяца интенсивных работ над движком SmartCore мы смогли перевести мой блог на Symfony2.\n            До этого момента блог работал на фреймворке Yii. Yii весьма неплох, но все же было принято решение осваивать Symfony2 и развивать движок SmartCore.Работа над ним и над самим сайтом продолжается. В планах создать функционал, не хуже чем на CMS Wordpress, а так же перевести магазин с CMS Joomla…', '2014-02-10 07:02:14', '2013-09-05 11:49:32', 1, NULL, NULL, '2014-02-10 07:02:14', NULL, 1),
+(3, 'Обновление ядра сайта', 'site_updating', 'Сайт полностью перешел на CMS SmartCore.', 'Сайт полностью перешел на CMS SmartCore. До этого использовались отдельные бандлы из движка, теперь же сайт переписан начисто.\n            Былв отключана система комментариев от FOS, вместо них используется Disqus.', '2014-02-10 07:02:14', '2014-02-10 13:48:42', 1, NULL, NULL, '2014-02-10 13:48:42', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `simple_news_instances`
+--
+
+DROP TABLE IF EXISTS `simple_news_instances`;
+CREATE TABLE IF NOT EXISTS `simple_news_instances` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `media_collection_id` int(10) unsigned DEFAULT NULL,
+  `use_image` tinyint(1) NOT NULL,
+  `use_annotation_widget` tinyint(1) NOT NULL,
+  `use_end_publish_date` tinyint(1) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_98EDD0015E237E06` (`name`),
+  KEY `IDX_98EDD001B52E685C` (`media_collection_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Дамп данных таблицы `simple_news_instances`
+--
+
+INSERT INTO `simple_news_instances` (`id`, `media_collection_id`, `use_image`, `use_annotation_widget`, `use_end_publish_date`, `created_at`, `name`) VALUES
+(1, NULL, 0, 0, 0, '2014-07-06 01:02:11', 'Default news');
 
 -- --------------------------------------------------------
 
@@ -618,111 +931,110 @@ CREATE TABLE IF NOT EXISTS `sitemap_urls` (
   `referer` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `title_hash` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `title` longtext COLLATE utf8_unicode_ci,
-  `title_dublicates` int(11) NOT NULL,
   `lastmod` datetime DEFAULT NULL,
   `changefreq` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
   `priority` double DEFAULT NULL,
   `status` smallint(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_365093828852ACDC` (`loc`),
-  KEY `title_hash` (`title_hash`)
+  KEY `IDX_365093829A62B8C7` (`title_hash`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=91 ;
 
 --
 -- Дамп данных таблицы `sitemap_urls`
 --
 
-INSERT INTO `sitemap_urls` (`id`, `is_visited`, `loc`, `referer`, `title_hash`, `title`, `title_dublicates`, `lastmod`, `changefreq`, `priority`, `status`) VALUES
-(1, 1, '/', NULL, '84ce67700a3c720841690f77eeb4623d', 'Dmitry Xe''s Personal Site', 0, NULL, NULL, 1, 200),
-(2, 1, '/about/', '/', '53b2d8bd5199c57b591f8f4a3fe6b0b9', 'About Us – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(3, 1, '/feedback/', '/', 'f80103e050f6bf6a9f4786c76dcbe078', 'Feedback – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(4, 1, '/blog/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(5, 1, '/news/', '/', 'aa17178d04e76de6615cf144686b172f', 'News – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(6, 1, '/blog/category/programing/', '/', '402208d9e6ee879989f4edeaebb09a1c', 'Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(7, 1, '/blog/category/programing/php/', '/', '69687f1e4356b0232e8f3470827b5718', 'PHP – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(8, 1, '/blog/category/programing/php/yii/', '/', 'a34121f55c6840cfbbf47e6646f63e2c', 'Yii – PHP – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(9, 1, '/blog/category/programing/php/symfony2/', '/', '7cf6e8e8660f281d6a9f2fe98395ce41', 'Symfony2 – PHP – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(10, 1, '/blog/category/programing/js/', '/', 'b6e7c07bda221a112513d46001eb8935', 'JavaScript – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(11, 1, '/blog/category/programing/cpp/', '/', 'c127704a7604b45961bb4372c3a50d40', 'C++ – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(12, 1, '/blog/category/programing/delphi/', '/', '5198bae33b61e86e0c7da4d0d0eed1af', 'Delphi – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(13, 1, '/blog/category/system_administration/', '/', '7bd5c0a81c45984e2bda2d8be7a2ae8e', 'Системное администрирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(14, 1, '/blog/category/system_administration/debian/', '/', '37063d7ce7da763360f234e932942e6a', 'Debian – Системное администрирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(15, 1, '/blog/category/system_administration/ssh/', '/', '1c84b6bbff028738bb862051cd31027a', 'SSH – Системное администрирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(16, 1, '/blog/category/imposition/', '/', '1f4e09fd5ebf972a153e1857da9457b1', 'Верстка – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(17, 1, '/blog/category/imposition/css/', '/', '09292afd0294354a8008e9621638334e', 'CSS – Верстка – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(18, 1, '/blog/category/imposition/css/twitter_bootstrap/', '/', '4bd46dc52c76269d544c4ee93058713a', 'Twitter Bootstrap – CSS – Верстка – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(19, 1, '/blog/category/soft/', '/', 'ac3ade8f23e16f5ffeefb63d9be9e28d', 'Программы (софт) – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(20, 1, '/blog/category/other/', '/', 'fc81545a7bc7af8bf6c72ead51885570', 'Другое – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(21, 1, '/blog/archive/2014/9/', '/', '4e27985623448d4043c8bcc871f556ee', 'Архив статей за Сентябрь 2014 года – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(22, 1, '/blog/archive/2014/8/', '/', 'cbd4bd8bb7c44d8227c00e30671c60d0', 'Архив статей за Август 2014 года – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(23, 1, '/blog/archive/2014/7/', '/', 'edf75b1ead01e06550d606f62eaeb86f', 'Архив статей за Июль 2014 года – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(24, 1, '/blog/archive/2014/2/', '/', 'f7ba3e71716615e1675165a951af1960', 'Архив статей за Февраль 2014 года – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(25, 1, '/blog/archive/2013/9/', '/', '8a9b0ee479cb75965995533cd5753bb7', 'Архив статей за Сентябрь 2013 года – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(26, 1, '/blog/archive/2013/8/', '/', '2a31786c68c313c9ef72c101b35d45e6', 'Архив статей за Август 2013 года – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(27, 1, '/blog/archive/2013/6/', '/', '05a7c7ca09ed248c1269eddba8e55822', 'Архив статей за Июнь 2013 года – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(28, 1, '/blog/archive/2013/1/', '/', '867d9f6d0e8b04bc547b2e335151923b', 'Архив статей за Январь 2013 года – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(29, 1, '/blog/archive/2012/2/', '/', '26606652885ae5bd32a73afbb6219fa2', 'Архив статей за Февраль 2012 года – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(30, 1, '/blog/archive/2011/11/', '/', 'eb806dab6e0850c2249c711e31903db7', 'Архив статей за Ноябрь 2011 года – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(31, 1, '/blog/tag/breadcrumbs/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(32, 1, '/blog/tag/yii/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(33, 1, '/blog/tag/ckeditor/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(34, 1, '/blog/tag/connect/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(35, 1, '/blog/tag/formatting/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(36, 1, '/blog/tag/date_and_time/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(37, 1, '/blog/tag/symfony2/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(38, 1, '/blog/tag/commands/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(39, 1, '/blog/tag/code_illumination/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(40, 1, '/blog/tag/phpstorm/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(41, 1, '/blog/tag/php/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(42, 1, '/blog/tag/memcached/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(43, 1, '/blog/tag/debian/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(44, 1, '/blog/tag/css/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(45, 1, '/blog/tag/linear_gradient/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(46, 1, '/blog/tag/twitter_bootstrap/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(47, 1, '/blog/tag/forms/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(48, 1, '/blog/tag/visual_sStudio_2012_cpp/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(49, 1, '/blog/tag/editor/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(50, 1, '/blog/tag/encoding/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(51, 1, '/blog/tag/framework/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(52, 1, '/blog/tag/cms/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(53, 1, '/blog/tag/select/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(54, 1, '/blog/tag/twig/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(55, 1, '/blog/tag/ssh/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(56, 1, '/blog/tag/translations/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(57, 1, '/blog/tag/skype/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(58, 1, '/blog/tag/chromium/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(59, 1, '/blog/tag/delphi/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(60, 1, '/blog/tag/domains/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(61, 1, '/blog/music_reproduction_in_delphi.html', '/', 'd94f89f9463182734104b2b4222767a0', 'Воспроизведение музыки в Delphi – Delphi – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(62, 1, '/blog/registration-domains.html', '/', '7180316b713d2aedcf75f27c9fa3af34', 'Регистрация доменов – Другое – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(63, 1, '/blog/chromium.html', '/', '12cb73306b054eec312d58d18b3c726d', 'Chromium – Delphi – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(64, 1, '/blog/we-disconnect-advertising-in-skype.html', '/', 'a337504ac22712432e699629a55eebaf', 'Отключаем рекламу в скайпе – Программы (софт) – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(65, 1, '/blog/mysql-an-insert-across-the-field-from-other-table.html', '/', '06e35074eb909fec574c9f5516055901', 'Mysql вставка по полю из другой таблицы – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(66, 1, '/blog/login-event-listener-in-symfony2.html', '/', '1188015af7df8e113a97100284c11fb2', 'Слушатель события Входа на сайт в Symfony 2 – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(67, 1, '/blog/translations_in_symfony2.html', '/', '6602d29fea29698ee46e8bbfac910559', 'Переводы (локализация) в Symfony 2 – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(68, 1, '/blog/commands_ssh.html', '/', 'ef5f619d44666ba293a9f2f09f99b5e4', 'Команды ssh – SSH – Системное администрирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(69, 1, '/blog/twig_in_symfony2_work_with_date_and_time.html', '/', '3b2a40fb691997d7f68f11103d7416dd', 'Twig в Symfony2: работа с датой и временем. – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(70, 1, '/blog/debain7_hot_commands_of_the_server.html', '/', 'd4b590be0ff5232ca62cf36de3616953', 'Debain7 – горячие команды сервера – Debian – Системное администрирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(71, 1, '/blog/page/1/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(72, 1, '/blog/page/2/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(73, 1, '/blog/page/3/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(74, 1, '/contacts/', '/about/', 'dd4cf23d82c09867aeb83d828865f0fe', 'Smart Core CMS: An Error Occurred: Not Found', 0, NULL, NULL, NULL, 200),
-(75, 1, '/news/moving_from_shared-hosting_on_vps.html', '/news/', '08cf562f202934d1bc814faaa27dcc0d', 'Переезд с шаред-хостинга на VPS – News – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(76, 1, '/news/moving_on_symfony2.html', '/news/', 'c34f49dc475523588c48c94bdafebaac', 'Сайт перешел на фреймворк Symfony2 – News – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(77, 1, '/news/site_updating.html', '/news/', 'fc630f61c03692f7a7947ba74a124a7d', 'Обновление ядра сайта – News – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(78, 1, '/blog/installation_memcached_on_windows7_x64_php_5_4_17.html', '/blog/category/programing/', '4231d820e4ffd3a615592cb789fab04a', 'Установка Memcached на Windows 7 x64 (php 5.4.17) – PHP – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(79, 1, '/blog/adjustment_symfony2_in_phpstorm.html', '/blog/category/programing/', '8263c47329d97c6be4748c292ff98a3a', 'Настройка Symfony2 в PhpStorm – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(80, 1, '/blog/fourth.html', '/blog/category/programing/', '92019b055cfeb52f0d3d354d16164538', 'Ссылки на Symfony2 – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(81, 1, '/blog/s2_sik_knd.html', '/blog/category/programing/', 'b6d6069b2b1e443711adf9e423dbc71c', 'Symfony2: справочник команд – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(82, 1, '/blog/formatting_of_date_and_time_in_yii.html', '/blog/category/programing/php/', 'cf1ce48790966a247352ca9d4053b233', 'Форматирование даты и времени в Yii – Yii – Программирование – PHP – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(83, 1, '/blog/breadcrumbs_yii.html', '/blog/category/programing/php/', '5a075194bc168eb2ac50966732772497', 'Хлебные крошки в Yii – Yii – Программирование – PHP – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(84, 1, '/blog/how_to_connect_ckeditor_to_framework_yii.html', '/blog/category/programing/php/', 'a278e598c0f1a56e9834e57a7751a43e', 'Как подключить Ckeditor к фреймворку Yii – Yii – Программирование – PHP – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(85, 1, '/blog/highlight_code_on_site.html', '/blog/category/programing/js/', '1e51c4c2c02ee9afcbe79fee08f8feb4', 'Подсвечиваем код на сайте – JavaScript – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(86, 1, '/blog/create_forms_in_visual_sStudio_2012.html', '/blog/category/programing/cpp/', 'c999a6dc8533e3ba6f255f4fb0e5b8c0', 'Создаем формы в Visual Studio 2012 – C++ – Программирование – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(87, 1, '/blog/connect_twitter_bootstrap_to_yii.html', '/blog/category/imposition/', '246baeeff706880e2897bdbf4aa6456f', 'Подключаем Twitter Bootstrap к Yii – Twitter Bootstrap – Верстка – CSS – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(88, 1, '/blog/css_linear_gradient_of_background.html', '/blog/category/imposition/', '66641ad921db313a994888b77cf10955', 'CSS – линейный градиент фона – CSS – Верстка – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(89, 1, '/blog/notepad_plus_plus.html', '/blog/category/soft/', '4a6b561a862b30bb508036bd22b2f368', 'NotePad++ – Программы (софт) – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200),
-(90, 1, '/blog/framework_vs_cms.html', '/blog/category/other/', 'dbd4fcc446f77211287779a7708af06f', 'Что выбрать: фреймворк или CMS – Другое – Blog – dmitxe.ru', 0, NULL, NULL, NULL, 200);
+INSERT INTO `sitemap_urls` (`id`, `is_visited`, `loc`, `referer`, `title_hash`, `title`, `lastmod`, `changefreq`, `priority`, `status`) VALUES
+(1, 1, '/', NULL, '84ce67700a3c720841690f77eeb4623d', 'Dmitry Xe''s Personal Site', NULL, NULL, 1, 200),
+(2, 1, '/about/', '/', '53b2d8bd5199c57b591f8f4a3fe6b0b9', 'About Us – dmitxe.ru', NULL, NULL, NULL, 200),
+(3, 1, '/feedback/', '/', 'f80103e050f6bf6a9f4786c76dcbe078', 'Feedback – dmitxe.ru', NULL, NULL, NULL, 200),
+(4, 1, '/blog/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(5, 1, '/news/', '/', 'aa17178d04e76de6615cf144686b172f', 'News – dmitxe.ru', NULL, NULL, NULL, 200),
+(6, 1, '/blog/category/programing/', '/', '402208d9e6ee879989f4edeaebb09a1c', 'Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(7, 1, '/blog/category/programing/php/', '/', '69687f1e4356b0232e8f3470827b5718', 'PHP – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(8, 1, '/blog/category/programing/php/yii/', '/', 'a34121f55c6840cfbbf47e6646f63e2c', 'Yii – PHP – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(9, 1, '/blog/category/programing/php/symfony2/', '/', '7cf6e8e8660f281d6a9f2fe98395ce41', 'Symfony2 – PHP – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(10, 1, '/blog/category/programing/js/', '/', 'b6e7c07bda221a112513d46001eb8935', 'JavaScript – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(11, 1, '/blog/category/programing/cpp/', '/', 'c127704a7604b45961bb4372c3a50d40', 'C++ – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(12, 1, '/blog/category/programing/delphi/', '/', '5198bae33b61e86e0c7da4d0d0eed1af', 'Delphi – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(13, 1, '/blog/category/system_administration/', '/', '7bd5c0a81c45984e2bda2d8be7a2ae8e', 'Системное администрирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(14, 1, '/blog/category/system_administration/debian/', '/', '37063d7ce7da763360f234e932942e6a', 'Debian – Системное администрирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(15, 1, '/blog/category/system_administration/ssh/', '/', '1c84b6bbff028738bb862051cd31027a', 'SSH – Системное администрирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(16, 1, '/blog/category/imposition/', '/', '1f4e09fd5ebf972a153e1857da9457b1', 'Верстка – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(17, 1, '/blog/category/imposition/css/', '/', '09292afd0294354a8008e9621638334e', 'CSS – Верстка – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(18, 1, '/blog/category/imposition/css/twitter_bootstrap/', '/', '4bd46dc52c76269d544c4ee93058713a', 'Twitter Bootstrap – CSS – Верстка – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(19, 1, '/blog/category/soft/', '/', 'ac3ade8f23e16f5ffeefb63d9be9e28d', 'Программы (софт) – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(20, 1, '/blog/category/other/', '/', 'fc81545a7bc7af8bf6c72ead51885570', 'Другое – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(21, 1, '/blog/archive/2014/9/', '/', '4e27985623448d4043c8bcc871f556ee', 'Архив статей за Сентябрь 2014 года – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(22, 1, '/blog/archive/2014/8/', '/', 'cbd4bd8bb7c44d8227c00e30671c60d0', 'Архив статей за Август 2014 года – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(23, 1, '/blog/archive/2014/7/', '/', 'edf75b1ead01e06550d606f62eaeb86f', 'Архив статей за Июль 2014 года – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(24, 1, '/blog/archive/2014/2/', '/', 'f7ba3e71716615e1675165a951af1960', 'Архив статей за Февраль 2014 года – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(25, 1, '/blog/archive/2013/9/', '/', '8a9b0ee479cb75965995533cd5753bb7', 'Архив статей за Сентябрь 2013 года – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(26, 1, '/blog/archive/2013/8/', '/', '2a31786c68c313c9ef72c101b35d45e6', 'Архив статей за Август 2013 года – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(27, 1, '/blog/archive/2013/6/', '/', '05a7c7ca09ed248c1269eddba8e55822', 'Архив статей за Июнь 2013 года – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(28, 1, '/blog/archive/2013/1/', '/', '867d9f6d0e8b04bc547b2e335151923b', 'Архив статей за Январь 2013 года – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(29, 1, '/blog/archive/2012/2/', '/', '26606652885ae5bd32a73afbb6219fa2', 'Архив статей за Февраль 2012 года – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(30, 1, '/blog/archive/2011/11/', '/', 'eb806dab6e0850c2249c711e31903db7', 'Архив статей за Ноябрь 2011 года – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(31, 1, '/blog/tag/breadcrumbs/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(32, 1, '/blog/tag/yii/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(33, 1, '/blog/tag/ckeditor/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(34, 1, '/blog/tag/connect/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(35, 1, '/blog/tag/formatting/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(36, 1, '/blog/tag/date_and_time/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(37, 1, '/blog/tag/symfony2/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(38, 1, '/blog/tag/commands/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(39, 1, '/blog/tag/code_illumination/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(40, 1, '/blog/tag/phpstorm/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(41, 1, '/blog/tag/php/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(42, 1, '/blog/tag/memcached/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(43, 1, '/blog/tag/debian/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(44, 1, '/blog/tag/css/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(45, 1, '/blog/tag/linear_gradient/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(46, 1, '/blog/tag/twitter_bootstrap/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(47, 1, '/blog/tag/forms/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(48, 1, '/blog/tag/visual_sStudio_2012_cpp/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(49, 1, '/blog/tag/editor/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(50, 1, '/blog/tag/encoding/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(51, 1, '/blog/tag/framework/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(52, 1, '/blog/tag/cms/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(53, 1, '/blog/tag/select/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(54, 1, '/blog/tag/twig/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(55, 1, '/blog/tag/ssh/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(56, 1, '/blog/tag/translations/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(57, 1, '/blog/tag/skype/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(58, 1, '/blog/tag/chromium/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(59, 1, '/blog/tag/delphi/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(60, 1, '/blog/tag/domains/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(61, 1, '/blog/music_reproduction_in_delphi.html', '/', 'd94f89f9463182734104b2b4222767a0', 'Воспроизведение музыки в Delphi – Delphi – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(62, 1, '/blog/registration-domains.html', '/', '7180316b713d2aedcf75f27c9fa3af34', 'Регистрация доменов – Другое – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(63, 1, '/blog/chromium.html', '/', '12cb73306b054eec312d58d18b3c726d', 'Chromium – Delphi – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(64, 1, '/blog/we-disconnect-advertising-in-skype.html', '/', 'a337504ac22712432e699629a55eebaf', 'Отключаем рекламу в скайпе – Программы (софт) – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(65, 1, '/blog/mysql-an-insert-across-the-field-from-other-table.html', '/', '06e35074eb909fec574c9f5516055901', 'Mysql вставка по полю из другой таблицы – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(66, 1, '/blog/login-event-listener-in-symfony2.html', '/', '1188015af7df8e113a97100284c11fb2', 'Слушатель события Входа на сайт в Symfony 2 – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(67, 1, '/blog/translations_in_symfony2.html', '/', '6602d29fea29698ee46e8bbfac910559', 'Переводы (локализация) в Symfony 2 – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(68, 1, '/blog/commands_ssh.html', '/', 'ef5f619d44666ba293a9f2f09f99b5e4', 'Команды ssh – SSH – Системное администрирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(69, 1, '/blog/twig_in_symfony2_work_with_date_and_time.html', '/', '3b2a40fb691997d7f68f11103d7416dd', 'Twig в Symfony2: работа с датой и временем. – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(70, 1, '/blog/debain7_hot_commands_of_the_server.html', '/', 'd4b590be0ff5232ca62cf36de3616953', 'Debain7 – горячие команды сервера – Debian – Системное администрирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(71, 1, '/blog/page/1/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(72, 1, '/blog/page/2/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(73, 1, '/blog/page/3/', '/', 'd2a8d4fdd708c38c03e337395b9c103f', 'Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(74, 1, '/contacts/', '/about/', 'dd4cf23d82c09867aeb83d828865f0fe', 'Smart Core CMS: An Error Occurred: Not Found', NULL, NULL, NULL, 200),
+(75, 1, '/news/moving_from_shared-hosting_on_vps.html', '/news/', '08cf562f202934d1bc814faaa27dcc0d', 'Переезд с шаред-хостинга на VPS – News – dmitxe.ru', NULL, NULL, NULL, 200),
+(76, 1, '/news/moving_on_symfony2.html', '/news/', 'c34f49dc475523588c48c94bdafebaac', 'Сайт перешел на фреймворк Symfony2 – News – dmitxe.ru', NULL, NULL, NULL, 200),
+(77, 1, '/news/site_updating.html', '/news/', 'fc630f61c03692f7a7947ba74a124a7d', 'Обновление ядра сайта – News – dmitxe.ru', NULL, NULL, NULL, 200),
+(78, 1, '/blog/installation_memcached_on_windows7_x64_php_5_4_17.html', '/blog/category/programing/', '4231d820e4ffd3a615592cb789fab04a', 'Установка Memcached на Windows 7 x64 (php 5.4.17) – PHP – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(79, 1, '/blog/adjustment_symfony2_in_phpstorm.html', '/blog/category/programing/', '8263c47329d97c6be4748c292ff98a3a', 'Настройка Symfony2 в PhpStorm – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(80, 1, '/blog/fourth.html', '/blog/category/programing/', '92019b055cfeb52f0d3d354d16164538', 'Ссылки на Symfony2 – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(81, 1, '/blog/s2_sik_knd.html', '/blog/category/programing/', 'b6d6069b2b1e443711adf9e423dbc71c', 'Symfony2: справочник команд – Symfony2 – Программирование – PHP – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(82, 1, '/blog/formatting_of_date_and_time_in_yii.html', '/blog/category/programing/php/', 'cf1ce48790966a247352ca9d4053b233', 'Форматирование даты и времени в Yii – Yii – Программирование – PHP – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(83, 1, '/blog/breadcrumbs_yii.html', '/blog/category/programing/php/', '5a075194bc168eb2ac50966732772497', 'Хлебные крошки в Yii – Yii – Программирование – PHP – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(84, 1, '/blog/how_to_connect_ckeditor_to_framework_yii.html', '/blog/category/programing/php/', 'a278e598c0f1a56e9834e57a7751a43e', 'Как подключить Ckeditor к фреймворку Yii – Yii – Программирование – PHP – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(85, 1, '/blog/highlight_code_on_site.html', '/blog/category/programing/js/', '1e51c4c2c02ee9afcbe79fee08f8feb4', 'Подсвечиваем код на сайте – JavaScript – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(86, 1, '/blog/create_forms_in_visual_sStudio_2012.html', '/blog/category/programing/cpp/', 'c999a6dc8533e3ba6f255f4fb0e5b8c0', 'Создаем формы в Visual Studio 2012 – C++ – Программирование – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(87, 1, '/blog/connect_twitter_bootstrap_to_yii.html', '/blog/category/imposition/', '246baeeff706880e2897bdbf4aa6456f', 'Подключаем Twitter Bootstrap к Yii – Twitter Bootstrap – Верстка – CSS – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(88, 1, '/blog/css_linear_gradient_of_background.html', '/blog/category/imposition/', '66641ad921db313a994888b77cf10955', 'CSS – линейный градиент фона – CSS – Верстка – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(89, 1, '/blog/notepad_plus_plus.html', '/blog/category/soft/', '4a6b561a862b30bb508036bd22b2f368', 'NotePad++ – Программы (софт) – Blog – dmitxe.ru', NULL, NULL, NULL, 200),
+(90, 1, '/blog/framework_vs_cms.html', '/blog/category/other/', 'dbd4fcc446f77211287779a7708af06f', 'Что выбрать: фреймворк или CMS – Другое – Blog – dmitxe.ru', NULL, NULL, NULL, 200);
 
 -- --------------------------------------------------------
 
@@ -732,13 +1044,14 @@ INSERT INTO `sitemap_urls` (`id`, `is_visited`, `loc`, `referer`, `title_hash`, 
 
 DROP TABLE IF EXISTS `sliders`;
 CREATE TABLE IF NOT EXISTS `sliders` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `width` smallint(6) DEFAULT NULL,
   `height` smallint(6) DEFAULT NULL,
   `mode` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `library` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `slide_properties` longtext COLLATE utf8_unicode_ci,
+  `pause_time` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
@@ -755,21 +1068,21 @@ CREATE TABLE IF NOT EXISTS `sliders` (
 
 DROP TABLE IF EXISTS `slides`;
 CREATE TABLE IF NOT EXISTS `slides` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `slider_id` int(11) DEFAULT NULL,
-  `enabled` tinyint(1) DEFAULT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `slider_id` int(10) unsigned NOT NULL,
+  `is_enabled` tinyint(1) DEFAULT '1',
   `file_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `original_file_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `position` smallint(6) NOT NULL,
+  `position` smallint(6) DEFAULT '0',
   `properties` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:array)',
   `created_at` datetime NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_B8C02091D7DF1668` (`file_name`),
   KEY `IDX_B8C020912CCC9638` (`slider_id`),
-  KEY `position` (`position`),
-  KEY `user_id` (`user_id`)
+  KEY `IDX_B8C02091462CE4F5` (`position`),
+  KEY `IDX_B8C02091A76ED395` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
@@ -785,22 +1098,23 @@ CREATE TABLE IF NOT EXISTS `slides` (
 
 DROP TABLE IF EXISTS `texter`;
 CREATE TABLE IF NOT EXISTS `texter` (
-  `item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `locale` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
   `editor` smallint(6) NOT NULL,
   `text` longtext COLLATE utf8_unicode_ci,
   `meta` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:array)',
-  `created` datetime NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`item_id`)
+  `created_at` datetime NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- Дамп данных таблицы `texter`
 --
 
-INSERT INTO `texter` (`item_id`, `locale`, `editor`, `text`, `meta`, `created`, `user_id`) VALUES
-(1, 'ru', 1, '<p>На этом сайте собраны различная полезная информация по тематике сайтостроения.</p>\n<p>Информация больше собрана для себя, впрочем, надеюсь, что она будет также полезна и другим программистам.</p>\n<p>Если Вам нужно создать сайт под ключ - свяжитесь со мной через <a href="/contacts/">форму обратной связи</a>.</p>\n<p>Данный блог написан на фреймворке <a href="http://symfony.com/" target="_blank">Symfony2</a>.</p>', 'a:0:{}', '2014-02-10 07:02:14', 1);
+INSERT INTO `texter` (`id`, `locale`, `editor`, `text`, `meta`, `created_at`, `user_id`, `updated_at`) VALUES
+(1, 'ru', 1, '<p>На этом сайте собраны различная полезная информация по тематике сайтостроения.</p>\n<p>Информация больше собрана для себя, впрочем, надеюсь, что она будет также полезна и другим программистам.</p>\n<p>Если Вам нужно создать сайт под ключ - свяжитесь со мной через <a href="/contacts/">форму обратной связи</a>.</p>\n<p>Данный блог написан на фреймворке <a href="http://symfony.com/" target="_blank">Symfony2</a>.</p>', 'a:0:{}', '2014-02-10 07:02:14', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -810,22 +1124,82 @@ INSERT INTO `texter` (`item_id`, `locale`, `editor`, `text`, `meta`, `created`, 
 
 DROP TABLE IF EXISTS `texter_history`;
 CREATE TABLE IF NOT EXISTS `texter_history` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `is_deleted` tinyint(1) NOT NULL,
-  `item_id` int(11) NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `item_id` int(10) unsigned DEFAULT NULL,
   `locale` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
   `editor` smallint(6) NOT NULL,
-  `text` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `text` longtext COLLATE utf8_unicode_ci,
   `meta` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:array)',
-  `created` datetime NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `item_id` (`item_id`),
-  KEY `is_deleted` (`is_deleted`)
+  KEY `IDX_82529097126F525E` (`item_id`),
+  KEY `IDX_82529097FD07C8FB` (`is_deleted`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
 -- Дамп данных таблицы `texter_history`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `unicat__configurations`
+--
+
+DROP TABLE IF EXISTS `unicat__configurations`;
+CREATE TABLE IF NOT EXISTS `unicat__configurations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `media_collection_id` int(10) unsigned DEFAULT NULL,
+  `default_structure_id` int(10) unsigned DEFAULT NULL,
+  `entities_namespace` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `is_inheritance` tinyint(1) NOT NULL DEFAULT '1',
+  `items_per_page` smallint(5) unsigned NOT NULL DEFAULT '10',
+  `created_at` datetime NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_F622D4625E237E06` (`name`),
+  UNIQUE KEY `UNIQ_F622D4622B36786B` (`title`),
+  KEY `IDX_F622D462B52E685C` (`media_collection_id`),
+  KEY `IDX_F622D4627E2E521` (`default_structure_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `unicat__configurations`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `unicat__structures`
+--
+
+DROP TABLE IF EXISTS `unicat__structures`;
+CREATE TABLE IF NOT EXISTS `unicat__structures` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `configuration_id` int(10) unsigned DEFAULT NULL,
+  `title_form` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `entries` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
+  `is_required` tinyint(1) DEFAULT NULL,
+  `is_default_inheritance` tinyint(1) NOT NULL DEFAULT '0',
+  `is_tree` tinyint(1) NOT NULL DEFAULT '1',
+  `properties` longtext COLLATE utf8_unicode_ci,
+  `created_at` datetime NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `position` smallint(6) DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_B933004773F32DD8` (`configuration_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `unicat__structures`
 --
 
 
@@ -856,8 +1230,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `credentials_expire_at` datetime DEFAULT NULL,
   `firstname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `lastname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `facebook_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `created` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_1483A5E992FC23A8` (`username_canonical`),
   UNIQUE KEY `UNIQ_1483A5E9A0D96FBF` (`email_canonical`)
@@ -867,33 +1240,93 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`, `firstname`, `lastname`, `facebook_id`, `created`) VALUES
-(1, 'admin', 'admin', 'XeDmitry@yandex.ru', 'xedmitry@yandex.ru', 1, '1kf88gzsdl6scs8w8kkk4o0kgo4c8ww', 'BMcHSRHkmIbPIGIkkfC909k9lwlQxGp8FwUJROxrYk8sOQYEyitmtiKE7g3PRT+djndv71TbOY7C3ayl4QbQqQ==', '2015-02-10 07:47:22', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, '', '', '', '2014-02-10 07:02:14'),
-(2, 'root', 'root', 'root@mail.ru', 'root@mail.ru', 1, 'cmwmxpar83wo8kk4k0kgok8goscgocc', 'q34yBU2Fh+uOLj8t+sYuMR362HnbHbim3pNi83F+Ki/SigAFOQPYOtSgviqC8yLymg5W6dFLMktZ/KcnBAqVwg==', '2014-08-26 09:14:26', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, '', '', '', '2014-02-10 07:02:14'),
-(3, 'tester', 'tester', 'tester@mail.ru', 'tester@mail.ru', 1, 'a7dqix1vsm0ckcw0oo0c4cc80skkcg0', 'dnp8bcDbJfIFPBVK0q4KJTZnxpnc/5sks8dZ+DTUuRitERmRHtfnEgqmDcOPbEgf/sr9IT5WSpBhbPvFyBM0NQ==', NULL, 0, 0, NULL, NULL, NULL, 'a:0:{}', 0, NULL, '', '', '', '2014-02-10 07:02:14');
+INSERT INTO `users` (`id`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`, `firstname`, `lastname`, `created_at`) VALUES
+(1, 'admin', 'admin', 'XeDmitry@yandex.ru', 'xedmitry@yandex.ru', 1, '1kf88gzsdl6scs8w8kkk4o0kgo4c8ww', 'BMcHSRHkmIbPIGIkkfC909k9lwlQxGp8FwUJROxrYk8sOQYEyitmtiKE7g3PRT+djndv71TbOY7C3ayl4QbQqQ==', '2015-02-10 07:47:22', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, '', '', '2014-02-10 07:02:14'),
+(2, 'root', 'root', 'root@mail.ru', 'root@mail.ru', 1, 'cmwmxpar83wo8kk4k0kgok8goscgocc', 'q34yBU2Fh+uOLj8t+sYuMR362HnbHbim3pNi83F+Ki/SigAFOQPYOtSgviqC8yLymg5W6dFLMktZ/KcnBAqVwg==', '2015-07-09 03:18:50', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, '', '', '2014-02-10 07:02:14'),
+(3, 'tester', 'tester', 'tester@mail.ru', 'tester@mail.ru', 1, 'a7dqix1vsm0ckcw0oo0c4cc80skkcg0', 'dnp8bcDbJfIFPBVK0q4KJTZnxpnc/5sks8dZ+DTUuRitERmRHtfnEgqmDcOPbEgf/sr9IT5WSpBhbPvFyBM0NQ==', NULL, 0, 0, NULL, NULL, NULL, 'a:0:{}', 0, NULL, '', '', '2014-02-10 07:02:14');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `users_groups`
+-- Структура таблицы `webforms`
 --
 
-DROP TABLE IF EXISTS `users_groups`;
-CREATE TABLE IF NOT EXISTS `users_groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `webforms`;
+CREATE TABLE IF NOT EXISTS `webforms` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `is_ajax` tinyint(1) NOT NULL DEFAULT '0',
+  `is_use_captcha` tinyint(1) NOT NULL DEFAULT '0',
+  `send_button_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `send_notice_emails` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `from_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `final_text` longtext COLLATE utf8_unicode_ci,
+  `created_at` datetime NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `roles` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:array)',
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_FF8AB7E05E237E06` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+  UNIQUE KEY `UNIQ_641866195E237E06` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
--- Дамп данных таблицы `users_groups`
+-- Дамп данных таблицы `webforms`
 --
 
-INSERT INTO `users_groups` (`id`, `name`, `roles`) VALUES
-(1, 'blogger', 'a:1:{i:0;s:12:"ROLE_BLOGGER";}'),
-(2, 'admin', 'a:1:{i:0;s:10:"ROLE_ADMIN";}');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `webforms_fields`
+--
+
+DROP TABLE IF EXISTS `webforms_fields`;
+CREATE TABLE IF NOT EXISTS `webforms_fields` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `web_form_id` int(10) unsigned DEFAULT NULL,
+  `is_required` tinyint(1) NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `params` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:array)',
+  `params_yaml` longtext COLLATE utf8_unicode_ci,
+  `type` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
+  `is_enabled` tinyint(1) DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `position` smallint(6) DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_4FE98D465E237E06` (`name`),
+  KEY `IDX_4FE98D46B75935E3` (`web_form_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `webforms_fields`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `webforms_messages`
+--
+
+DROP TABLE IF EXISTS `webforms_messages`;
+CREATE TABLE IF NOT EXISTS `webforms_messages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `web_form_id` int(10) unsigned DEFAULT NULL,
+  `data` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:array)',
+  `comment` longtext COLLATE utf8_unicode_ci,
+  `status` smallint(6) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL,
+  `ip_address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_24719905B75935E3` (`web_form_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Дамп данных таблицы `webforms_messages`
+--
+
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -910,8 +1343,8 @@ ALTER TABLE `blog_articles`
 -- Ограничения внешнего ключа таблицы `blog_articles_tags_relations`
 --
 ALTER TABLE `blog_articles_tags_relations`
-  ADD CONSTRAINT `FK_512A6F437294869C` FOREIGN KEY (`article_id`) REFERENCES `blog_articles` (`id`),
-  ADD CONSTRAINT `FK_512A6F43BAD26311` FOREIGN KEY (`tag_id`) REFERENCES `blog_tags` (`id`);
+  ADD CONSTRAINT `FK_512A6F43BAD26311` FOREIGN KEY (`tag_id`) REFERENCES `blog_tags` (`id`),
+  ADD CONSTRAINT `FK_512A6F437294869C` FOREIGN KEY (`article_id`) REFERENCES `blog_articles` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `blog_categories`
@@ -920,35 +1353,124 @@ ALTER TABLE `blog_categories`
   ADD CONSTRAINT `FK_DC3564813D8E604F` FOREIGN KEY (`parent`) REFERENCES `blog_categories` (`id`);
 
 --
--- Ограничения внешнего ключа таблицы `engine_blocks_inherit`
---
-ALTER TABLE `engine_blocks_inherit`
-  ADD CONSTRAINT `FK_372DC759162CB942` FOREIGN KEY (`folder_id`) REFERENCES `engine_folders` (`folder_id`),
-  ADD CONSTRAINT `FK_372DC759E9ED820C` FOREIGN KEY (`block_id`) REFERENCES `engine_blocks` (`block_id`);
-
---
 -- Ограничения внешнего ключа таблицы `engine_folders`
 --
 ALTER TABLE `engine_folders`
-  ADD CONSTRAINT `FK_6C047E64A640A07B` FOREIGN KEY (`folder_pid`) REFERENCES `engine_folders` (`folder_id`);
+  ADD CONSTRAINT `FK_6C047E64A640A07B` FOREIGN KEY (`folder_pid`) REFERENCES `engine_folders` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `engine_nodes`
 --
 ALTER TABLE `engine_nodes`
-  ADD CONSTRAINT `FK_3055D1B7162CB942` FOREIGN KEY (`folder_id`) REFERENCES `engine_folders` (`folder_id`),
-  ADD CONSTRAINT `FK_3055D1B7E9ED820C` FOREIGN KEY (`block_id`) REFERENCES `engine_blocks` (`block_id`);
+  ADD CONSTRAINT `FK_3055D1B798260155` FOREIGN KEY (`region_id`) REFERENCES `engine_regions` (`id`),
+  ADD CONSTRAINT `FK_3055D1B7162CB942` FOREIGN KEY (`folder_id`) REFERENCES `engine_folders` (`id`);
 
 --
--- Ограничения внешнего ключа таблицы `menu`
+-- Ограничения внешнего ключа таблицы `engine_regions_inherit`
 --
-ALTER TABLE `menu`
-  ADD CONSTRAINT `FK_7D053A93162CB942` FOREIGN KEY (`folder_id`) REFERENCES `engine_folders` (`folder_id`),
-  ADD CONSTRAINT `FK_7D053A935550C4ED` FOREIGN KEY (`pid`) REFERENCES `menu` (`item_id`),
-  ADD CONSTRAINT `FK_7D053A93FE54D947` FOREIGN KEY (`group_id`) REFERENCES `menu_groups` (`group_id`);
+ALTER TABLE `engine_regions_inherit`
+  ADD CONSTRAINT `FK_41BBC122162CB942` FOREIGN KEY (`folder_id`) REFERENCES `engine_folders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_41BBC12298260155` FOREIGN KEY (`region_id`) REFERENCES `engine_regions` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `galleries`
+--
+ALTER TABLE `galleries`
+  ADD CONSTRAINT `FK_F70E6EB7B52E685C` FOREIGN KEY (`media_collection_id`) REFERENCES `media_collections` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `gallery_albums`
+--
+ALTER TABLE `gallery_albums`
+  ADD CONSTRAINT `FK_5661ABED4E7AF8F` FOREIGN KEY (`gallery_id`) REFERENCES `galleries` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `gallery_photos`
+--
+ALTER TABLE `gallery_photos`
+  ADD CONSTRAINT `FK_AAF50C7B1137ABCF` FOREIGN KEY (`album_id`) REFERENCES `gallery_albums` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `media_categories`
+--
+ALTER TABLE `media_categories`
+  ADD CONSTRAINT `FK_30D688FC727ACA70` FOREIGN KEY (`parent_id`) REFERENCES `media_categories` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `media_collections`
+--
+ALTER TABLE `media_collections`
+  ADD CONSTRAINT `FK_244DA17D14E68FF3` FOREIGN KEY (`default_storage_id`) REFERENCES `media_storages` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `media_files`
+--
+ALTER TABLE `media_files`
+  ADD CONSTRAINT `FK_192C84E85CC5DB90` FOREIGN KEY (`storage_id`) REFERENCES `media_storages` (`id`),
+  ADD CONSTRAINT `FK_192C84E812469DE2` FOREIGN KEY (`category_id`) REFERENCES `media_categories` (`id`),
+  ADD CONSTRAINT `FK_192C84E8514956FD` FOREIGN KEY (`collection_id`) REFERENCES `media_collections` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `media_files_transformed`
+--
+ALTER TABLE `media_files_transformed`
+  ADD CONSTRAINT `FK_1084B87D5CC5DB90` FOREIGN KEY (`storage_id`) REFERENCES `media_storages` (`id`),
+  ADD CONSTRAINT `FK_1084B87D514956FD` FOREIGN KEY (`collection_id`) REFERENCES `media_collections` (`id`),
+  ADD CONSTRAINT `FK_1084B87D93CB796C` FOREIGN KEY (`file_id`) REFERENCES `media_files` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `menu_items`
+--
+ALTER TABLE `menu_items`
+  ADD CONSTRAINT `FK_70B2CA2A162CB942` FOREIGN KEY (`folder_id`) REFERENCES `engine_folders` (`id`),
+  ADD CONSTRAINT `FK_70B2CA2A5550C4ED` FOREIGN KEY (`pid`) REFERENCES `menu_items` (`id`),
+  ADD CONSTRAINT `FK_70B2CA2ACCD7E912` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `simple_news`
+--
+ALTER TABLE `simple_news`
+  ADD CONSTRAINT `FK_B232FBE93A51721D` FOREIGN KEY (`instance_id`) REFERENCES `simple_news_instances` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `simple_news_instances`
+--
+ALTER TABLE `simple_news_instances`
+  ADD CONSTRAINT `FK_98EDD001B52E685C` FOREIGN KEY (`media_collection_id`) REFERENCES `media_collections` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `slides`
 --
 ALTER TABLE `slides`
   ADD CONSTRAINT `FK_B8C020912CCC9638` FOREIGN KEY (`slider_id`) REFERENCES `sliders` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `texter_history`
+--
+ALTER TABLE `texter_history`
+  ADD CONSTRAINT `FK_82529097126F525E` FOREIGN KEY (`item_id`) REFERENCES `texter` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `unicat__configurations`
+--
+ALTER TABLE `unicat__configurations`
+  ADD CONSTRAINT `FK_F622D4627E2E521` FOREIGN KEY (`default_structure_id`) REFERENCES `unicat__structures` (`id`),
+  ADD CONSTRAINT `FK_F622D462B52E685C` FOREIGN KEY (`media_collection_id`) REFERENCES `media_collections` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `unicat__structures`
+--
+ALTER TABLE `unicat__structures`
+  ADD CONSTRAINT `FK_B933004773F32DD8` FOREIGN KEY (`configuration_id`) REFERENCES `unicat__configurations` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `webforms_fields`
+--
+ALTER TABLE `webforms_fields`
+  ADD CONSTRAINT `FK_4FE98D46B75935E3` FOREIGN KEY (`web_form_id`) REFERENCES `webforms` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `webforms_messages`
+--
+ALTER TABLE `webforms_messages`
+  ADD CONSTRAINT `FK_24719905B75935E3` FOREIGN KEY (`web_form_id`) REFERENCES `webforms` (`id`);

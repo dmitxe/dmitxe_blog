@@ -1,5 +1,5 @@
     {% if is_granted('ROLE_BLOGGER') %}
-        <p><a href="{{ path('smart_blog.article.edit', {'id': article.id}) }}" class="btn">{{ 'Edit'|trans }}</a></p>
+        <p><a href="{{ path('smart_blog_admin_article_edit', {'id': article.id}) }}" class="btn">{{ 'Edit'|trans }}</a></p>
     {% endif %}
 
     <h2>{{ article.title }}</h2>
@@ -10,7 +10,7 @@
 
     <p>{{ article.text|raw }}</p>
 
-    {{ render(controller('SmartSocialBundle:Share:index', { 'url': path('smart_blog.article.show', {'slug': article.slug}) })) }}
+    {{ render(controller('SiteBundle:Share:index', { 'url': path('smart_blog.article.show', {'slug': article.slug}) })) }}
 
     {% if article.tags|length %}
         {{ 'Tags'|trans }}:
@@ -26,5 +26,6 @@
 
     <div>
         <h3>Комментарии к статье</h3>
-    {{ knp_disqus_render('dmitryxepersonalblog', {'identifier': path('smart_blog.article.show', {'slug': article.slug}), 'limit': 10}) }}
+
+        {{ knp_disqus_render('dmitryxepersonalblog', {'identifier': path('smart_blog.article.show', {'slug': article.slug}), 'limit': 10}) }}
     </div>

@@ -1,81 +1,90 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "name": "smart-core/smart-core-cms-sandbox",
+    "description": "Smart Core CMS Sandbox",
+    "license": "MIT",
     "autoload": {
         "psr-0": { "": "src/" }
     },
     "require": {
-        "php": ">=5.4.1",
-        "ext-intl": "*",
-        "symfony/symfony": "~2.4",
-        "symfony/assetic-bundle": "2.3.*",
-        "symfony/monolog-bundle": "2.4.*",
-        "symfony/swiftmailer-bundle": "2.3.*",
-        "sensio/distribution-bundle": "2.3.*",
-        "sensio/generator-bundle": "2.3.*",
-        "sensiolabs/doctrine-query-statistics-bundle": "dev-master",
-        "twig/extensions": "1.0.*",
-        "doctrine/orm": "~2.2,>=2.2.3",
-        "doctrine/doctrine-bundle": "1.2.*",
-        "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "doctrine/doctrine-migrations-bundle": "dev-master",
+        "php": ">=5.5.9",
+        "symfony/symfony": "~2.7",
+        "smart-core/cms-bundle": "dev-master",
 
-        "avalanche123/imagine-bundle": "*",
-        "egulias/listeners-debug-command-bundle": "*",
-        "elao/web-profiler-extra-bundle": "dev-master",
-        "fabpot/goutte": "dev-master",
-        "facebook/php-sdk": "*",
-        "friendsofsymfony/user-bundle": "~2.0@dev",
-        "genemu/form-bundle": "2.2.*",
-        "helios-ag/fm-elfinder-bundle": "1.4.1",
-        "incenteev/composer-parameter-handler": "~2.0",
-        "jms/debugging-bundle": "dev-master",
-        "hwi/oauth-bundle": "0.3.*@dev",
-        "knplabs/knp-menu-bundle":"*",
-        "knplabs/rad-bundle": "2.3.x",
-        "liip/doctrine-cache-bundle": "dev-master",
+        "doctrine/migrations": "1.0.*@dev",
+        "doctrine/doctrine-fixtures-bundle": "dev-master",
+        "doctrine/doctrine-migrations-bundle": "2.1.*@dev",
+        "dizda/cloud-backup-bundle": "dev-master",
         "liip/functional-test-bundle": "dev-master",
-        "liip/theme-bundle": "dev-master",
-        "mopa/bootstrap-bundle":  "2.3.x-dev",
-        "phpspec/phpspec": "~2@dev",
-        "raulfraile/ladybug-bundle": "v0.7",
-        "rickysu/tagcache-bundle": "dev-master",
-        "sonata-project/intl-bundle": "dev-master",
+        "jms/debugging-bundle": "dev-master",
+        "mremi/templating-extra-bundle": "dev-master",
+
+
+        "friendsofsymfony/user-bundle": "dev-master",
+        "hwi/oauth-bundle": "0.4.*@dev",
+        "knplabs/knp-disqus-bundle":"dev-master",
+        "knplabs/knp-menu": "dev-master",
+        "knplabs/knp-menu-bundle": "dev-master",
+        "mopa/bootstrap-bundle":  "dev-master",
+        "stfalcon/tinymce-bundle": "dev-master",
+
+        "smart-core/module-breadcrumbs": "dev-master",
+        "smart-core/module-gallery": "dev-master",
+        "smart-core/module-menu": "dev-master",
+        "smart-core/module-simplenews": "dev-master",
+        "smart-core/module-slider": "dev-master",
+        "smart-core/module-texter": "dev-master",
+        "smart-core/module-unicat": "dev-master",
+        "smart-core/module-user": "dev-master",
+        "smart-core/module-webform": "dev-master",
+        "smart-core/module-widget": "dev-master",
+
+        "smart-core/cms-generator-bundle": "dev-master",
+        "smart-core/core-bundle": "dev-master",
+        "smart-core/felib-bundle": "dev-master",
+        "smart-core/html-bundle": "dev-master",
+        "smart-core/media-bundle": "dev-master",
+        "smart-core/rich-editor-bundle": "dev-master",
+        "smart-core/seo-bundle": "dev-master",
         "smart-core/session-bundle": "dev-master",
-        "stfalcon/tinymce-bundle": "v0.2.1",
-        "whiteoctober/breadcrumbs-bundle": "dev-master",
-        "white-october/pagerfanta-bundle": "dev-master",
-        "zendframework/zend-servicemanager": "2.2.*",
-        "zendframework/zend-tag": "2.2.*",
-        "knplabs/knp-disqus-bundle":"dev-master"
+        "smart-core/settings-bundle": "dev-master",
+        "smart-core/simple-profiler-bundle": "dev-master",
+        "smart-core/sitemap-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
             "sh bin/init_var",
+            "sh bin/clear_cache",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "SmartCore\\Bundle\\AcceleratorCacheBundle\\Composer\\ScriptHandler::clearCache",
             "php app/console doctrine:schema:update"
         ],
         "post-update-cmd": [
             "sh bin/init_var",
+            "sh bin/clear_cache",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "SmartCore\\Bundle\\AcceleratorCacheBundle\\Composer\\ScriptHandler::clearCache",
             "php app/console doctrine:schema:update"
         ]
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "preferred-install": "dist"
     },
-    "minimum-stability": "alpha",
     "extra": {
         "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
         "symfony-web-dir": "web",
+        "symfony-assets-install": "symlink",
+        "branch-alias": {
+            "dev-master": "2.7-dev"
+        },
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
