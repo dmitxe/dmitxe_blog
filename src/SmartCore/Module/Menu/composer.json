@@ -1,9 +1,0 @@
-{
-    "name": "smart-core/module-menu",
-    "autoload": {
-        "psr-0": {
-            "SmartCore\\Module\\Menu": ""
-        }
-    },                
-    "target-dir": "SmartCore/Module/Menu"
-}
