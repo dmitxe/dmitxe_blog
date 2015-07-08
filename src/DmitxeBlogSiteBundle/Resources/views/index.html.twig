@@ -1,0 +1,154 @@
+{% extends '@Html/base.html.twig' %}
+
+{% set use_libs = {
+    'bootstrap': '2',
+    'syntaxhighlighter': null,
+} %}
+
+{% block title %}{{ parent() }}{{ cms_html_title() }}{% endblock title %}
+
+{% block meta %}{{ parent() }}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% endblock meta %}
+
+{% block styles %}{{ parent() }}
+    <style type="text/css">
+        @import url({{ asset('bundles/site/css/comments.css') }});
+        @import url({{ asset('bundles/site/js/jlike/buttons.css') }});
+        @import url({{ asset('bundles/site/css/screen.css') }});
+        @import url({{ asset('bundles/site/css/main.css') }});
+        body {
+            padding-top: 60px;
+            padding-bottom: 100px;
+        }
+    </style>
+{% endblock styles %}
+
+{% block scripts %}{{ parent() }}
+    <script type="text/javascript">
+        var pathbs = 'http://{{ app.request.host ~ app.request.getBaseUrl() }}';
+        var typeGet="0";
+        if(!window.VK) {
+            document.write(unescape('<script type="text/javascript" src="http://vk.com/js/api/openapi.js">%3C/script%3E'));
+        }
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/site/js/jlike/buttons.js') }}"></script>
+    <script type="text/javascript">
+        // SyntaxHighlighter.config.bloggerMode = true;
+        SyntaxHighlighter.defaults['toolbar'] = false;
+        SyntaxHighlighter.all();
+        // hljs.initHighlightingOnLoad();
+    </script>
+
+{% endblock scripts %}
+
+{% block body %}
+
+<div id="mst_page" class="container">
+    <div class="row">
+        <div id="header" class="span12">
+            <div id="logo"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="mainmenu" class="span12">
+            <div class="navbar navbar-static-top navbar-inverse">
+                <div class="navbar-inner top-menu">
+                    {{ main_menu }}
+                    <ul class="nav pull-right">
+                        {% if is_granted('ROLE_USER') %}
+                            <li class="divider-vertical"></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user icon-white"></i>
+                                    &nbsp;{{ app.user.username }} <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ path('fos_user_profile_show') }}"><i class="icon-cog"></i> Мой профиль</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="{{ path('fos_user_security_logout') }}"><i class="icon-off"></i> Выход</a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li><a href="{{ path('fos_user_registration_register') }}">Зарегистрироваться</a></li>
+                            <li class="dropdown">
+                                <a href="{{ path('fos_user_profile_show') }}">Войти</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="row">
+            <div class="span12">
+                <div class="breadcrumb">
+                    {{ breadcrumbs }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row" class='span3'>
+            {% block sidebar %}
+                <div id="sidebar" class="span3">
+                    <div class="portlet">
+						<div class="cmf-frontadmin-node">
+							<div class="portlet-decoration">
+								<div class="portlet-title">Реклама</div>
+							</div>
+							<div class="portlet-content">
+								<div id="google_ads">
+									<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+									<!-- Блок под Netopus -->
+									<ins class="adsbygoogle"
+										 style="display:inline-block;width:268px;height:250px"
+										 data-ad-client="ca-pub-4133262202239972"
+										 data-ad-slot="3920662445"></ins>
+									<script>
+									(adsbygoogle = window.adsbygoogle || []).push({});
+									</script>
+								</div>
+							</div>	
+						</div>	
+                    </div>
+                    <div class="portlet">
+                        {{ left_sidebar }}
+                    </div>
+                </div>
+            {% endblock sidebar %}
+            <div class="span9">
+                <div id="mst_content">
+                    {% include '@SmartCore/flash_messages.html.twig' %}
+
+                    {% block content content %}
+                </div>
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="span12">
+            <div id="footer"> © 2011-2013 Дмитрий Хе. Все права защищены. {{  footer  }}
+                <br />
+                <small>
+                    {{ simple_profiler() }}
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+{% endblock body %}
+
+{% block body_js %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function () {
+            jQuery('#login-dropdown').click(function(e) {
+                setTimeout(function() {
+                    jQuery("#username").focus();
+                }, 1);
+            });
+        });
+    </script>
+{% endblock body_js %}

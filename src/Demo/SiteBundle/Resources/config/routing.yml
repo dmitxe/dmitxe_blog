@@ -1,3 +1,0 @@
-#demo_site_homepage:
-#    pattern:  /hello/{name}
-#    defaults: { _controller: DemoSiteBundle:Default:index }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Demo\SiteBundle;
+namespace DmitxeBlogSiteBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Demo\SiteBundle\Entity;
+namespace DmitxeBlogSiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
