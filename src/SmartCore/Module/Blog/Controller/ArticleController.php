@@ -140,6 +140,7 @@ class ArticleController extends Controller
 
             if ($form->isValid()) {
                 $article = $form->getData();
+                $article->setAuthor($this->getUser());
                 $articleService->update($article);
 
                 return $this->redirect($this->generateUrl('smart_blog.article.show', ['slug' => $article->getSlug()]));
@@ -177,6 +178,7 @@ class ArticleController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+                $article->setAuthor($this->getUser());
                 $articleService->update($article, false);
 
                 return $this->redirect($this->generateUrl('smart_blog.article.show', ['slug' => $article->getSlug()]));
