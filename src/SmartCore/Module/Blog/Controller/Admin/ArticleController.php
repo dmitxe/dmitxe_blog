@@ -58,7 +58,9 @@ class ArticleController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $articleService->update($form->getData());
+                $article = $form->getData();
+                $article->setAuthor($this->getUser());
+                $articleService->update($article);
 
                 return $this->redirect($this->generateUrl('smart_blog_admin_article'));
             }
@@ -85,7 +87,9 @@ class ArticleController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $articleService->update($form->getData(), false);
+                $article = $form->getData();
+                $article->setAuthor($this->getUser());
+                $articleService->update($article, false);
 
                 return $this->redirect($this->generateUrl('smart_blog_admin_article'));
             }
